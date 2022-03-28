@@ -2,12 +2,14 @@
  #Requirements Document 
 
 Date: 22 march 2022
+	27 march 2022
 
-Version: 0.0
+Version: 0.1
 
  
 | Version number | Change |
-| ----------------- |:-----------|
+| ----------------- |:-----------:|
+| 0.1| added first stakeholders and some FR|
 | | | 
 
 
@@ -50,7 +52,12 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|   Stakeholder x..     |             | 
+|   companies  and retailers     | they wish to organize their inventory and manage different relationships with the app|
+|	suppliers		| they provide the different types of items which the companies and retailers wish to manage|
+|	quality office	| they set the quality standart and testing of items ordered from different suppliers| 
+|	OU 				| OU(organizational units) are subparts of the company which have the need to ask and manage items from the companys warehouse|
+|	paying service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
+
 
 # Context Diagram and interfaces
 
@@ -86,9 +93,21 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | ID        | Description  |
 | ------------- |:-------------:| 
-|  FR1     |  |
-|  FR2     |   |
-| FRx..  | | 
+|  FR1 		| User Management |
+|   FR1.1 	| User registration|
+|     FR1.1.1 	| User profile setting|
+|   FR1.2 	| User Log in|
+|   FR1.3 	| User Log out|
+|	FR1.4 	| User profile management|  
+|  FR2 		| Sales management  |
+|   FR2.1 	| Start sale transaction|
+|   FR2.2 	| End sale transaction|
+|  FR3 		| Warehouse management|
+|   FR3.1 	| Inventory management|
+| 	 FR3.1.1 	| Low supply notification|
+|	 FR3.1.2 	| Item requested by internal entity|
+|	 FR3.1.3 	| Item requested to supplier|
+| ------------- |:-------------:| 
 
 ## Non Functional Requirements
 
