@@ -4,13 +4,13 @@
 Date: 22 march 2022
 	27 march 2022
 
-Version: 0.1
+Version: 0.2
 
  
 | Version number | Change |
 | ----------------- |:-----------:|
 | 0.1| added first stakeholders and some FR|
-| | | 
+| 0.2| completed the stakeholders and interfaces| 
 
 
 # Contents
@@ -52,11 +52,14 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|   companies  and retailers     | they wish to organize their inventory and manage different relationships with the app|
-|	suppliers		| they provide the different types of items which the companies and retailers wish to manage|
-|	quality office	| they set the quality standart and testing of items ordered from different suppliers| 
+|   Companies  and retailers employees    | They wish to organize their inventory and manage different relationships with the app|
+| Manager | Can supervise the availability of items. The manager has an administrator role | 
+|	Suppliers		| They provide the different types of items which the companies and retailers wish to manage|
+|	Quality office	| They set the quality standart and testing of items ordered from different suppliers| 
 |	OU 				| OU(organizational units) are subparts of the company which have the need to ask and manage items from the companys warehouse|
-|	paying service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
+|	Payment service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
+|	Competitors	| Other applications that provide similar services|
+|	Items	| Products that must be managed in the warehouse|
 
 
 # Context Diagram and interfaces
@@ -72,8 +75,12 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 \<GUIs will be described graphically in a separate document>
 
 | Actor | Logical Interface | Physical Interface  |
-| ------------- |:-------------:| -----:|
-|   Actor x..     |  |  |
+| ------------- |:-------------:| :-----:|
+| Companies and retailers employees | Graphical User Interface | Screen, keyboard |
+| Manager  | Graphical User Interface | Screen, keyboard |
+| Item  | ReadBarCode  | Laser Beam (Bar Code Reader) |
+| Payment service | APIs (e.g: PayPal: https://developer.paypal.com/home)  | Internet Connection  |
+| Organizational Units  | InternalOrderReceived | Internal Network |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
