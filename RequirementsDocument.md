@@ -4,13 +4,14 @@
 Date: 22 march 2022
 	27 march 2022
 
-Version: 0.2
+Version: 0.3
 
  
 | Version number | Change |
 | ----------------- |:-----------:|
 | 0.1| added first stakeholders and some FR|
 | 0.2| completed the stakeholders and interfaces| 
+| 0.3| added new stakeholder/actor employee and made a prototype of the context diagram|
 
 
 # Contents
@@ -60,6 +61,8 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |	Payment service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
 |	Competitors	| Other applications that provide similar services|
 |	Items	| Products that must be managed in the warehouse|
+|	IT manager| Will be the one to manage the application and its correct use and functionality|
+|	Employee 	| Are the users of the application on a base level and represent the OU when making orders|
 
 
 # Context Diagram and interfaces
@@ -82,6 +85,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Payment service | APIs (e.g: PayPal: https://developer.paypal.com/home)  | Internet Connection  |
 | Organizational Units  | InternalOrderReceived | Internal Network |
 | Quality Office employees  | Graphical User Interface | Screen, Keyboard |
+| Employee | Graphical User Interface | Screen, Keyboard |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
