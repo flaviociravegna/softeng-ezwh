@@ -4,7 +4,7 @@
 Date: 22 march 2022
 	27 march 2022
 
-Version: 0.3
+Version: 0.4
 
  
 | Version number | Change |
@@ -12,6 +12,7 @@ Version: 0.3
 | 0.1| added first stakeholders and some FR|
 | 0.2| completed the stakeholders and interfaces| 
 | 0.3| added new stakeholder/actor employee and made a prototype of the context diagram|
+| 0.4| started NF requirements|
 
 
 # Contents
@@ -108,17 +109,60 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  FR1 		| User Management |
 |   FR1.1 	| User registration|
 |     FR1.1.1 	| User profile setting|
-|   FR1.2 	| User Log in|
+|	FR1.2 |User Authentication|
+|   	FR1.2.1 | User Log in|
+| 		FR1.2.2 | User level of access authentication |
 |   FR1.3 	| User Log out|
-|	FR1.4 	| User profile management|  
+|	FR1.4 	| User profile management|
 |  FR2 		| Sales management  |
 |   FR2.1 	| Start sale transaction|
-|   FR2.2 	| End sale transaction|
+|	FR2.2 	| Payment management |
+|   FR2.3 	| End sale transaction|
 |  FR3 		| Warehouse management|
-|   FR3.1 	| Inventory management|
-| 	 FR3.1.1 	| Low supply notification|
-|	 FR3.1.2 	| Item requested by internal entity|
-|	 FR3.1.3 	| Item requested to supplier|
+|   FR3.1 	| Item management|
+|	 FR3.1.1 	| Item request management| 
+|	  FR3.1.1.1		| Item internally requested by OU management|
+|	  FR3.1.1.2 	| Item Order to supplier management|
+| 	  FR3.1.1.3 	| Add a new order |
+| 	  FR3.1.1.4 	| Complete an existing order |
+| 	  FR3.1.1.5 	| Cancel an order |
+| 	  FR3.1.1.6 	| List order log |
+| 	   FR3.1.1.6.1 	| Filter order log based on order information |
+| 	 FR3.1.2 	| List available items|
+| 	  FR3.1.2.1 	| Filter based upon item information |
+| 	 FR3.1.3	| Add new item to warehouse |
+|	 FR3.1.4 	| Delete item from warehouse |
+|	 FR3.1.5 	| Modify or check item information |
+|	  FR3.1.5.1 	| Modify or check item physical location |
+| 	   FR3.1.5.1.1 	| Show item location on a map |
+| 	  FR3.1.6 	| Low supply notification |
+| 	FR3.2 	| Add a new warehouse |
+| 	FR3.3 	| Remove a warehouse |
+| 	FR3.4 	| Modify warehouse information |
+| 	FR3.5 	| List warehouses |
+|  FR4		| Manage suppliers |
+|	 FR4.1 	| Add new supplier to record|
+| 	  FR4.1.1 	| Create new supplier account|
+|	 FR4.2 	|List suppliers|
+|	  FR4.2.1 	| Filter suppliers based on items|
+|  FR5 		| Manage quality check |
+|	 FR5.1 	| List items in the quality office domain |
+| 	  FR5.1.1 | Fileter based on type of test 	|
+| 	 FR5.2 	| Test management |
+| 	  FR5.2.1 | Add new test |
+| 	  FR5.2.2 | Remove a test |
+| 	  FR5.2.3 | Modify a test |
+| 	   FR5.2.3.1 | Change test properties |
+| 	   FR5.2.3.2 | Manage items to be tested |
+|		FR5.2.3.2.1 | Add item to test |
+| 		FR5.2.3.2.2 | Remove item from test |
+| 		FR5.2.3.2.3 | Item result management |
+| 		 FR5.2.3.2.3.1 | Register item results |
+| 		 FR5.2.3.2.3.2 | Handle failed results |
+| 		FR5.2.3.2.4 | List items in the test |
+|		 FR5.2.3.2.4.1 | Filter based on item result|
+
+
 | ------------- |:-------------:| 
 
 ## Non Functional Requirements
@@ -127,7 +171,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |   |  | |
+|  NFR1     | |   | |
 |  NFR2     | |  | |
 |  NFR3     | | | |
 | NFRx .. | | | | 
