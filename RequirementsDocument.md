@@ -54,7 +54,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|   Companies  and retailers employees    | They wish to organize their inventory and manage different relationships with the app|
+|   Companies  and retailers    | They wish to organize their inventory and manage different relationships with the app|
 | Manager | Can supervise the availability of items. The manager has an administrator role | 
 |	Suppliers		| They provide the different types of items which the companies and retailers wish to manage|
 |	Quality office	| They set the quality standart and testing of items ordered from different suppliers| 
@@ -167,14 +167,24 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
-| ------------- |:-------------:| :-----:| -----:|
-|  NFR1     | |   | |
-|  NFR2     | |  | |
-|  NFR3     | | | |
-| NFRx .. | | | | 
+| ------------- |:-------------:| :-----:| :-----:|
+|  NFR1     | Usability |   A manager should be able to use all the system functions after two hours training| |
+|  NFR2.1     | Efficiency |  Following functional requirements should be completed in less than ½ sec | FR2.X, FR3.1.1.1, FR3.1.1.2, FR3.1.1.3, FR3.1.1.4, FR3.1.1.5, FR3.1.3, FR3.1.4, FR3.1.5, FR3.1.6, FR3.2, FR3.3, FR3.4, FR3.5, FR5.2.X|
+|  NFR2.2     | Efficiency | Following functional requirements should require less than 1 sec| FR1.1, FR1.2, FR3.1.1.6, FR3.1.2, FR4.1.1, FR4.2, FR5.1, FR5.2.3.2.4 |
+| NFR2.3 | Efficiency | Menu navigation must be not percepted (response time < 0.1 sec)| | 
+| NFR2.4 | Efficiency | The application should meet the previous performance requirements when there are less than 1000 users connected per hour| |
+| NFR2.5 | Efficiency | Application size < 100 MB| |
+| NFR3.1	| Reliability		| Mean Time Between Failure > 20 days | |
+| NFR3.2	| Reliability		| The application must be available to users 98 % of the time (during working hours [Mon – Fri, 08:00 – 19:00] ) every month | |
+| NFR4.1	| Maintainability	| An error should be fixed, 80% of the times, in less than 24 hours| |
+| NFR4.2	| Maintainability	| About 20 person hours needed to fix a major defect | |
+| NFR5.1	| Security		| Personal data must be processed in compliance with the GDPR| GDPR: https://eur-lex.europa.eu/eli/reg/2016/679/oj |
+| NFR5.2	| Security		| Only authorized users can access to the data. Users must authenticate themselves using their credentials (e-mail + secure password). Basic user must not be able to exploit Manager tasks| Secure password constraints: <br>- Minimum length greater (or equal) than 12 characters <br> - Must include: [at least 1 special symbol (e.g. @_#$%), Numbers, Lowercase & Uppercase characters]. <br> - Must be changed every 10 months|
+| NFR6	| Portability		| The application should run on the majority of the most used browsers in their secure versions| Firefox 88+, Chrome 93+, Safari (macOS) 11.1.1+, Safari (iOS) 12.4.3+, Opera 72+|
+| NFR7	| Implementation		| The application front-end and back-end is coded in Javascript | |
+| NFR8 | Domain | Currency is Euro | FR2 |
 
 
 # Use case diagram and use cases
