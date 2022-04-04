@@ -1,4 +1,3 @@
-
  #Requirements Document 
 
 Date: 22 march 2022
@@ -195,14 +194,76 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 \<next describe here each use case in the UCD>
-### Use case 1, UC1
-| Actors Involved        |  |
-| ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+### Use case 1, UC1 - Create User Account
+| Actors Involved        | Manager|
+| ------------- |:-------------:|
+|  Precondition     |           Account M does not exist                                                |
+|  Post condition     |                Account M added in the system                 |  
+|  Nominal Scenario     |  New Manage creates a new account M and populates its fields.  |
+
+### Use case 2, UC2 - Delete the account
+
+| Actors Involved        |   Manager|
+| ------------- |:-------------:|
+|  Precondition     |                       Account M exists                       |
+|  Post condition     |             Account M removed from system                                                 |
+|  Nominal Scenario   |  Manager  selects an account M to delete |
+
+
+### Use case 3, UC3 - Add new items
+
+| Actors Involved        | Manager, Items|
+| ------------- |:-------------:|
+|  Precondition     |           item I not exist in warehouse                                 |
+|  Post condition     |                   item I added in the warehouse                   |
+|  Nominal Scenario     | manager add one or more items to warehouse |
+
+
+### Use case 4, UC4 - Modify item information 
+
+| Actors Involved        | Manager, Items|
+| ------------- |:-------------:|
+|  Precondition     |           item I exist in warehouse                                 |
+|  Post condition     |                                      |
+|  Nominal Scenario     | manager modify one or more information of items in warehouse |
+|  Variants     | Only manager can modify the information of items in warehouse |
+
+### Use case 5, UC5 - Delete item 
+
+| Actors Involved        | Manager, Items|
+| ------------- |:-------------:|
+|  Precondition     |           item I exist in warehouse                                 |
+|  Post condition     |              item I removed from the warehouse                        |
+|  Nominal Scenario     | manager remove one or more item from warehouse |
+
+### Use case 6, UC6 - Quality test 
+
+| Actors Involved        |  Items, Quality Office employees|
+| ------------- |:-------------:|
+|  Precondition     |           item I be chosen to be test                                 |
+|  Post condition     |              item been tested                        |
+|  Nominal Scenario     | Quality Office employees test the chosen item and test whether the quality is good or not |
+|  Variants     | After the item been tested, it will be add to the warehouse if quality is good |
+
+### Use case 7, UC7 - Create new internal order 
+
+| Actors Involved        | Manager, Items,  Organizational Units|
+| ------------- |:-------------:|
+|  Precondition     |            Organizational Units OU send a request of  item I and item I exist in warehouse                                 |
+|  Post condition     |              new internal order O added in system             |
+|  Nominal Scenario     | Organizational Units send a request to warehouse  |
+
+### Use case 7, UC7 - Complete internal order 
+
+| Actors Involved        | Manager, Items, Payment service,  Organizational Units|
+| ------------- |:-------------:|
+|  Precondition     |            Order O exist in system                                 |
+|  Post condition     |              item I send to OU , OU pay the price ,the number of item I  decreased, order O removed from system            |
+|  Nominal Scenario     | Organizational Units pick the ordered items from warehouse |
+
+
+
+
 
 ##### Scenario 1.1 
 
