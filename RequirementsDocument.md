@@ -53,16 +53,16 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Stakeholder name  | Description | 
 | ----------------- |:-----------:|
-|   Companies  and retailers    | They wish to organize their inventory and manage different relationships with the app|
-| Manager | Can supervise the availability of items. The manager has an administrator role | 
-|	Suppliers		| They provide the different types of items which the companies and retailers wish to manage|
+|   Company or retailer  | They wish to organize their inventory and manage different relationships with the app|
+|	Manager 		| Can supervise the availability of items. The manager has an administrator role | 
+|	Supplier		| They provide the different types of items which the companies and retailers wish to manage|
 |	Quality office	| They set the quality standart and testing of items ordered from different suppliers| 
 |	OU 				| OU(organizational units) are subparts of the company which have the need to ask and manage items from the companys warehouse|
 |	Payment service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
-|	Competitors	| Other applications that provide similar services|
-|	Items	| Products that must be managed in the warehouse|
-|	IT manager| Will be the one to manage the application and its correct use and functionality|
-|	Employee 	| Are the users of the application on a base level and represent the OU when making orders|
+|	Competitors		| Other applications that provide similar services|
+|	Items			| Products that must be managed in the warehouse|
+|	IT manager		| Will be the one to manage the application and its correct use and functionality|
+|	Employee 		| Are the users of the application on a base level and represent the OU when making orders|
 
 
 # Context Diagram and interfaces
@@ -79,13 +79,14 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| :-----:|
-| Companies and retailers employees | Graphical User Interface | Screen, keyboard |
-| Manager  | Graphical User Interface | Screen, keyboard |
-| Item  | ReadBarCode  | Laser Beam (Bar Code Reader) |
+| Company or retailer	| Graphical User Interface | Screen, keyboard |
+| Manager		| Graphical User Interface | Screen, keyboard |
+| IT Manager	| Graphical User Interface | Screen, keyboard |
+| Item	| ReadBarCode  | Laser Beam (Bar Code Reader) |
 | Payment service | APIs (e.g: PayPal: https://developer.paypal.com/home)  | Internet Connection  |
-| Organizational Units  | InternalOrderReceived | Internal Network |
-| Quality Office employees  | Graphical User Interface | Screen, Keyboard |
+| Quality Office | Graphical User Interface | Screen, Keyboard |
 | Employee | Graphical User Interface | Screen, Keyboard |
+| Supplier | Graphical User Interface | Screen, Keyboard |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
@@ -253,7 +254,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     |              new internal order O added in system             |
 |  Nominal Scenario     | Organizational Units send a request to warehouse  |
 
-### Use case 7, UC7 - Complete internal order 
+### Use case 8, UC8 - Complete internal order 
 
 | Actors Involved        | Manager, Items, Payment service,  Organizational Units|
 | ------------- |:-------------:|
