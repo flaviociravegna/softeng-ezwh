@@ -55,12 +55,12 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | ----------------- |:-----------:|
 |   Company or retailer  | They wish to organize their inventory and manage different relationships with the app|
 |	Manager 		| Can supervise the availability of items. The manager has an administrator role | 
-|	Supplier		| They provide the different types of items which the companies and retailers wish to manage|
-|	Quality office	| They set the quality standart and testing of items ordered from different suppliers| 
+|	Supplier		| Provide the different types of items which the companies and retailers wish to manage|
+|	Quality office	| Sets the quality standart and testing of items ordered from different suppliers| 
 |	OU 				| OU(organizational units) are subparts of the company which have the need to ask and manage items from the companys warehouse|
 |	Payment service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
 |	Competitors		| Other applications that provide similar services|
-|	Items			| Products that must be managed in the warehouse|
+|	Item			| Product that must be managed in the warehouse|
 |	IT manager		| Will be the one to manage the application and its correct use and functionality|
 |	Employee 		| Are the users of the application on a base level and represent the OU when making orders|
 
@@ -79,14 +79,13 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| :-----:|
-| Company or retailer	| Graphical User Interface | Screen, keyboard |
+| Employee 		| Graphical User Interface | Screen, Keyboard |
 | Manager		| Graphical User Interface | Screen, keyboard |
 | IT Manager	| Graphical User Interface | Screen, keyboard |
-| Item	| ReadBarCode  | Laser Beam (Bar Code Reader) |
+| Quality Office| Graphical User Interface | Screen, Keyboard |
+| Supplier 		| Graphical User Interface | Screen, Keyboard |
+| Item			| ReadBarCode  | Laser Beam (Bar Code Reader) |
 | Payment service | APIs (e.g: PayPal: https://developer.paypal.com/home)  | Internet Connection  |
-| Quality Office | Graphical User Interface | Screen, Keyboard |
-| Employee | Graphical User Interface | Screen, Keyboard |
-| Supplier | Graphical User Interface | Screen, Keyboard |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
