@@ -56,7 +56,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Companies  and retailers    | They wish to organize their inventory and manage different relationships with the app|
 | Manager | Can supervise the availability of items. The manager has an administrator role | 
 |	Suppliers		| They provide the different types of items which the companies and retailers wish to manage|
-|	Quality office	| They set the quality standart and testing of items ordered from different suppliers| 
+|	Quality office	| They set the quality standard and testing of items ordered from different suppliers| 
 |	OU 				| OU(organizational units) are subparts of the company which have the need to ask and manage items from the companys warehouse|
 |	Payment service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
 |	Competitors	| Other applications that provide similar services|
@@ -240,7 +240,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Actors Involved        |  Items, Quality Office employees|
 | ------------- |:-------------:|
-|  Precondition     |           item I be chosen to be test                                 |
+|  Precondition     |           item I exists and it has not yet been tested                                |
 |  Post condition     |              item been tested                        |
 |  Nominal Scenario     | Quality Office employees test the chosen item and test whether the quality is good or not |
 |  Variants     | After the item been tested, it will be add to the warehouse if quality is good |
@@ -253,7 +253,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     |              new internal order O added in system             |
 |  Nominal Scenario     | Organizational Units send a request to warehouse  |
 
-### Use case 7, UC7 - Complete internal order 
+### Use case 8, UC8 - Complete internal order 
 
 | Actors Involved        | Manager, Items, Payment service,  Organizational Units|
 | ------------- |:-------------:|
@@ -261,6 +261,15 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |  Post condition     |              item I send to OU , OU pay the price ,the number of item I  decreased, order O removed from system            |
 |  Nominal Scenario     | Organizational Units pick the ordered items from warehouse |
 
+### Use case 9, UC9 - Issue an order 
+
+| Actors Involved        | Manager, Items, Payment service |
+| ------------- |:-------------:|
+|  Precondition     |            Item I exists in the warehouse and it is in short supply                            |
+|  Post condition     |        The order is issued | 
+| | Physical space in warehouse is updated       |
+|  Nominal Scenario     | The manager chooses a supplier from the list of supplier for the selected item and orders the quantity needed |
+| Exceptions | The order cannot be issued because there's not enough physical space in the warehouse|
 
 
 
