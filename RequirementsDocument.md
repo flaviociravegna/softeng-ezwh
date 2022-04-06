@@ -247,6 +247,31 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Nominal Scenario     | Quality Office employees test the chosen item and test whether the quality is good or not |
 |  Variants     | After the item been tested, it will be add to the warehouse if quality is good |
 
+##### Scenario 6.1 
+
+| Scenario |  Item's quality is good |
+| ------------- |:-------------:| 
+|  Precondition     | item I exists and it has not yet been tested  |
+|  Post condition     | item been tested   |
+| Step#        | Description  |
+|  1     |  Quality Office employees selects item I|  
+|  2     |  Quality Office employees choose a type of test to test the quality of I|
+|  3    |  Item I pass the test |
+|  4    |  Item I been added to warehouse |
+
+##### Scenario 6.2 
+
+| Scenario |  Item's quality is not good |
+| ------------- |:-------------:| 
+|  Precondition     | item I exists and it has not yet been tested  |
+|  Post condition     | item been tested   |
+| Step#        | Description  |
+|  1     |  Quality Office employees selects item I|  
+|  2     |  Quality Office employees choose a type of test to test the quality of I|
+|  3    |  Item I not pass the test |
+|  4    |  Item I been rejected and sent back to the supplier |
+
+
 ### Use case 7, UC7 - Create new internal order 
 
 | Actors Involved        | Manager, Items,  Employee|
