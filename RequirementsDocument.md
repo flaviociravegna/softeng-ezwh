@@ -3,7 +3,7 @@
 Date: 22 march 2022
 	27 march 2022
 
-Version: 0.4
+Version: 0.5
 
  
 | Version number | Change |
@@ -12,6 +12,7 @@ Version: 0.4
 | 0.2| completed the stakeholders and interfaces| 
 | 0.3| added new stakeholder/actor employee and made a prototype of the context diagram|
 | 0.4| started NF requirements|
+| 0.5| Completed NFR and Context Diagram
 
 
 # Contents
@@ -56,7 +57,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Company or retailer  | They wish to organize their inventory and manage different relationships with the app|
 |	Manager 		| Can supervise the availability of items. The manager has an administrator role | 
 |	Supplier		| Provide the different types of items which the companies and retailers wish to manage|
-|	Quality office	| Sets the quality standart and testing of items ordered from different suppliers| 
+|	Quality office employee	| Sets the quality standart and testing of items ordered from different suppliers| 
 |	OU 				| OU(organizational units) are subparts of the company which have the need to ask and manage items from the companys warehouse|
 |	Payment service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
 |	Competitors		| Other applications that provide similar services|
@@ -70,7 +71,8 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ## Context Diagram
 \<Define here Context diagram using UML use case diagram>
 
-\<actors are a subset of stakeholders>
+
+Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, Payment service
 
 ## Interfaces
 \<describe here each interface in the context diagram>
@@ -82,7 +84,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 | Employee 		| Graphical User Interface | Screen, Keyboard |
 | Manager		| Graphical User Interface | Screen, keyboard |
 | IT Manager	| Graphical User Interface | Screen, keyboard |
-| Quality Office| Graphical User Interface | Screen, Keyboard |
+| Quality Office employee	| Graphical User Interface | Screen, Keyboard |
 | Supplier 		| Graphical User Interface | Screen, Keyboard |
 | Item			| ReadBarCode  | Laser Beam (Bar Code Reader) |
 | Payment service | APIs (e.g: PayPal: https://developer.paypal.com/home)  | Internet Connection  |
@@ -212,7 +214,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ### Use case 3, UC3 - Add new items
 
-| Actors Involved        | Manager, Items|
+| Actors Involved        | Manager, Item|
 | ------------- |:-------------:|
 |  Precondition     |           item I not exist in warehouse                                 |
 |  Post condition     |                   item I added in the warehouse                   |
@@ -221,7 +223,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ### Use case 4, UC4 - Modify item information 
 
-| Actors Involved        | Manager, Items|
+| Actors Involved        | Manager, Item|
 | ------------- |:-------------:|
 |  Precondition     |           item I exist in warehouse                                 |
 |  Post condition     |                                      |
@@ -230,7 +232,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ### Use case 5, UC5 - Delete item 
 
-| Actors Involved        | Manager, Items|
+| Actors Involved        | Manager, Item|
 | ------------- |:-------------:|
 |  Precondition     |           item I exist in warehouse                                 |
 |  Post condition     |              item I removed from the warehouse                        |
@@ -238,7 +240,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ### Use case 6, UC6 - Quality test 
 
-| Actors Involved        |  Items, Quality Office employees|
+| Actors Involved        |  Items, Quality Office employee|
 | ------------- |:-------------:|
 |  Precondition     |           item I exists and it has not yet been tested                                |
 |  Post condition     |              item been tested                        |
@@ -247,23 +249,23 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ### Use case 7, UC7 - Create new internal order 
 
-| Actors Involved        | Manager, Items,  Organizational Units|
+| Actors Involved        | Manager, Items,  Employee|
 | ------------- |:-------------:|
-|  Precondition     |            Organizational Units OU send a request of  item I and item I exist in warehouse                                 |
+|  Precondition     |            Organizational Unit Employee E send a request of  item I and item I exist in warehouse                                 |
 |  Post condition     |              new internal order O added in system             |
-|  Nominal Scenario     | Organizational Units send a request to warehouse  |
+|  Nominal Scenario     | Organizational Unit Employee send a request to warehouse  |
 
 ### Use case 8, UC8 - Complete internal order 
 
-| Actors Involved        | Manager, Items, Payment service,  Organizational Units|
+| Actors Involved        | Manager, Item, Payment service, Employee|
 | ------------- |:-------------:|
 |  Precondition     |            Order O exist in system                                 |
-|  Post condition     |              item I send to OU , OU pay the price ,the number of item I  decreased, order O removed from system            |
-|  Nominal Scenario     | Organizational Units pick the ordered items from warehouse |
+|  Post condition     |              item I sent, Employee pay the price, the number of item I  decreased, order O removed from system            |
+|  Nominal Scenario     | Organizational Unit Employee pick the ordered items from warehouse |
 
 ### Use case 9, UC9 - Issue an order 
 
-| Actors Involved        | Manager, Items, Payment service |
+| Actors Involved        | Manager, Item, Payment service |
 | ------------- |:-------------:|
 |  Precondition     |            Item I exists in the warehouse and it is in short supply                            |
 |  Post condition     |        The order is issued | 
