@@ -13,6 +13,7 @@ Version: 0.5
 | 0.3| added new stakeholder/actor employee and made a prototype of the context diagram|
 | 0.4| started NF requirements|
 | 0.5| Completed NFR and Context Diagram
+| 0.6| Added FR "Read bar code on product" and related NFR (link to the standard)
 
 
 # Contents
@@ -136,6 +137,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |	 FR3.1.5 	| Modify or check item information |
 |	  FR3.1.5.1 	| Modify or check item physical location |
 | 	   FR3.1.5.1.1 	| Show item location on a map |
+|	  FR3.1.5.2		| Read bar code on product |
 | 	  FR3.1.6 	| Low supply notification |
 | 	FR3.2 	| Add a new warehouse |
 | 	FR3.3 	| Remove a warehouse |
@@ -184,8 +186,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | NFR5.1	| Security		| Personal data must be processed in compliance with the GDPR| GDPR: https://eur-lex.europa.eu/eli/reg/2016/679/oj |
 | NFR5.2	| Security		| Only authorized users can access to the data. Users must authenticate themselves using their credentials (e-mail + secure password). Basic user must not be able to exploit Manager tasks| Secure password constraints: <br>- Minimum length greater (or equal) than 12 characters <br> - Must include: [at least 1 special symbol (e.g. @_#$%), Numbers, Lowercase & Uppercase characters]. <br> - Must be changed every 10 months|
 | NFR6	| Portability		| The application should run on the majority of the most used browsers in their secure versions| Firefox 88+, Chrome 93+, Safari (macOS) 11.1.1+, Safari (iOS) 12.4.3+, Opera 72+|
-| NFR7	| Implementation		| The application front-end and back-end is coded in Javascript | |
-| NFR8 | Domain | Currency is Euro | FR2 |
+| NFR7	| Domain	| The Bar Code number is an UPC-A 12 digits Code. Implementation details can be found at the following link:<br> https://www.gs1.org/docs/barcodes/GS1_General_Specifications.pdf | FR3.1.5.2 |
+| NFR8	| Domain 	| Currency is Euro | FR2 |
 
 
 # Use case diagram and use cases
