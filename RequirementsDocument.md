@@ -380,7 +380,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  5	 |  M confirms							|
 |  6	 |  Item I updated						|
 
-##### Scenario 3.5 
+##### Scenario 3.6 
 
 | Scenario | Delete item from warehouse |
 | ------------- |:-------------:| 
@@ -392,7 +392,115 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3	 |  M confirms							|
 |  4	 |  Item I deleted						|
 
-### Use case 6, UC6 - Quality test 
+### Use case 4, UC4 - List available items 
+
+| Actors Involved        | Employee, Item |
+| ------------- |:-------------:|
+|  Precondition     |  Employee E is logged in          	|
+|  Post condition   |             								|  
+|  Nominal Scenario |  Show available item list					|
+|  Variants			|  Show available item list using filters	|
+
+##### Scenario 4.1 
+| Scenario | Show available item list |
+| ------------- |:-------------:|
+|  Precondition     | Employee E is logged in   		     |
+|  Post condition   | List of item showed          		     |
+|  Step#        	| Description  		|
+|  1	 |  E wants to look at the available items							|
+|  2	 |  Application shows an item list	looking for the available ones	|
+
+##### Scenario 4.2 
+| Scenario | Show available item list (filter based) |
+| ------------- |:-------------:|
+|  Precondition     | Employee E is logged in   		     |
+|  Post condition   | Filtered list of item showed         	 |
+|  Step#        	| Description  		|
+|  1	 |  E wants to look at the available items							|
+|  2	 |  E selects the filters											|
+|  3	 |  Application shows a filtered item list, looking for the available ones	|
+
+### Use case 5, UC5 - CRUD Internal order 
+
+|  Actors Involved        | Manager, Item, Employee|
+|  ------------- |:-------------:|
+|  Precondition		  | (Organizational Unit) Employee E logged in, a collection of items exists in the warehouses |
+|  Post condition     | Internal Order O is added, modified or deleted	|
+|  Nominal Scenario   | Add internal order   	|
+|  Variants			  | Modify internal order	|
+|					  | Cancel internal order 	|
+
+##### Scenario 5.1
+| Scenario |  Add internal order |
+| ------------- |:-------------:| 
+|  Precondition     | Employee E is logged in, internal order O does not exists  	 |
+|  Post condition   | Internal Order O is added  |
+|  Step#        	| Description  			|
+|  1	 |  Application asks E to select an item that is available								|
+|  2     |  E select the item(s) with their quantity |
+|  3   	 |  E confirms the internal order request												|
+|  4	 |  Internal Order O is added	|
+
+##### Scenario 5.2
+| Scenario |  Modify internal order |
+| ------------- |:-------------:| 
+|  Precondition     | Employee E is logged in, internal order O exists  		|
+|  Post condition   | Internal Order O is modified  |
+|  Step#        	| Description  			|
+|  1	 |  Application asks to select the internal order that needs to be modified								|
+|  2     |  E updates the items with their quantity |
+|  3   	 |  E confirms the internal order modification |
+|  4	 |  Internal Order O is modified	|
+
+##### Scenario 5.3
+| Scenario |  Cancel internal order |
+| ------------- |:-------------:| 
+|  Precondition     | Employee E is logged in, internal order O exists  		 |
+|  Post condition   | Internal Order O does not exists  	 |
+|  Step#        	| Description  			|
+|  1	 |  Application asks to select the internal order (showing only the ones created by the employee's Organizational Unit) that needs to be deleted |
+|  2     |  E selects the order |
+|  3   	 |  E confirms			|
+|  4	 |  Internal Order O is cancelled	|
+
+### Use case 6, UC6 - Manage Internal order 
+
+|  Actors Involved        | Manager, Item, Employee|
+|  ------------- |:-------------:|
+|  Precondition		  | User (Manager or Employee) logged in, internal order O exists  |
+|  Post condition     | 	|
+|  Nominal Scenario   | Set order status to "Delivered to pick up area" |
+|  Variants			  | Set order status to "Completed" |
+
+##### Scenario 6.1
+| Scenario | Set order status to "Delivered to pick up area" |
+| ------------- |:-------------:| 
+|  Precondition     | Employee E is logged in, internal order O exists with status "not delivered", items requested are available  	 |
+|  Post condition   | Internal Order O status is set to "Delivered to pick up area"  |
+|  Step#        	| Description  			|
+|  1	 |  Application shows the internal order informations: all the items requested are available and their position is known |
+|  2   	 |  E collects the items requested by the internal order |
+|  3	 |  E scans the bar code of each item		  |
+|  4	 |  The application sets the items requested to "not available" and decreases the quantities of available items |
+|  3     |  The internal order status is set as "delivered to pick up area" by E1 |
+|  5	 |  Internal Order O is delivered to pick up area	|
+
+##### Scenario 6.2
+| Scenario | Set order status to "Completed" |
+| ------------- |:-------------:| 
+|  Precondition     | (Warehouse) Employee E1 is logged in, (Other OU) Employee E2 exists, internal order O exists with status "delivered to pick up area"|
+|  Post condition   | Internal Order O status is completed  |
+|  Step#        	| Description  			|
+|  1	 |  E2 arrives in the pick up area to collect the internal order |
+|  2   	 |  E2 authenticates |
+|  3   	 |  E2 collects the items requested by the internal order |
+|  4     |  The internal order status is set as "Completed" by E1 |
+|  5	 |  Internal Order O is completed	|
+
+
+
+
+### Use case 7, UC7 - Quality test 
 
 | Actors Involved        |  Items, Quality Office employee|
 | ------------- |:-------------:|
@@ -425,22 +533,6 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3    |  Item I not pass the test |
 |  4    |  Item I been rejected and sent back to the supplier |
 
-
-### Use case 7, UC7 - Create new internal order 
-
-| Actors Involved        | Manager, Items,  Employee|
-| ------------- |:-------------:|
-|  Precondition     |            Organizational Unit Employee E send a request of  item I and item I exist in warehouse                                 |
-|  Post condition     |              new internal order O added in system             |
-|  Nominal Scenario     | Organizational Unit Employee send a request to warehouse  |
-
-### Use case 8, UC8 - Complete internal order 
-
-| Actors Involved        | Manager, Item, Payment service, Employee|
-| ------------- |:-------------:|
-|  Precondition     |            Order O exist in system                                 |
-|  Post condition     |              item I sent, Employee pay the price, the number of item I  decreased, order O removed from system            |
-|  Nominal Scenario     | Organizational Unit Employee pick the ordered items from warehouse |
 
 ### Use case 9, UC9 - Issue an order 
 
