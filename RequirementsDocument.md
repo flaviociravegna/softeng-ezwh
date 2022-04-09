@@ -14,6 +14,7 @@ Version: 0.5
 | 0.4| started NF requirements|
 | 0.5| Completed NFR and Context Diagram
 | 0.6| Added FR "Read bar code on product" and related NFR (link to the standard)
+| 0.7| Completed use cases [1..5]
 
 
 # Contents
@@ -111,7 +112,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  FR1 		| User Management |
 |   FR1.1 	| User registration|
 |     FR1.1.1 	| User profile setting|
-|	FR1.2 |User Authentication|
+|	FR1.2 	|User Authentication|
 |   	FR1.2.1 | User Log in|
 | 		FR1.2.2 | User level of access authentication |
 |   FR1.3 	| User Log out|
@@ -197,48 +198,199 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 \<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
 
-\<next describe here each use case in the UCD>
-### Use case 1, UC1 - Create User Account
-| Actors Involved        | Manager|
+### Use case 1, UC1 - Manage Users Account
+| Actors Involved        | IT Manager |
 | ------------- |:-------------:|
-|  Precondition     |           Account M does not exist                                                |
-|  Post condition     |                Account M added in the system                 |  
-|  Nominal Scenario     |  New Manage creates a new account M and populates its fields.  |
+|  Precondition     |           IT Manager M exists and is logged in            	|
+|  Post condition   |                        					    |  
+|  Nominal Scenario |  M creates registers a new user account and its access rights		|
+|  Variants			|  M modifies an user that is already registered					|
 
-### Use case 2, UC2 - Delete the account
 
-| Actors Involved        |   Manager|
+##### Scenario 1.1
+| Scenario |  User registration |
+| ------------- |:-------------:| 
+|  Precondition     | IT Manager M exists and is logged in  |
+|  Post condition   | Account A is created  |
+|  Step#        	| Description  			|
+|  1	 |  Application asks for ID, Name, Surname, E-mail 		|
+|  2     |  M inserts the credentials of the new account A 		|  
+|  3     |  M selects the access rights for the new account A 	|
+|  4   	 |  M confirms the inserted data 						|
+
+##### Scenario 1.2
+| Scenario |  User profile management |
+| ------------- |:-------------:| 
+|  Precondition     | IT Manager M exists and is logged in  |
+| 					| Account A exists						||
+|  Post condition   | Account A is modified  |
+|  Step#        		| Description  		|
+|  1	 |  Application asks to select the user account that needs to be modified 		|
+|  2     |  M selects the right account A 		|  
+|  3     |  M modifies the fields of account A 	|
+|  4   	 |  M confirms the updated data 		|
+
+##### Scenario 1.3
+| Scenario |  Delete user |
+| ------------- |:-------------:| 
+|  Precondition     | IT Manager M exists and is logged in  |
+| 					| Account A exists						|
+|  Post condition   | Account A is deleted  |
+|  Step#        		| Description  		|
+|  1	 |  Application asks to select the user account that needs to be deleted 		|
+|  2     |  M selects the right account A 		|
+|  3   	 |  M confirms the action 		|
+
+### Use case 2, UC2 - Authorize and Authenticate
+| Actors Involved        | IT Manager, Manager, Employee |
 | ------------- |:-------------:|
-|  Precondition     |                       Account M exists                       |
-|  Post condition     |             Account M removed from system                                                 |
-|  Nominal Scenario   |  Manager  selects an account M to delete |
+|  Precondition     |            	|
+|  Post condition   |               |  
+|  Nominal Scenario |  Login (user authenticated)		|
+|  Variants			|  Logout	|
+|  Exceptions		|  Login: wrong password,  Login: expired password, Login: account not defined |
 
+##### Scenario 2.1
+| Scenario |  Login |
+| ------------- |:-------------:| 
+|  Precondition     | Account A exists  |
+|  Post condition   | User U logged in  |
+|  Step#        	| Description  		|
+|  1	 |  Application asks for E-mail, password 		|
+|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  3     |  U confirms the inserted data 				|
+|  4     |  The application checks the credentials 		|
+|  5   	 |  User U logged in |
+|  6	 |  The application shows the functionalities related to the user rights |
 
-### Use case 3, UC3 - Add new items
+##### Scenario 2.2
+| Scenario |  Login (exception: wrong password) |
+| ------------- |:-------------:| 
+|  Precondition     | Account A exists 		|
+|  Post condition   | User U not logged in  |
+|  Step#        	| Description  			|
+|  1	 |  Application asks for E-mail, password 		|
+|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  3     |  U confirms the inserted data 				|
+|  4     |  The application checks the credentials 		|
+|  5   	 |  Application shows an error message to alert the user that the inserted password is wrong |
 
-| Actors Involved        | Manager, Item|
+##### Scenario 2.3
+| Scenario |  Login (exception: password expired) |
+| ------------- |:-------------:| 
+|  Precondition     | Account A exists 		|
+|  Post condition   | User U not logged in  |
+|  Step#        	| Description  			|
+|  1	 |  Application asks for E-mail, password 		|
+|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  3     |  U confirms the inserted data 				|
+|  4     |  The application checks the credentials 		|
+|  5   	 |  Application shows an error message to alert the user that the inserted password is expired and must be updated. The system sends an email to the IT Manager in order to update the password |
+|  6	 |  User U not logged in |
+
+##### Scenario 2.4
+| Scenario |  Login (exception: account not defined) |
+| ------------- |:-------------:| 
+|  Precondition     | Account A does not exists 		|
+|  Post condition   | User U not logged in  			|
+|  Step#        	| Description  						|
+|  1	 |  Application asks for E-mail, password 		|
+|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  3     |  U confirms the inserted data 				|
+|  4     |  The application checks the credentials 		|
+|  5   	 |  Application shows an error message to alert the user that the account associated to the inserted credentials is not defined   |
+|  6	 |  User U not logged in |
+
+##### Scenario 2.5
+| Scenario |  Logout (variant) |
+| ------------- |:-------------:| 
+|  Precondition     | Account A exists, User U logged in  |
+|  Post condition   | User U logged off  |
+|  Step#        	| Description  		|
+|  1	 |  User U wants to log off		|
+|  3     |  U clicks on the "Logout" button			      |
+|  5   	 |  User U logged off |
+
+### Use case 3, UC3 - Item management
+
+| Actors Involved        | Manager, Employee, Item |
 | ------------- |:-------------:|
-|  Precondition     |           item I not exist in warehouse                                 |
-|  Post condition     |                   item I added in the warehouse                   |
-|  Nominal Scenario     | manager add one or more items to warehouse |
+|  Precondition     |  Manager (or Employee) is logged in          	|
+|  Post condition   |             						|  
+|  Nominal Scenario |  Add new item in a warehouse (bar code)	|
+|  Variants			|  Add manually a new item in a warehouse	|
+|					|  Modify item information					|
+|					|  Check item information					|
+|					|  Delete item from warehouse				|
+|  Exceptions		|  Add new item in a warehouse - exception, |
 
-
-### Use case 4, UC4 - Modify item information 
-
-| Actors Involved        | Manager, Item|
+##### Scenario 3.1
+| Scenario |  Add new item in a warehouse (bar code) |
 | ------------- |:-------------:|
-|  Precondition     |           item I exist in warehouse                                 |
-|  Post condition     |                                      |
-|  Nominal Scenario     | manager modify one or more information of items in warehouse |
-|  Variants     | Only manager can modify the information of items in warehouse |
+|  Precondition     | Employee E logged in, item I does not exist in a warehouse  |
+|  Post condition   | item I added in a warehouse           |
+|  Step#        	| Description  		|
+|  1	 |  E reads the item barcode with the bar code scanner	|
+|  2     |  U clicks on the "Add" button					    |
+|  3   	 |  Item I added in the warehouse 						|
 
-### Use case 5, UC5 - Delete item 
-
-| Actors Involved        | Manager, Item|
+##### Scenario 3.2
+| Scenario |  Add manually a new item in a warehouse|
 | ------------- |:-------------:|
-|  Precondition     |           item I exist in warehouse                                 |
-|  Post condition     |              item I removed from the warehouse                        |
-|  Nominal Scenario     | manager remove one or more item from warehouse |
+|  Precondition     | Manager M logged in, item I does not exist in a warehouse  |
+|  Post condition   | item I added in a warehouse           |
+|  Step#        	| Description  		|
+|  1	 |  Application asks for item ID, descriptor |
+|  2	 |  M selects the warehouse where the item will be stored, inserts item ID and selects/inserts the associated item descriptor  |
+|  3     |  M confirms							|
+|  4   	 |  Item I added in the warehouse 		|
+
+##### Scenario 3.3
+| Scenario |  Add new item in a warehouse - exception |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in, item I exist in a warehouse  |
+|  Post condition   | item I not added in a warehouse           |
+|  Step#        	| Description  		|
+|  1	 |  Application asks for item ID, descriptor, warehouse |
+|  2	 |  M selects the warehouse where the item will be stored, inserts item ID and selects/inserts the associated item descriptor	|
+|  3     |  M clicks on the "Add" button		 |
+|  4   	 |  Application shows an error message to alert the Manager that the item already exists in the selected warehouse  |
+|  5   	 |  Item I not added in the warehouse 		|
+
+##### Scenario 3.4
+| Scenario | Show item information |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in, item I exist     |
+|  Post condition   | item I information showed             |
+|  Step#        	| Description  		|
+|  1	 |  Application shows an item list		|
+|  2	 |  M selects the desired item 			|
+|  3     |  Application shows item informations	|
+
+##### Scenario 3.5
+| Scenario |  Modify item information |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in, item I exist     |
+|  Post condition   | item I modified                       |
+|  Step#        	| Description  		|
+|  1	 |  Application shows an item list		|
+|  2	 |  M selects the desired item 			|
+|  3     |  Application shows item informations	|
+|  4   	 |  M modifies the item informations	|
+|  5	 |  M confirms							|
+|  6	 |  Item I updated						|
+
+##### Scenario 3.5 
+
+| Scenario | Delete item from warehouse |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in, Item I exists	 |
+|  Post condition   | Item is deleted				 		 |
+|  Step#       	    | Description  |
+|  1	 |  Application shows an item list		|
+|  2	 |  M selects the desired item 			|
+|  3	 |  M confirms							|
+|  4	 |  Item I deleted						|
 
 ### Use case 6, UC6 - Quality test 
 
