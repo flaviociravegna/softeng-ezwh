@@ -165,6 +165,9 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | 		 FR5.2.3.2.3.2 | Handle failed results |
 | 		FR5.2.3.2.4 | List items in the test |
 |		 FR5.2.3.2.4.1 | Filter based on item result|
+|	FR6 	| Server Management |
+| 	 FR6.1 | Add Server	|
+| 	 FR6.2 | Remove a Server	|
 
 
 | ------------- |:-------------:| 
