@@ -202,12 +202,15 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 
 ### Use case 1, UC1 - Manage Users Account
-| Actors Involved        | IT Manager |
+| Actors Involved        | IT Manager, Employee E |
 | ------------- |:-------------:|
-|  Precondition     |           IT Manager M exists and is logged in            	|
-|  Post condition   |                        					    |  
+|  Precondition     |  IT Manager M exists and is logged in |
+|					|  Employee E exists 		   			|
+|  Post condition   |                        										    |  
 |  Nominal Scenario |  M creates registers a new user account and its access rights		|
 |  Variants			|  M modifies an user that is already registered					|
+|  					|  M deletes an	user												|
+|  					|  E sends an user sign up request									|
 
 
 ##### Scenario 1.1
@@ -225,7 +228,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | Scenario |  User profile management |
 | ------------- |:-------------:| 
 |  Precondition     | IT Manager M exists and is logged in  |
-| 					| Account A exists						||
+| 					| Account A exists						|
 |  Post condition   | Account A is modified  |
 |  Step#        		| Description  		|
 |  1	 |  Application asks to select the user account that needs to be modified 		|
@@ -242,10 +245,22 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Step#        		| Description  		|
 |  1	 |  Application asks to select the user account that needs to be deleted 		|
 |  2     |  M selects the right account A 		|
-|  3   	 |  M confirms the action 		|
+|  3   	 |  M confirms the action 				|
+
+##### Scenario 1.4
+| Scenario |  Send user sign up request |
+| ------------- |:-------------:| 
+|  Precondition     | IT Manager M exists		|
+|					| Employee E wants to sign up 	|
+|  Post condition   | Account A is created  	|
+|  Step#        	| Description  				|
+|  1	 |  Application asks for Company Name, Server Address, E-mail, Name, Surname, Password 	|
+|  2     |  E inserts the credentials of the account A	 										| 
+|  3     |  E reads and accepts the user agreement		 										|
+|  4   	 |  An e-mail is sent to the IT Manager to notify a "sign up request" 					|
 
 ### Use case 2, UC2 - Authorize and Authenticate
-| Actors Involved        | IT Manager, Manager, Employee |
+| Actors Involved   | IT Manager, Manager, Employee |
 | ------------- |:-------------:|
 |  Precondition     |            	|
 |  Post condition   |               |  
@@ -259,8 +274,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A exists  |
 |  Post condition   | User U logged in  |
 |  Step#        	| Description  		|
-|  1	 |  Application asks for E-mail, password 		|
-|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  1	 |  Application asks for Company server address, E-mail/username, password 		|
+|  2     |  U inserts the credentials  of the account A |  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
 |  5   	 |  User U logged in |
@@ -272,8 +287,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A exists 		|
 |  Post condition   | User U not logged in  |
 |  Step#        	| Description  			|
-|  1	 |  Application asks for E-mail, password 		|
-|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  1	 |  Application asks for Company server address, E-mail, password 		|
+|  2     |  U inserts the credentials (Company server address, e-mail and password) of the account A 	|  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
 |  5   	 |  Application shows an error message to alert the user that the inserted password is wrong |
@@ -284,8 +299,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A exists 		|
 |  Post condition   | User U not logged in  |
 |  Step#        	| Description  			|
-|  1	 |  Application asks for E-mail, password 		|
-|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  1	 |  Application asks for Company server address, E-mail, password 		|
+|  2     |  U inserts the credentials (Company server address, e-mail and password) of the account A 	|  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
 |  5   	 |  Application shows an error message to alert the user that the inserted password is expired and must be updated. The system sends an email to the IT Manager in order to update the password |
@@ -297,8 +312,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A does not exists 		|
 |  Post condition   | User U not logged in  			|
 |  Step#        	| Description  						|
-|  1	 |  Application asks for E-mail, password 		|
-|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
+|  1	 |  Application asks for Company server address, E-mail, password 		|
+|  2     |  U inserts the credentials (Company server address, e-mail and password) of the account A 	|  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
 |  5   	 |  Application shows an error message to alert the user that the account associated to the inserted credentials is not defined   |
@@ -307,19 +322,20 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 ##### Scenario 2.5
 | Scenario |  Logout (variant) |
 | ------------- |:-------------:| 
-|  Precondition     | Account A exists, User U logged in  |
-|  Post condition   | User U logged off  |
+|  Precondition     | Account A exists	|
+|					| User U (Employee, Manager, IT Manager) logged in  |
+|  Post condition   | User U logged off |
 |  Step#        	| Description  		|
-|  1	 |  User U wants to log off		|
-|  3     |  U clicks on the "Logout" button			      |
-|  5   	 |  User U logged off |
+|  1	 |  User U wants to log off			|
+|  3     |  Employee logs out				|
+|  5   	 |  Application shows login page 	|
 
 ### Use case 3, UC3 - Item management
 
 | Actors Involved        | Manager, Employee, Item |
 | ------------- |:-------------:|
 |  Precondition     |  Manager (or Employee) is logged in          	|
-|  Post condition   |             						|  
+|  Post condition   |             								|  
 |  Nominal Scenario |  Add new item in a warehouse (bar code)	|
 |  Variants			|  Add manually a new item in a warehouse	|
 |					|  Modify item information					|
@@ -330,51 +346,56 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 ##### Scenario 3.1
 | Scenario |  Add new item in a warehouse (bar code) |
 | ------------- |:-------------:|
-|  Precondition     | Employee E logged in, item I does not exist in a warehouse  |
+|  Precondition     | Employee E logged in|
+|					| item I does not exist in a warehouse  |
 |  Post condition   | item I added in a warehouse           |
 |  Step#        	| Description  		|
 |  1	 |  E reads the item barcode with the bar code scanner	|
-|  2     |  U clicks on the "Add" button					    |
+|  2     |  E confirms										    |
 |  3   	 |  Item I added in the warehouse 						|
 
 ##### Scenario 3.2
 | Scenario |  Add manually a new item in a warehouse|
 | ------------- |:-------------:|
-|  Precondition     | Manager M logged in, item I does not exist in a warehouse  |
+|  Precondition     | Manager M logged in	|
+|					| item I does not exist in a warehouse  |
 |  Post condition   | item I added in a warehouse           |
-|  Step#        	| Description  		|
+|  Step#        	| Description  			|
 |  1	 |  Application asks for item ID, descriptor |
 |  2	 |  M selects the warehouse where the item will be stored, inserts item ID and selects/inserts the associated item descriptor  |
-|  3     |  M confirms							|
-|  4   	 |  Item I added in the warehouse 		|
+|  3     |  M confirms the inserted/selected data		 |
+|  4   	 |  Item I added in the warehouse 				 |
 
 ##### Scenario 3.3
 | Scenario |  Add new item in a warehouse - exception |
 | ------------- |:-------------:|
-|  Precondition     | Manager M logged in, item I exist in a warehouse  |
+|  Precondition     | Manager M logged in	|
+|					| item I exist in a warehouse  |
 |  Post condition   | item I not added in a warehouse           |
 |  Step#        	| Description  		|
 |  1	 |  Application asks for item ID, descriptor, warehouse |
 |  2	 |  M selects the warehouse where the item will be stored, inserts item ID and selects/inserts the associated item descriptor	|
-|  3     |  M clicks on the "Add" button		 |
+|  3     |  M confirms the inserted/selected data		 |
 |  4   	 |  Application shows an error message to alert the Manager that the item already exists in the selected warehouse  |
-|  5   	 |  Item I not added in the warehouse 		|
+|  5   	 |  Item I not added in the warehouse 			 |
 
 ##### Scenario 3.4
 | Scenario | Show item information |
 | ------------- |:-------------:|
-|  Precondition     | Manager M logged in, item I exist     |
+|  Precondition     | Employee E logged in	|
+|					| item I exist    		|
 |  Post condition   | item I information showed             |
-|  Step#        	| Description  		|
+|  Step#        	| Description  			|
 |  1	 |  Application shows an item list		|
-|  2	 |  M selects the desired item 			|
+|  2	 |  E selects the desired item 			|
 |  3     |  Application shows item informations	|
 
 ##### Scenario 3.5
 | Scenario |  Modify item information |
 | ------------- |:-------------:|
-|  Precondition     | Manager M logged in, item I exist     |
-|  Post condition   | item I modified                       |
+|  Precondition     | Manager M logged in	|
+|					| item I exist    		|
+|  Post condition   | item I modified       |
 |  Step#        	| Description  		|
 |  1	 |  Application shows an item list		|
 |  2	 |  M selects the desired item 			|
@@ -387,7 +408,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 | Scenario | Delete item from warehouse |
 | ------------- |:-------------:| 
-|  Precondition     | Manager M is logged in, Item I exists	 |
+|  Precondition     | Manager M is logged in	 |
+|					| item I exist    		|
 |  Post condition   | Item is deleted				 		 |
 |  Step#       	    | Description  |
 |  1	 |  Application shows an item list		|
@@ -427,7 +449,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 |  Actors Involved        | Manager, Item, Employee|
 |  ------------- |:-------------:|
-|  Precondition		  | (Organizational Unit) Employee E logged in, a collection of items exists in the warehouses |
+|  Precondition		  | (Organizational Unit) Employee E logged in		|
 |  Post condition     | Internal Order O is added, modified or deleted	|
 |  Nominal Scenario   | Add internal order   	|
 |  Variants			  | Modify internal order	|
@@ -436,74 +458,155 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 ##### Scenario 5.1
 | Scenario |  Add internal order |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E is logged in, internal order O does not exists  	 |
-|  Post condition   | Internal Order O is added  |
+|  Precondition     | Employee E is logged in	|
+|					| internal order O does not exists  	 |
+|  Post condition   | Internal Order O is added |
 |  Step#        	| Description  			|
-|  1	 |  Application asks E to select an item that is available								|
-|  2     |  E select the item(s) with their quantity |
-|  3   	 |  E confirms the internal order request												|
-|  4	 |  Internal Order O is added	|
+|  1	 |  Application asks E to select an item that is available		|
+|  2     |  E select the item(s) and their amount						|
+|  3   	 |  E confirms the internal order request						|
+|  4	 |  Internal Order O is added									|
 
 ##### Scenario 5.2
 | Scenario |  Modify internal order |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E is logged in, internal order O exists  		|
+|  Precondition     | Employee E is logged in 		|
+|					| internal order O exists  		|
 |  Post condition   | Internal Order O is modified  |
 |  Step#        	| Description  			|
 |  1	 |  Application asks to select the internal order that needs to be modified								|
-|  2     |  E updates the items with their quantity |
-|  3   	 |  E confirms the internal order modification |
-|  4	 |  Internal Order O is modified	|
+|  2     |  E updates the items with their quantity 	|
+|  3   	 |  E confirms the internal order modification  |
+|  4	 |  Internal Order O is modified				|
 
 ##### Scenario 5.3
 | Scenario |  Cancel internal order |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E is logged in, internal order O exists  		 |
+|  Precondition     | Employee E is logged in		|
+|					| internal order O exists  		|
 |  Post condition   | Internal Order O does not exists  	 |
 |  Step#        	| Description  			|
-|  1	 |  Application asks to select the internal order (showing only the ones created by the employee's Organizational Unit) that needs to be deleted |
-|  2     |  E selects the order |
-|  3   	 |  E confirms			|
-|  4	 |  Internal Order O is cancelled	|
+|  1	 |  E looks at the order list 	  |
+|  2	 |  E selects a specific order 	  |
+|  3   	 |  Applications shows the order details 	  |
+|  4   	 |  E cancels the order		 	  |
+|  5	 |  Internal Order O is cancelled |
+
 
 ### Use case 6, UC6 - Manage Internal order 
 
-|  Actors Involved        | Manager, Item, Employee|
+|  Actors Involved        | Item, Employee|
 |  ------------- |:-------------:|
-|  Precondition		  | User (Manager or Employee) logged in, internal order O exists  |
+|  Precondition		  | User (Manager or Employee) logged in |
+|					  | internal order O exists  		     |
 |  Post condition     | 	|
 |  Nominal Scenario   | Set order status to "Delivered to pick up area" |
 |  Variants			  | Set order status to "Completed" |
+|  					  | Set order status to "Cancelled" |
+|  					  | Set order status to "On Going" |
 
 ##### Scenario 6.1
 | Scenario | Set order status to "Delivered to pick up area" |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E is logged in, internal order O exists with status "not delivered", items requested are available  	 |
+|  Precondition     | Employee E is logged in 	|
+|					| internal order O exists with status "On Going" |
+|					| items requested are available  	 |
 |  Post condition   | Internal Order O status is set to "Delivered to pick up area"  |
 |  Step#        	| Description  			|
 |  1	 |  Application shows the internal order informations: all the items requested are available and their position is known |
 |  2   	 |  E collects the items requested by the internal order |
 |  3	 |  E scans the bar code of each item		  |
 |  4	 |  The application sets the items requested to "not available" and decreases the quantities of available items |
-|  3     |  The internal order status is set as "delivered to pick up area" by E1 |
+|  3     |  The internal order status is set as "delivered to pick up area"  |
 |  5	 |  Internal Order O is delivered to pick up area	|
 
 ##### Scenario 6.2
 | Scenario | Set order status to "Completed" |
 | ------------- |:-------------:| 
-|  Precondition     | (Warehouse) Employee E1 is logged in, (Other OU) Employee E2 exists, internal order O exists with status "delivered to pick up area"|
+|  Precondition     | (Warehouse) Employee E1 is logged in  |
+|					| (Other OU) Employee E2 exists 		|
+|					| internal order O exists with status "delivered to pick up area"|
 |  Post condition   | Internal Order O status is completed  |
 |  Step#        	| Description  			|
 |  1	 |  E2 arrives in the pick up area to collect the internal order |
 |  2   	 |  E2 authenticates |
 |  3   	 |  E2 collects the items requested by the internal order |
-|  4     |  The internal order status is set as "Completed" by E1 |
+|  4     |  The internal order status is set as "Completed"		  |
 |  5	 |  Internal Order O is completed	|
 
+##### Scenario 6.3
+| Scenario | Set order status to "Cancelled" |
+| ------------- |:-------------:| 
+|  Precondition     | Employee E is logged in	|
+|					| internal order O exists 	|
+|  Post condition   | Internal Order O is cancelled  |
+|  Step#        	| Description  			|
+|  1	 |  A "cancel order" notification arrives 	  |
+|  2	 |  Internal Order O is cancelled			  |
+
+
+### Use case 7, UC7 - Manage Suppliers 
+
+|  Actors Involved        | Manager, Item, Employee|
+|  ------------- |:-------------:|
+|  Precondition		  | (Organizational Unit) Employee E logged in  |
+|  Post condition     | Supplier S is added, modified or deleted	|
+|  Nominal Scenario   | Add new supplier	   	|
+|  Variants			  | Modify supplier			|
+|					  | Delete supplier		 	|
+|					  | Show supplier informations 	|
+
+##### Scenario 7.1
+| Scenario |  Add new supplier |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in |
+|					| Supplier S does not exists in the system	|
+|  Post condition   | Supplier S added  |
+|  Step#        	| Description  		|
+|  1	 |  M wants to add a new supplier in the system			|
+|  2     |  M inserts name, address, phone number			    |
+|  3     |  M confirms the inserted data					    |
+|  4   	 |  S added in the warehouse 							|
+
+##### Scenario 7.2
+| Scenario |  Modify supplier |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in |
+|					| Supplier S exists in the system	|
+|  Post condition   | Supplier S modified   |
+|  Step#        	| Description  			|
+|  1	 |  M wants to modify a supplier						|
+|  2     |  M modifies the supplier informations			    |
+|  3     |  M confirms the updated data						    |
+|  4   	 |  S modified				 							|
+
+##### Scenario 7.3
+| Scenario |  Delete supplier |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in |
+|					| Supplier S exists in the system	|
+|  Post condition   | Supplier S deleted  |
+|  Step#        	| Description  		|
+|  1	 |  M wants to delete a supplier in the system			|
+|  2     |  M selects the supplier							    |
+|  3     |  M confirms the operation						    |
+|  4   	 |  S deleted				 							|
+
+##### Scenario 7.4
+| Scenario |  Show supplier informations |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in |
+|					| Supplier S exists in the system	|
+|  Post condition   | Supplier S information are shown			|
+|  Step#        	| Description  								|
+|  1	 |  M wants to supplier informations					|
+|  2     |  M selects the supplier							    |
+|  3     |  Application shows supplier informations			    |
 
 
 
-### Use case 7, UC7 - Quality test 
+
+### Use case 8, UC8 - Quality test 
 
 | Actors Involved        |  Items, Quality Office employee|
 | ------------- |:-------------:|
@@ -512,7 +615,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Nominal Scenario     | Quality Office employees test the chosen item and test whether the quality is good or not |
 |  Variants     | After the item been tested, it will be add to the warehouse if quality is good |
 
-##### Scenario 6.1 
+##### Scenario 8.1 
 
 | Scenario |  Item's quality is good |
 | ------------- |:-------------:| 
@@ -524,7 +627,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3    |  Item I pass the test |
 |  4    |  Item I been added to warehouse |
 
-##### Scenario 6.2 
+##### Scenario 8.2 
 
 | Scenario |  Item's quality is not good |
 | ------------- |:-------------:| 
@@ -535,19 +638,6 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  2     |  Quality Office employees choose a type of test to test the quality of I|
 |  3    |  Item I not pass the test |
 |  4    |  Item I been rejected and sent back to the supplier |
-
-
-### Use case 9, UC9 - Issue an order 
-
-| Actors Involved        | Manager, Item, Payment service |
-| ------------- |:-------------:|
-|  Precondition     |            Item I exists in the warehouse and it is in short supply                            |
-|  Post condition     |        The order is issued | 
-| | Physical space in warehouse is updated       |
-|  Nominal Scenario     | The manager chooses a supplier from the list of supplier for the selected item and orders the quantity needed |
-| Exceptions | The order cannot be issued because there's not enough physical space in the warehouse|
-
-
 
 
 ##### Scenario 1.1 
