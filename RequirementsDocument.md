@@ -348,6 +348,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | ------------- |:-------------:|
 |  Precondition     | Employee E logged in|
 |					| item I does not exist in a warehouse  |
+|					| warehouse has enough space to hold item I  |
 |  Post condition   | item I added in a warehouse           |
 |  Step#        	| Description  		|
 |  1	 |  E reads the item barcode with the bar code scanner	|
@@ -359,6 +360,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | ------------- |:-------------:|
 |  Precondition     | Manager M logged in	|
 |					| item I does not exist in a warehouse  |
+|					| warehouse has enough space to hold item I  |
 |  Post condition   | item I added in a warehouse           |
 |  Step#        	| Description  			|
 |  1	 |  Application asks for item ID, descriptor |
