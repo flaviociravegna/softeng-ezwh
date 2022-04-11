@@ -151,7 +151,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |	  FR4.2.1 	| Filter suppliers based on items|
 |  FR5 		| Manage quality check |
 |	 FR5.1 	| List items in the quality office domain |
-| 	  FR5.1.1 | Fileter based on type of test 	|
+| 	  FR5.1.1 | Filter based on type of test 	|
 | 	 FR5.2 	| Test management |
 | 	  FR5.2.1 | Add new test |
 | 	  FR5.2.2 | Remove a test |
@@ -327,8 +327,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Post condition   | User U logged off |
 |  Step#        	| Description  		|
 |  1	 |  User U wants to log off			|
-|  3     |  Employee logs out				|
-|  5   	 |  Application shows login page 	|
+|  2     |  Employee logs out				|
+|  3   	 |  Application shows login page 	|
 
 ### Use case 3, UC3 - Item management
 
@@ -460,7 +460,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 ##### Scenario 5.1
 | Scenario |  Add internal order |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E is logged in	|
+|  Precondition     |  OU Employee E is logged in	|
 |					| internal order O does not exists  	 |
 |  Post condition   | Internal Order O is added |
 |  Step#        	| Description  			|
@@ -472,7 +472,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 ##### Scenario 5.2
 | Scenario |  Modify internal order |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E is logged in 		|
+|  Precondition     | OU Employee E is logged in 		|
 |					| internal order O exists  		|
 |  Post condition   | Internal Order O is modified  |
 |  Step#        	| Description  			|
@@ -484,7 +484,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 ##### Scenario 5.3
 | Scenario |  Cancel internal order |
 | ------------- |:-------------:| 
-|  Precondition     | Employee E is logged in		|
+|  Precondition     | OU Employee E is logged in		|
 |					| internal order O exists  		|
 |  Post condition   | Internal Order O does not exists  	 |
 |  Step#        	| Description  			|
@@ -519,8 +519,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  2   	 |  E collects the items requested by the internal order |
 |  3	 |  E scans the bar code of each item		  |
 |  4	 |  The application sets the items requested to "not available" and decreases the quantities of available items |
-|  3     |  The internal order status is set as "delivered to pick up area"  |
-|  5	 |  Internal Order O is delivered to pick up area	|
+|  5     |  The internal order status is set as "delivered to pick up area"  |
+|  6	 |  Internal Order O is delivered to pick up area	|
 
 ##### Scenario 6.2
 | Scenario | Set order status to "Completed" |
@@ -549,9 +549,9 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 ### Use case 7, UC7 - Manage Suppliers 
 
-|  Actors Involved        | Manager, Item, Employee|
+|  Actors Involved        | Manager |
 |  ------------- |:-------------:|
-|  Precondition		  | (Organizational Unit) Employee E logged in  |
+|  Precondition		  | Manager M is logged in  |
 |  Post condition     | Supplier S is added, modified or deleted	|
 |  Nominal Scenario   | Add new supplier	   	|
 |  Variants			  | Modify supplier			|
@@ -568,7 +568,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  1	 |  M wants to add a new supplier in the system			|
 |  2     |  M inserts name, address, phone number			    |
 |  3     |  M confirms the inserted data					    |
-|  4   	 |  S added in the warehouse 							|
+|  4   	 |  S added in the system	 							|
 
 ##### Scenario 7.2
 | Scenario |  Modify supplier |
@@ -607,8 +607,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 
 
-
-### Use case 8, UC8 - Quality test 
+### Use case 8, UC8 - Perform quality test 
 
 | Actors Involved        |  Items, Quality Office employee|
 | ------------- |:-------------:|
@@ -624,10 +623,11 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | item I exists and it has not yet been tested  |
 |  Post condition     | item been tested   |
 | Step#        | Description  |
-|  1     |  Quality Office employees selects item I|  
-|  2     |  Quality Office employees choose a type of test to test the quality of I|
+|  1     |  Quality Office employee selects item I|  
+|  2     |  Quality Office employee chooses a type of test to test the quality of I|
 |  3    |  Item I pass the test |
-|  4    |  Item I been added to warehouse |
+|  4    |   Quality Office employee set the status "Passed" for Item I|
+|  5	|  Item I is added to warehouse |
 
 ##### Scenario 8.2 
 
@@ -639,8 +639,161 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  1     |  Quality Office employees selects item I|  
 |  2     |  Quality Office employees choose a type of test to test the quality of I|
 |  3    |  Item I not pass the test |
-|  4    |  Item I been rejected and sent back to the supplier |
+|  4    |   Quality Office employee set the status "Failed" for Item I|
+|  5    |  Item I is rejected and sent back to the supplier |
 
+### Use case 9, UC9 - Manage Tests
+
+|  Actors Involved        | Quality Test Employee|
+|  ------------- |:-------------:|
+|  Precondition		  | Quality Test Employee E logged in  |
+|  Post condition     | Test is added, modified or deleted	|
+|  Nominal Scenario   | Add new test	   	|
+|  Variants			  | Modify test			|
+|					  | Delete test		 	|
+|					  | Show test information 	|
+
+##### Scenario 9.1
+| Scenario |  Add new test |
+| ------------- |:-------------:|
+|  Precondition     | Quality Test Office Employee QE is logged in |
+|					| Test T does not exists in the system	|
+|  Post condition   | Test T added  |
+|  Step#        	| Description  		|
+|  1	 |  QE wants to add a new test in the system			|
+|  2     |  QE inserts name and description		    |
+|  3     |  QE confirms the inserted data					    |
+|  4   	 |  T added in the system 							|
+
+##### Scenario 9.2
+| Scenario |  Modify test |
+| ------------- |:-------------:|
+|  Precondition     | Quality Test Office Employee QE is logged in |
+|					| Test T exists in the system	|
+|  Post condition   | Test T modified   |
+|  Step#        	| Description  			|
+|  1	 |  QE wants to modify a test						|
+|  2	 |  QE selects the test to be modified from the list of tests in the system |
+|  3     |  QE modifies the test informations (name and/or description)			    |
+|  4     |  QE confirms the updated data						    |
+|  5   	 |  T modified				 							|
+
+##### Scenario 9.3
+| Scenario |  Delete test |
+| ------------- |:-------------:|
+|  Precondition     | Quality Test Office Employee QE is logged in |
+|					| Test T exists in the system	|
+|  Post condition   | Test deleted  |
+|  Step#        	| Description  		|
+|  1	 |  QE wants to delete a test						|
+|  2	 |  QE chooses the test to be deleted from the list of tests in the system |
+|  3     |  QE confirms the operation						    |
+|  4   	 |  T deleted			 							|
+
+### Use case 10, UC10 - CRUD Warehouse
+
+|  Actors Involved        | Manager |
+|  ------------- |:-------------:|
+|  Precondition		  | Manager M is logged in		|
+|  Post condition     | Warehouse W is added, modified or deleted	|
+|  Nominal Scenario   | Add new warehouse  	|
+|  Variants			  | Modify warehouse	|
+|					  | Delete warehouse 	|
+
+##### Scenario 10.1
+| Scenario |  Add warehouse |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in	|
+|					| Warehouse W does not exists  	 |
+|  Post condition   | Warehouse W is added |
+|  Step#        	| Description  		|
+|  1	 |  M wants to add a new warehouse in the system			|
+|  2     |  M inserts name and address		    |
+|  3     |  M confirms the inserted data					    |
+|  4   	 |  W added in the system 							|
+
+##### Scenario 10.2
+| Scenario |  Modify warehouse |
+| ------------- |:-------------:|
+|  Precondition     | Manager M is logged in |
+|					| Warehouse W exists in the system	|
+|  Post condition   | Warehouse W modified   |
+|  Step#        	| Description  			|
+|  1	 |  M wants to modify a warehouse						|
+|  2	 |  M selects the warehouse to be modified from the list of warehouses in the system |
+|  3     |  M modifies the warehouse informations 		    |
+|  4     |  M confirms the updated data						    |
+|  5   	 |  W modified				 							|
+
+##### Scenario 10.3
+| Scenario |  Delete warehouse |
+| ------------- |:-------------:|
+|  Precondition     | Manager M is logged in |
+|					| Warehouse W exists in the system	|
+|  Post condition   | Warehouse deleted  |
+|  Step#        	| Description  		|
+|  1	 |  M wants to delete a warehouse						|
+|  2	 |  M chooses the warehouse to be deleted from the list of warehouses  in the system |
+|  3     |  M confirms the operation						    |
+|  4   	 |  W deleted			 							|
+
+### Use case 11, UC11 - Issue an order to Supplier
+
+|  Actors Involved        | Manager, Item, Supplier |
+|  ------------- |:-------------:|
+|  Precondition		  | Manager M is logged in		|
+|  Post condition     | The order of item I is successfully sent 				|
+|  Nominal Scenario   | The order is issued  	|
+|  Exceptions			  | The order cannot be issued because there is not enough space in the warehouse	|
+
+
+##### Scenario 11.1
+| Scenario |  Issue an order successfully after notification |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in	|
+|					| Item I is in short supply  	 |
+|  Post condition   | The order of item I is successfully sent |
+|  Step#        	| Description  		|
+|  1	 |  M gets notified that item I is in short supply			|
+|  2     |  M decides to issue an order for item I		    |
+|  3     |  M presses on the notification					    |
+|  4   	 |  M selects the supplier from the suppliers list of the selected item							|
+|  5   	 |  M chooses the quantity to be ordered of the selected item 							|
+|  6   	 |  M confirms the data entered 					|
+|  7  	 |  The system checks that there is enough space in the warehouse for the order to be issued |
+|  8	 |  The order is successfully issued |
+
+##### Scenario 11.2
+| Scenario |  Issue an order unsuccessfully after notification |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in	|
+|					| Item I is in short supply  	 |
+|  Post condition   | The order of item I is successfully sent |
+|  Step#        	| Description  		|
+|  1	 |  M gets notified that item I is in short supply			|
+|  2     |  M decides to issue an order for item I		    |
+|  3     |  M presses on the notification					|
+|  4   	 |  M selects the supplier from the suppliers list of the selected item							|
+|  5   	 |  M chooses the quantity to be ordered of the selected item 							|
+|  6   	 |  M confirms the data entered 					|
+|  7 	 |  The system notifies M that there is not enough space in the warehouse for the required quantity				|
+|  8 	 |  M updates the quantity (M selects a smaller quantity) |
+|  9   	 |  M confirms the data entered 					|
+|  10 	 |  The system checks that there is enough space in the warehouse for the order to be issued |
+|  11	 |  The order is successfully issued |
+
+##### Scenario 11.3
+| Scenario |  Issue an order successfully without notification |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in	|
+|  Post condition   | The order of item I is successfully sent |
+|  Step#        	| Description  		|
+|  1     |  M decides to issue an order for item I		    |
+|  2   	 |  M selects the supplier from the suppliers list of the selected item							|
+|  3   	 |  M chooses the quantity to be ordered of the selected item 							|
+|  4   	 |  M confirms the data entered 					|
+|  5  	 |  The system checks that there is enough space in the warehouse for the order to be issued |
+|  6	 |  The order is successfully issued |
 
 ##### Scenario 1.1 
 
