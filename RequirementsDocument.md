@@ -201,7 +201,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 \<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
 
-### Use case 1, UC1 - Manage Users Account
+### Use case 1, UC1 - Manage User Account
 | Actors Involved        | IT Manager, Employee E |
 | ------------- |:-------------:|
 |  Precondition     |  IT Manager M exists and is logged in |
@@ -260,7 +260,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4   	 |  An e-mail is sent to the IT Manager to notify a "sign up request" 					|
 
 ### Use case 2, UC2 - Authorize and Authenticate
-| Actors Involved   | IT Manager, Manager, Employee |
+| Actors Involved   | IT Manager, Manager, Employee, Supplier |
 | ------------- |:-------------:|
 |  Precondition     |            	|
 |  Post condition   |               |  
@@ -323,7 +323,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | Scenario |  Logout (variant) |
 | ------------- |:-------------:| 
 |  Precondition     | Account A exists	|
-|					| User U (Employee, Manager, IT Manager) logged in  |
+|					| User U (Employee, Manager, IT Manager, Supplier) logged in  |
 |  Post condition   | User U logged off |
 |  Step#        	| Description  		|
 |  1	 |  User U wants to log off			|
@@ -337,11 +337,13 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     |  Manager (or Employee) is logged in          	|
 |  Post condition   |             								|  
 |  Nominal Scenario |  Add new item in a warehouse (bar code)	|
-|  Variants			|  Add manually a new item in a warehouse	|
+|  Variants			|  Add manually a new item in supplier's offered item list |
 |					|  Modify item information					|
 |					|  Check item information					|
 |					|  Delete item from warehouse				|
-|  Exceptions		|  Add new item in a warehouse - exception, |
+|					|  Show available item list					|
+|					|  Show available item list using filters	|
+|  Exceptions		|  Add new item in a warehouse - exception  |
 
 ##### Scenario 3.1
 | Scenario |  Add new item in a warehouse (bar code) |
@@ -356,28 +358,25 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3   	 |  Item I added in the warehouse 						|
 
 ##### Scenario 3.2
-| Scenario |  Add manually a new item in a warehouse|
+| Scenario |  Add manually a new item in supplier's offered item list|
 | ------------- |:-------------:|
-|  Precondition     | Manager M logged in	|
-|					| item I does not exist in a warehouse  |
-|					| warehouse has enough space to hold item I  |
+|  Precondition     | Supplier S logged in	|
+|					| item I does not exist in supplier's offered item list  |
 |  Post condition   | item I added in a warehouse           |
 |  Step#        	| Description  			|
-|  1	 |  Application asks for item ID, descriptor |
-|  2	 |  M selects the warehouse where the item will be stored, inserts item ID and selects/inserts the associated item descriptor  |
+|  1	 |  Application asks for item informations (Name, Description, price per unit etc) |
 |  3     |  M confirms the inserted/selected data		 |
-|  4   	 |  Item I added in the warehouse 				 |
+|  4   	 |  Item I added in the "supplier's offered item" list 				 |
 
 ##### Scenario 3.3
 | Scenario |  Add new item in a warehouse - exception |
 | ------------- |:-------------:|
-|  Precondition     | Manager M logged in	|
+|  Precondition     | Employee E logged in	|
 |					| item I exist in a warehouse  |
 |  Post condition   | item I not added in a warehouse           |
 |  Step#        	| Description  		|
-|  1	 |  Application asks for item ID, descriptor, warehouse |
-|  2	 |  M selects the warehouse where the item will be stored, inserts item ID and selects/inserts the associated item descriptor	|
-|  3     |  M confirms the inserted/selected data		 |
+|  1	 |  E scans the item's barcode					 |
+|  3     |  M confirms		 |
 |  4   	 |  Application shows an error message to alert the Manager that the item already exists in the selected warehouse  |
 |  5   	 |  Item I not added in the warehouse 			 |
 
@@ -407,7 +406,6 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  6	 |  Item I updated						|
 
 ##### Scenario 3.6 
-
 | Scenario | Delete item from warehouse |
 | ------------- |:-------------:| 
 |  Precondition     | Manager M is logged in	 |
@@ -419,16 +417,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3	 |  M confirms							|
 |  4	 |  Item I deleted						|
 
-### Use case 4, UC4 - List available items 
-
-| Actors Involved        | Employee, Item |
-| ------------- |:-------------:|
-|  Precondition     |  Employee E is logged in          	|
-|  Post condition   |             								|  
-|  Nominal Scenario |  Show available item list					|
-|  Variants			|  Show available item list using filters	|
-
-##### Scenario 4.1 
+##### Scenario 3.7
 | Scenario | Show available item list |
 | ------------- |:-------------:|
 |  Precondition     | Employee E is logged in   		     |
@@ -437,7 +426,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  1	 |  E wants to look at the available items							|
 |  2	 |  Application shows an item list	looking for the available ones	|
 
-##### Scenario 4.2 
+##### Scenario 3.8
 | Scenario | Show available item list (filter based) |
 | ------------- |:-------------:|
 |  Precondition     | Employee E is logged in   		     |
@@ -447,7 +436,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  2	 |  E selects the filters											|
 |  3	 |  Application shows a filtered item list, looking for the available ones	|
 
-### Use case 5, UC5 - CRUD Internal order 
+### Use case 4, UC4 - CRUD Internal order 
 
 |  Actors Involved        | Manager, Item, Employee|
 |  ------------- |:-------------:|
@@ -457,7 +446,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Variants			  | Modify internal order	|
 |					  | Cancel internal order 	|
 
-##### Scenario 5.1
+##### Scenario 4.1
 | Scenario |  Add internal order |
 | ------------- |:-------------:| 
 |  Precondition     |  OU Employee E is logged in	|
@@ -469,7 +458,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3   	 |  E confirms the internal order request						|
 |  4	 |  Internal Order O is added									|
 
-##### Scenario 5.2
+##### Scenario 4.2
 | Scenario |  Modify internal order |
 | ------------- |:-------------:| 
 |  Precondition     | OU Employee E is logged in 		|
@@ -481,7 +470,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3   	 |  E confirms the internal order modification  |
 |  4	 |  Internal Order O is modified				|
 
-##### Scenario 5.3
+##### Scenario 4.3
 | Scenario |  Cancel internal order |
 | ------------- |:-------------:| 
 |  Precondition     | OU Employee E is logged in		|
@@ -495,7 +484,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  5	 |  Internal Order O is cancelled |
 
 
-### Use case 6, UC6 - Manage Internal order 
+### Use case 5, UC5 - Manage Internal order 
 
 |  Actors Involved        | Item, Employee|
 |  ------------- |:-------------:|
@@ -507,7 +496,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  					  | Set order status to "Cancelled" |
 |  					  | Set order status to "On Going" |
 
-##### Scenario 6.1
+##### Scenario 5.1
 | Scenario | Set order status to "Delivered to pick up area" |
 | ------------- |:-------------:| 
 |  Precondition     | Employee E is logged in 	|
@@ -522,7 +511,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  5     |  The internal order status is set as "delivered to pick up area"  |
 |  6	 |  Internal Order O is delivered to pick up area	|
 
-##### Scenario 6.2
+##### Scenario 5.2
 | Scenario | Set order status to "Completed" |
 | ------------- |:-------------:| 
 |  Precondition     | (Warehouse) Employee E1 is logged in  |
@@ -536,7 +525,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4     |  The internal order status is set as "Completed"		  |
 |  5	 |  Internal Order O is completed	|
 
-##### Scenario 6.3
+##### Scenario 5.3
 | Scenario | Set order status to "Cancelled" |
 | ------------- |:-------------:| 
 |  Precondition     | Employee E is logged in	|
@@ -547,9 +536,9 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  2	 |  Internal Order O is cancelled			  |
 
 
-### Use case 7, UC7 - Manage Suppliers 
+### Use case 6, UC6 - Manage Suppliers 
 
-|  Actors Involved        | Manager |
+|  Actors Involved        | Manager, Supplier |
 |  ------------- |:-------------:|
 |  Precondition		  | Manager M is logged in  |
 |  Post condition     | Supplier S is added, modified or deleted	|
@@ -558,7 +547,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |					  | Delete supplier		 	|
 |					  | Show supplier informations 	|
 
-##### Scenario 7.1
+##### Scenario 6.1
 | Scenario |  Add new supplier |
 | ------------- |:-------------:|
 |  Precondition     | Manager M logged in |
@@ -570,7 +559,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  M confirms the inserted data					    |
 |  4   	 |  S added in the system	 							|
 
-##### Scenario 7.2
+##### Scenario 6.2
 | Scenario |  Modify supplier |
 | ------------- |:-------------:|
 |  Precondition     | Manager M logged in |
@@ -582,7 +571,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  M confirms the updated data						    |
 |  4   	 |  S modified				 							|
 
-##### Scenario 7.3
+##### Scenario 6.3
 | Scenario |  Delete supplier |
 | ------------- |:-------------:|
 |  Precondition     | Manager M logged in |
@@ -594,7 +583,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  M confirms the operation						    |
 |  4   	 |  S deleted				 							|
 
-##### Scenario 7.4
+##### Scenario 6.4
 | Scenario |  Show supplier informations |
 | ------------- |:-------------:|
 |  Precondition     | Manager M logged in |
@@ -607,7 +596,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 
 
-### Use case 8, UC8 - Perform quality test 
+### Use case 7, UC7 - Perform quality test 
 
 | Actors Involved        |  Items, Quality Office employee|
 | ------------- |:-------------:|
@@ -616,7 +605,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Nominal Scenario     | Quality Office employees test the chosen item and test whether the quality is good or not |
 |  Variants     | After the item been tested, it will be add to the warehouse if quality is good |
 
-##### Scenario 8.1 
+##### Scenario 7.1 
 
 | Scenario |  Item's quality is good |
 | ------------- |:-------------:| 
@@ -629,7 +618,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4    |   Quality Office employee set the status "Passed" for Item I|
 |  5	|  Item I is added to warehouse |
 
-##### Scenario 8.2 
+##### Scenario 7.2 
 
 | Scenario |  Item's quality is not good |
 | ------------- |:-------------:| 
@@ -642,7 +631,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4    |   Quality Office employee set the status "Failed" for Item I|
 |  5    |  Item I is rejected and sent back to the supplier |
 
-### Use case 9, UC9 - Manage Tests
+### Use case 8, UC8 - Manage Tests
 
 |  Actors Involved        | Quality Test Employee|
 |  ------------- |:-------------:|
@@ -653,7 +642,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |					  | Delete test		 	|
 |					  | Show test information 	|
 
-##### Scenario 9.1
+##### Scenario 8.1
 | Scenario |  Add new test |
 | ------------- |:-------------:|
 |  Precondition     | Quality Test Office Employee QE is logged in |
@@ -665,7 +654,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  QE confirms the inserted data					    |
 |  4   	 |  T added in the system 							|
 
-##### Scenario 9.2
+##### Scenario 8.2
 | Scenario |  Modify test |
 | ------------- |:-------------:|
 |  Precondition     | Quality Test Office Employee QE is logged in |
@@ -678,7 +667,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4     |  QE confirms the updated data						    |
 |  5   	 |  T modified				 							|
 
-##### Scenario 9.3
+##### Scenario 8.3
 | Scenario |  Delete test |
 | ------------- |:-------------:|
 |  Precondition     | Quality Test Office Employee QE is logged in |
@@ -690,7 +679,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  QE confirms the operation						    |
 |  4   	 |  T deleted			 							|
 
-### Use case 10, UC10 - CRUD Warehouse
+### Use case 9, UC9 - Manage Warehouse
 
 |  Actors Involved        | Manager |
 |  ------------- |:-------------:|
@@ -700,7 +689,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Variants			  | Modify warehouse	|
 |					  | Delete warehouse 	|
 
-##### Scenario 10.1
+##### Scenario 9.1
 | Scenario |  Add warehouse |
 | ------------- |:-------------:| 
 |  Precondition     | Manager M is logged in	|
@@ -712,7 +701,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  M confirms the inserted data					    |
 |  4   	 |  W added in the system 							|
 
-##### Scenario 10.2
+##### Scenario 9.2
 | Scenario |  Modify warehouse |
 | ------------- |:-------------:|
 |  Precondition     | Manager M is logged in |
@@ -725,7 +714,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4     |  M confirms the updated data						    |
 |  5   	 |  W modified				 							|
 
-##### Scenario 10.3
+##### Scenario 9.3
 | Scenario |  Delete warehouse |
 | ------------- |:-------------:|
 |  Precondition     | Manager M is logged in |
@@ -737,17 +726,17 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  M confirms the operation						    |
 |  4   	 |  W deleted			 							|
 
-### Use case 11, UC11 - Issue an order to Supplier
+### Use case 10, UC10 - Issue an order to Supplier
 
 |  Actors Involved        | Manager, Item, Supplier |
 |  ------------- |:-------------:|
 |  Precondition		  | Manager M is logged in		|
 |  Post condition     | The order of item I is successfully sent 				|
 |  Nominal Scenario   | The order is issued  	|
-|  Exceptions			  | The order cannot be issued because there is not enough space in the warehouse	|
+|  Exceptions		  | The order cannot be issued because there is not enough space in the warehouse	|
 
 
-##### Scenario 11.1
+##### Scenario 10.1
 | Scenario |  Issue an order successfully after notification |
 | ------------- |:-------------:| 
 |  Precondition     | Manager M is logged in	|
@@ -763,7 +752,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  7  	 |  The system checks that there is enough space in the warehouse for the order to be issued |
 |  8	 |  The order is successfully issued |
 
-##### Scenario 11.2
+##### Scenario 10.2
 | Scenario |  Issue an order unsuccessfully after notification |
 | ------------- |:-------------:| 
 |  Precondition     | Manager M is logged in	|
@@ -782,7 +771,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  10 	 |  The system checks that there is enough space in the warehouse for the order to be issued |
 |  11	 |  The order is successfully issued |
 
-##### Scenario 11.3
+##### Scenario 10.3
 | Scenario |  Issue an order successfully without notification |
 | ------------- |:-------------:| 
 |  Precondition     | Manager M is logged in	|
@@ -794,36 +783,6 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4   	 |  M confirms the data entered 					|
 |  5  	 |  The system checks that there is enough space in the warehouse for the order to be issued |
 |  6	 |  The order is successfully issued |
-
-##### Scenario 1.1 
-
-\<describe here scenarios instances of UC1>
-
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
-
-| Scenario 1.1 | |
-| ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
-| Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
-
-##### Scenario 1.2
-
-##### Scenario 1.x
-
-### Use case 2, UC2
-..
-
-### Use case x, UCx
-..
-
 
 
 # Glossary
