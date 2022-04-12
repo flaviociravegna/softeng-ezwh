@@ -77,9 +77,6 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, Payment service
 
 ## Interfaces
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| :-----:|
@@ -102,10 +99,6 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 # Functional and non functional requirements
 
 ## Functional Requirements
-
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<they match to high level use cases>
 
 | ID        | Description  |
 | ------------- |:-------------:| 
@@ -144,6 +137,10 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | 	FR3.3 	| Remove a warehouse |
 | 	FR3.4 	| Modify warehouse information |
 | 	FR3.5 	| List warehouses |
+| 	FR3.5 	| Drop Point Management |
+| 	  FR3.5.1	| Add drop point 	|
+| 	  FR3.5.2	| Delete Drop Point |
+| 	  FR3.5.2	| List Drop Points 	|
 |  FR4		| Manage suppliers |
 |	 FR4.1 	| Add new supplier to record|
 | 	  FR4.1.1 	| Create new supplier account|
@@ -160,15 +157,9 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | 	   FR5.2.3.2 | Manage items to be tested |
 |		FR5.2.3.2.1 | Add item to test |
 | 		FR5.2.3.2.2 | Remove item from test |
-| 		FR5.2.3.2.3 | Item result management |
-| 		 FR5.2.3.2.3.1 | Register item results |
-| 		 FR5.2.3.2.3.2 | Handle failed results |
+| 		FR5.2.3.2.3 | Test History			|
 | 		FR5.2.3.2.4 | List items in the test |
 |		 FR5.2.3.2.4.1 | Filter based on item result|
-|	FR6 	| Server Management |
-| 	 FR6.1 | Add Server	|
-| 	 FR6.2 | Remove a Server	|
-
 
 | ------------- |:-------------:| 
 
@@ -176,21 +167,21 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
-| ------------- |:-------------:| :-----:| :-----:|
-|  NFR1     | Usability |   A manager should be able to use all the system functions after two hours training| |
+| ------------- |:-------------:| :-----| :-----:|
+|  NFR1     | Usability |   A manager should be able to use all the system functions after two hours training| All FR |
 |  NFR2.1     | Efficiency |  Following functional requirements should be completed in less than ½ sec | FR2.X, FR3.1.1.1, FR3.1.1.2, FR3.1.1.3, FR3.1.1.4, FR3.1.1.5, FR3.1.3, FR3.1.4, FR3.1.5, FR3.1.6, FR3.2, FR3.3, FR3.4, FR3.5, FR5.2.X|
 |  NFR2.2     | Efficiency | Following functional requirements should require less than 1 sec| FR1.1, FR1.2, FR3.1.1.6, FR3.1.2, FR4.1.1, FR4.2, FR5.1, FR5.2.3.2.4 |
-| NFR2.3 | Efficiency | Menu navigation must be not percepted (response time < 0.1 sec)| | 
-| NFR2.4 | Efficiency | The application should meet the previous performance requirements when there are less than 1000 users connected per hour| |
-| NFR2.5 | Efficiency | Application size < 100 MB| |
-| NFR3.1	| Reliability		| Mean Time Between Failure > 20 days | |
-| NFR3.2	| Reliability		| The application must be available to users 98 % of the time (during working hours [Mon – Fri, 08:00 – 19:00] ) every month | |
-| NFR4.1	| Maintainability	| An error should be fixed, 80% of the times, in less than 24 hours| |
-| NFR4.2	| Maintainability	| About 20 person hours needed to fix a major defect | |
-| NFR5.1	| Security		| Personal data must be processed in compliance with the GDPR| GDPR: https://eur-lex.europa.eu/eli/reg/2016/679/oj |
-| NFR5.2	| Security		| Only authorized users can access to the data. Users must authenticate themselves using their credentials (e-mail + secure password). Basic user must not be able to exploit Manager tasks| Secure password constraints: <br>- Minimum length greater (or equal) than 12 characters <br> - Must include: [at least 1 special symbol (e.g. @_#$%), Numbers, Lowercase & Uppercase characters]. <br> - Must be changed every 10 months|
-| NFR6	| Portability		| The application should run on the majority of the most used browsers in their secure versions| Firefox 88+, Chrome 93+, Safari (macOS) 11.1.1+, Safari (iOS) 12.4.3+, Opera 72+|
-| NFR7	| Domain	| The Bar Code number is an UPC-A 12 digits Code. Implementation details can be found at the following link:<br> https://www.gs1.org/docs/barcodes/GS1_General_Specifications.pdf | FR3.1.5.2 |
+| NFR2.3 | Efficiency | Menu navigation must be not percepted (response time < 0.1 sec)| All FR | 
+| NFR2.4 | Efficiency | The application should meet the previous performance requirements when there are less than 1000 users connected per hour| All FR |
+| NFR2.5 | Efficiency | Application size < 100 MB| All FR |
+| NFR3.1	| Reliability		| Mean Time Between Failure > 20 days | All FR |
+| NFR3.2	| Reliability		| The application must be available to users 98 % of the time (during working hours [Mon – Fri, 08:00 – 19:00] ) every month | All FR |
+| NFR4.1	| Maintainability	| An error should be fixed, 80% of the times, in less than 24 hours| All FR |
+| NFR4.2	| Maintainability	| About 20 person hours needed to fix a major defect | All FR |
+| NFR5.1	| Security		| Personal data must be processed in compliance with the GDPR. <br>GDPR: https://eur-lex.europa.eu/eli/reg/2016/679/oj| All FR |
+| NFR5.2	| Security		| Only authorized users can access to the data. Users must authenticate themselves using their credentials (e-mail + secure password). Basic user must not be able to exploit Manager tasks. <br><br>Secure password constraints: <br>- Minimum length greater (or equal) than 12 characters <br> - Must include: [at least 1 special symbol (e.g. @_#$%), Numbers, Lowercase & Uppercase characters]. <br> - Must be changed every 10 months| All FR |
+| NFR6	| Portability		| The application should run on the majority of the most used browsers in their secure versions <br>(Firefox 88+, Chrome 93+, Safari (macOS) 11.1.1+, Safari (iOS) 12.4.3+, Opera 72+)| All FR |
+| NFR7	| Domain	| The Bar Code number is an UPC-A 12 digits Code. Implementation details can be found at the following link:<br> https://www.gs1.org/docs/barcodes/GS1_General_Specifications.pdf | All FR |
 | NFR8	| Domain 	| Currency is Euro | FR2 |
 
 
@@ -254,7 +245,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |					| Employee E wants to sign up 	|
 |  Post condition   | Account A is created  	|
 |  Step#        	| Description  				|
-|  1	 |  Application asks for Company Name, Server Address, E-mail, Name, Surname, Password 	|
+|  1	 |  Application asks for Company Name, E-mail, Name, Surname, Password 	|
 |  2     |  E inserts the credentials of the account A	 										| 
 |  3     |  E reads and accepts the user agreement		 										|
 |  4   	 |  An e-mail is sent to the IT Manager to notify a "sign up request" 					|
@@ -274,7 +265,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A exists  |
 |  Post condition   | User U logged in  |
 |  Step#        	| Description  		|
-|  1	 |  Application asks for Company server address, E-mail/username, password 		|
+|  1	 |  Application asks for E-mail/username, password 		|
 |  2     |  U inserts the credentials  of the account A |  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
@@ -287,8 +278,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A exists 		|
 |  Post condition   | User U not logged in  |
 |  Step#        	| Description  			|
-|  1	 |  Application asks for Company server address, E-mail, password 		|
-|  2     |  U inserts the credentials (Company server address, e-mail and password) of the account A 	|  
+|  1	 |  Application asks for E-mail, password 		|
+|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
 |  5   	 |  Application shows an error message to alert the user that the inserted password is wrong |
@@ -299,8 +290,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A exists 		|
 |  Post condition   | User U not logged in  |
 |  Step#        	| Description  			|
-|  1	 |  Application asks for Company server address, E-mail, password 		|
-|  2     |  U inserts the credentials (Company server address, e-mail and password) of the account A 	|  
+|  1	 |  Application asks for E-mail, password 		|
+|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
 |  5   	 |  Application shows an error message to alert the user that the inserted password is expired and must be updated. The system sends an email to the IT Manager in order to update the password |
@@ -312,8 +303,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  Precondition     | Account A does not exists 		|
 |  Post condition   | User U not logged in  			|
 |  Step#        	| Description  						|
-|  1	 |  Application asks for Company server address, E-mail, password 		|
-|  2     |  U inserts the credentials (Company server address, e-mail and password) of the account A 	|  
+|  1	 |  Application asks for E-mail, password 		|
+|  2     |  U inserts the credentials (e-mail and password) of the account A 	|  
 |  3     |  U confirms the inserted data 				|
 |  4     |  The application checks the credentials 		|
 |  5   	 |  Application shows an error message to alert the user that the account associated to the inserted credentials is not defined   |
@@ -595,7 +586,6 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  Application shows supplier informations			    |
 
 
-
 ### Use case 7, UC7 - Perform quality test 
 
 | Actors Involved        |  Items, Quality Office employee|
@@ -783,6 +773,102 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4   	 |  M confirms the data entered 					|
 |  5  	 |  The system checks that there is enough space in the warehouse for the order to be issued |
 |  6	 |  The order is successfully issued |
+
+
+### Use case 11, UC11 - Manage Drop Point
+
+|  Actors Involved        | Manager |
+|  ------------- |:-------------:|
+|  Precondition		  | Manager M is logged in		|
+|  Post condition     | 			 				|
+|  Nominal Scenario   | A new drop point is added  	|
+|  Variants			  | A drop point is removed		|
+|  Variants			  | List drop points			|
+
+##### Scenario 11.1
+| Scenario |  A new drop point is added |
+| ------------- |:-------------:| 
+|  Precondition     | Manager M is logged in	|
+|					| Drop point D does not exists in the system  	 |
+|  Post condition   | Drop point D exists in the system |
+|  Step#        	| Description  		|
+|  1	 |  M wants to add a new drop point in the system	|
+|  2     |  M inserts name, address and additional instructions, if needed	|
+|  3     |  M confirms the inserted data					|
+|  4   	 |  D added in the system 							|
+
+##### Scenario 11.2
+| Scenario |  A drop point is removed |
+| ------------- |:-------------:|
+|  Precondition     | Manager M is logged in |
+|					| Drop point D exists in the system  	 |
+|  Post condition   | Drop point D does not exists in the system |
+|  Step#        	| Description  		|
+|  1	 |  M wants to delete a drop point						|
+|  2	 |  M chooses the drop point to be deleted from a list of drop points |
+|  3     |  M confirms the operation						    |
+|  4   	 |  W deleted			 								|
+
+##### Scenario 11.2
+| Scenario |  list drop points |
+| ------------- |:-------------:|
+|  Precondition     | Manager M is logged in |
+|  Post condition   | Application shows the list				|
+|  Step#        	| Description  		|
+|  1	 |  M wants to see all drop points						|
+|  2	 |  Application shows a list of available drop points 	|
+
+
+##### Use Case 12, UC12 - Manage items to be tested
+|  Actors Involved        | Quality Office Employee E, Item I |
+|  ------------- |:-------------:|
+|  Precondition		  | Quality Office Employee E is logged in		|
+|  Post condition     | 			 				|
+|  Nominal Scenario   | Add item to test		 	|
+|  Variants			  | Remove item from test 		|
+|  					  | Test History				|
+|					  | List tested items (filters)	|
+
+##### Scenario 11.1
+| Scenario |  Add item to test |
+| ------------- |:-------------:|
+|  Precondition     | Quality Office Employee E is logged in |
+|					| Item I not tested						 |
+|  Post condition   | Application adds the item to a specific test	 |
+|  Step#        	| Description  		|
+|  1	 |  E selects the item		|
+|  2	 |  Application adds the item to the test	 	|
+
+##### Scenario 11.2
+| Scenario |  Remove item from test |
+| ------------- |:-------------:|
+|  Precondition     | Quality Office Employee E is logged in |
+|					| Item I not tested						 |
+|  Post condition   | Application removes the item from a specific test	 |
+|  Step#        	| Description  		|
+|  1	 |  Application shows a list of items				|
+|  2	 |  E selects the item		|
+|  3	 |  Application removes the item to the test	 	|
+
+##### Scenario 11.3
+| Scenario |  Test History |
+| ------------- |:-------------:|
+|  Precondition     | Quality Office Employee E is logged in |
+|  Post condition   | Application shows the tests executed	 |
+|  Step#        	| Description  		|
+|  1	 |  M wants to see the test history		|
+|  2	 |  Application shows a list of executed tests	 	|
+
+##### Scenario 11.4
+| Scenario |  List tested items (filters) |
+| ------------- |:-------------:|
+|  Precondition     | Quality Office Employee E is logged in |
+|  Post condition   | Application shows the (filtered) items tested |
+|  Step#        	| Description  		|
+|  1	 |  M wants to see the tested items		|
+|  2	 |  M selects a specific test 			|
+|  3	 |  (optional) E selects/inserts the filters 	|
+|  4	 |  Application shows a list of the items	 	|
 
 
 # Glossary
