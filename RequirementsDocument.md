@@ -3,7 +3,7 @@
 Date: 22 march 2022
 	27 march 2022
 
-Version: 0.5
+Version: 0.7
 
  
 | Version number | Change |
@@ -71,10 +71,10 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 # Context Diagram and interfaces
 
 ## Context Diagram
-\<Define here Context diagram using UML use case diagram>
 
+![](Context_Diagram.png)
 
-Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, Payment service
+Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, Map Service
 
 ## Interfaces
 
@@ -89,12 +89,14 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | Map Service	| Google Maps APIs<br>Documentation: https://developers.google.com/maps/documentation/ | Internet Link |
 
 # Stories and personas
-\<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
 
-\<Persona is-an-instance-of actor>
+Sophie, 43 years old, mother of two daughters. She lives in Milan and works for a pharmaceutical products company, where she is the warehouse Manager based 1 hour from Milan. Using the EzWh application, Sophie is able to keep every aspect of the warehouse under control, but above all she can also do it from the comfort of her home, thus spending more time with her daughters.
 
-\<stories will be formalized later as scenarios in use cases>
+Marc, 35 years old, loves racing bikes. He graduated in pharmacy in 2020 and has been working in a Quality Control Office of a pharmaceutical company for a year. Every day at work he takes care of testing products that arrive in the company, to check that the quality is adequate. He has to keep track of all the tests done and those still to be done.
 
+Paul, 47 years old, father of a 7 year old son. He is passionate about gardening and botany, a passion that he loves to cultivate on the weekend with long outdoor walks. Instead, during the week he heads a company that produces raw materials for pharmaceutical products. He has no particular computer skills, but he can easily keep track of all the orders he receives through the application.
+
+Allison, 27 years old. She lives in a rental apartment near Milan with her best friend. She is very patient and has always cared about people's problems. However, she did not choose to be a psychologist, but she works as IT manager of a pharmaceutical company. Thanks to her high IT skills, every day at work she helps employees solve technical problems with the application and manages all accounts, right from the moment they are created.
 
 # Functional and non functional requirements
 
@@ -206,8 +208,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 
 
 ## Use case diagram
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
+![](UseCase_Diagram.png)
 
 ### Use case 1, UC1 - Manage User Account
 | Actors Involved        | IT Manager, Employee E |
@@ -753,7 +755,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  M confirms the operation						    |
 |  4   	 |  W deleted			 							|
 
-##### Scenario 10.4
+##### Scenario 9.4
 | Scenario | Show WH Details	|
 | ------------- |:-------------:|
 |  Precondition     | Employee E is logged in		 |
@@ -865,7 +867,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3     |  M confirms the operation						    |
 |  4   	 |  W deleted			 								|
 
-##### Scenario 11.2
+##### Scenario 11.3
 | Scenario |  list drop points |
 | ------------- |:-------------:|
 |  Precondition     | Manager M is logged in |
@@ -875,7 +877,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  2	 |  Application shows a list of available drop points 	|
 
 
-##### Use Case 12, UC12 - Manage items to be tested
+### Use Case 12, UC12 - Manage items to be tested
 |  Actors Involved        | Quality Office Employee E, Item I |
 |  ------------- |:-------------:|
 |  Precondition		  | Quality Office Employee E is logged in		|
@@ -927,38 +929,32 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  4	 |  Application shows a list of the items	 	|
 
 
-### Use case 13, UC13 - Show address on a map
+### Use case 13, UC13 - Show warehouse address on a map
 
-|  Actors Involved        | Manager |
+|  Actors Involved        | Employee |
 |  ------------- |:-------------:|
 |  Precondition		  | Employee E is logged in		|
 |  Post condition     | Address is shown on a map	|
-|  Nominal Scenario   | A map shows the address  	|
+|  Nominal Scenario   | A map shows the werehouse address  	|
 
 ##### Scenario 13.1
-| Scenario |  A map shows the address |
+| Scenario |  A map shows the warehouse address |
 | ------------- |:-------------:|
 |  Precondition     | Employee E is logged in |
-|  Post condition   | Address is shown on a map |
+|  Post condition   | Warehouse address is shown on a map |
 |  Step#        	| Description  		|
 |  1	 |  E looks at the warehouse details		|
-|  2	 |  Application uses the address to show it on a map |
-|  3	 |  Application shows the location on a map	 	|
+|  2	 |  Application uses the warehouse address to show it on a map |
+|  3	 |  Application shows the warehouse address on a map	 	|
 
 # Glossary
-
-\<use UML class diagram to define important terms, or concepts in the domain of the system, and their relationships> 
-
-\<concepts are used consistently all over the document, ex in use cases, requirements etc>
+ ![](Class_Diagram.png)
 
 # System Design
-\<describe here system design>
-
-\<must be consistent with Context diagram>
+![](System_Design.png)
 
 # Deployment Diagram 
-
-\<describe here deployment diagram >
+![](Deployment_Diagram.png)
 
 
 

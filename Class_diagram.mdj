@@ -909,7 +909,7 @@
 											"top": 381,
 											"width": 63.2353515625,
 											"height": 13,
-											"text": "+state",
+											"text": "+tested",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1121,7 +1121,7 @@
 											"top": 461,
 											"width": 98.4140625,
 											"height": 13,
-											"text": "+Location",
+											"text": "+Address",
 											"horizontalAlignment": 0
 										}
 									],
@@ -1335,6 +1335,24 @@
 											"width": 70.79541015625,
 											"height": 13,
 											"text": "+Attribute1",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGAI+A3NEiX9Os=",
+											"_parent": {
+												"$ref": "AAAAAAF/5T6qEhu8/vQ="
+											},
+											"model": {
+												"$ref": "AAAAAAGAI+A3HEiUAh8="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": 941,
+											"top": 581,
+											"width": 70.79541015625,
+											"height": 13,
+											"text": "+Attribute2",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7376,37 +7394,6 @@
 							"points": "1281:197;1324:185"
 						},
 						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAF/5da+j5RrQMI=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"left": 984,
-							"top": 232,
-							"width": 113,
-							"height": 65,
-							"text": "\"state\" can be \"ok\" or \"rejected\"",
-							"horzAlign": 2,
-							"vertAlign": 5
-						},
-						{
-							"_type": "UMLNoteLinkView",
-							"_id": "AAAAAAF/5da+j5RsoYc=",
-							"_parent": {
-								"$ref": "AAAAAAFF+qBtyKM79qY="
-							},
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAF/5da+j5RrQMI="
-							},
-							"tail": {
-								"$ref": "AAAAAAF/5T2l5hth5og="
-							},
-							"lineStyle": 1,
-							"points": "1016:335;1029:297"
-						},
-						{
 							"_type": "UMLClassView",
 							"_id": "AAAAAAF/5e4VvZUSgnQ=",
 							"_parent": {
@@ -9148,8 +9135,8 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;13;0",
-							"left": 1376,
-							"top": 320,
+							"left": 1344,
+							"top": 328,
 							"width": 105,
 							"height": 129,
 							"text": "\"Price per unit\" is needed only for items added by suppliers",
@@ -9170,7 +9157,7 @@
 								"$ref": "AAAAAAF/5T14Xxs2BZI="
 							},
 							"lineStyle": 1,
-							"points": "1289:386;1375:385"
+							"points": "1289:389;1343:390"
 						}
 					]
 				},
@@ -9492,8 +9479,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF/5T2l5htfP5M="
 							},
-							"name": "state",
-							"type": ""
+							"name": "tested"
 						}
 					]
 				},
@@ -9552,8 +9538,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF/5T3VABuKAHk="
 							},
-							"name": "Location",
-							"type": ""
+							"name": "Address"
 						}
 					]
 				},
@@ -9613,6 +9598,15 @@
 								"$ref": "AAAAAAF/5T6qEhu0AV0="
 							},
 							"name": "Attribute1",
+							"type": ""
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGAI+A3HEiUAh8=",
+							"_parent": {
+								"$ref": "AAAAAAF/5T6qEhu0AV0="
+							},
+							"name": "Attribute2",
 							"type": ""
 						}
 					]
