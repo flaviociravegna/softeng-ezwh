@@ -94,7 +94,13 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 \<Persona is-an-instance-of actor>
 
 \<stories will be formalized later as scenarios in use cases>
+Sophie, 43 years old, mother of two daughters. She lives in Milan and works for a pharmaceutical products company, where she is the warehouse Manager based 1 hour from Milan. Using the EzWh application, Sophie is able to keep every aspect of the warehouse under control, but above all she can also do it from the comfort of her home, thus spending more time with her daughters.
 
+Marc, 35 years old, loves racing bikes. He graduated in pharmacy in 2020 and has been working in a Quality Control Office of a pharmaceutical company for a year. Every day at work he takes care of testing products that arrive in the company, to check that the quality is adequate. He has to keep track of all the tests done and those still to be done.
+
+Paul, 47 years old, father of a 7 year old son. He is passionate about gardening and botany, a passion that he loves to cultivate on the weekend with long outdoor walks. Instead, during the week he heads a company that produces raw materials for pharmaceutical products. He has no particular computer skills, but he can easily keep track of all the orders he receives through the application.
+
+Allison, 27 years old. She lives in a rental apartment near Milan with her best friend. She is very patient and has always cared about people's problems. However, she did not choose to be a psychologist, but she works as IT manager of a pharmaceutical company. Thanks to her high IT skills, every day at work she helps employees solve technical problems with the application and manages all accounts, right from the moment they are created.
 
 # Functional and non functional requirements
 
