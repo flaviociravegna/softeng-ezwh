@@ -72,7 +72,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ## Context Diagram
 
-![](Context_Diagram.png)
+![](Images/Context_Diagram.png)
 
 Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, Map Service
 
@@ -209,7 +209,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 
 ## Use case diagram
 
-![](UseCase_Diagram.png)
+![](Images/UseCase_Diagram.png)
 
 ### Use case 1, UC1 - Manage User Account
 | Actors Involved        | IT Manager, Employee E |
@@ -228,7 +228,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Precondition     | IT Manager M exists and is logged in  |
 |  Post condition   | Account A is created  |
 |  Step#        	| Description  			|
-|  1	 |  Application asks for ID, Name, Surname, E-mail 		|
+|  1	 |  Application asks for Name, Surname, E-mail, Password, Department 		|
 |  2     |  M inserts the credentials of the new account A 		|  
 |  3     |  M selects the access rights for the new account A 	|
 |  4   	 |  M confirms the inserted data 						|
@@ -252,9 +252,8 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 | 					| Account A exists						|
 |  Post condition   | Account A is deleted  |
 |  Step#        		| Description  		|
-|  1	 |  Application asks to select the user account that needs to be deleted 		|
-|  2     |  M selects the right account A 		|
-|  3   	 |  M confirms the action 				|
+|  1     |  M selects the right account A to be deleted		|
+|  2   	 |  M confirms the action 				|
 
 ##### Scenario 1.4
 | Scenario |  Send user sign up request |
@@ -341,9 +340,9 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 
 ### Use case 3, UC3 - Item management
 
-| Actors Involved        | Manager, Employee, Item |
+| Actors Involved        | Manager, Employee, Item, Supplier|
 | ------------- |:-------------:|
-|  Precondition     |  Manager (or Employee) is logged in          	|
+|  Precondition     |  Manager (Employee/Supplier) is logged in          	|
 |  Post condition   |             								|  
 |  Nominal Scenario |  Add manually a new item in supplier's offered item list |
 |  Variants			|  Add new item in a warehouse (bar code)	|
@@ -362,8 +361,8 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Post condition   | item I added in a warehouse           |
 |  Step#        	| Description  			|
 |  1	 |  Application asks for item informations (Name, Description, price per unit etc) |
-|  3     |  M confirms the inserted/selected data		 |
-|  4   	 |  Item I added in the "supplier's offered item" list 				 |
+|  2     |  M confirms the inserted/selected data		 |
+|  3   	 |  Item I added in the "supplier's offered item" list 				 |
 
 ##### Scenario 3.2
 | Scenario |  Add new item in a warehouse (bar code) |
@@ -452,34 +451,24 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Precondition		  | (Organizational Unit) Employee E logged in		|
 |  Post condition     | Internal Order O is added, modified or deleted	|
 |  Nominal Scenario   | Add internal order   	|
-|  Variants			  | Modify internal order	|
-|					  | Cancel internal order 	|
+|  Variants			  | Cancel internal order 	|
 
 ##### Scenario 4.1
 | Scenario |  Add internal order |
 | ------------- |:-------------:| 
 |  Precondition     |  OU Employee E is logged in	|
-|					| internal order O does not exists  	 |
+|					| Internal Order O does not exists  	 |
+|					| Drop Point DP exists |
 |  Post condition   | Internal Order O is added |
 |  Step#        	| Description  			|
-|  1	 |  Application asks E to select an item that is available		|
-|  2     |  E select the item(s) and their amount						|
-|  3   	 |  E confirms the internal order request						|
-|  4	 |  Internal Order O is added									|
+|  1	 |  E selects an item that is available		|
+|  2     |  E selects the item(s) and their amount						|
+|  3     |  E selects a Drop Point DP						|
+|  4   	 |  E confirms the internal order request						|
+|  5	 |  Internal Order O is added									|
+
 
 ##### Scenario 4.2
-| Scenario |  Modify internal order |
-| ------------- |:-------------:| 
-|  Precondition     | OU Employee E is logged in 		|
-|					| internal order O exists  		|
-|  Post condition   | Internal Order O is modified  |
-|  Step#        	| Description  			|
-|  1	 |  Application asks to select the internal order that needs to be modified								|
-|  2     |  E updates the items with their quantity 	|
-|  3   	 |  E confirms the internal order modification  |
-|  4	 |  Internal Order O is modified				|
-
-##### Scenario 4.3
 | Scenario |  Cancel internal order |
 | ------------- |:-------------:| 
 |  Precondition     | OU Employee E is logged in		|
@@ -504,7 +493,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Variants			  | Set order status to "Completed" |
 |  					  | Set order status to "Cancelled" |
 |  					  | Set order status to "On Going"  |
-|					  | Show internal order item list	|
+|					  | Show internal order list	|
 
 ##### Scenario 5.1
 | Scenario | Set order status to "Delivered to pick up area" |
@@ -546,14 +535,13 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  2	 |  Internal Order O is cancelled			  |
 
 ##### Scenario 5.4
-| Scenario | Show internal order item list |
+| Scenario | Show internal order list |
 | ------------- |:-------------:|
 |  Precondition     | Employee E is logged in   		     |
-|  Post condition   | list of item showed         	 |
+|  Post condition   | list of internal orders showed         	 |
 |  Step#        	| Description  		|
-|  1	 |  E wants to look at the items ordered by an OU	|
-|  2	 |  E selects the internal order	|
-|  3	 |  Application shows an item list	|
+|  1	 |  E wants to see the orders previously made	|
+|  2	 |  Application shows an order list	|
 
 
 ### Use case 6, UC6 - Manage Suppliers 
@@ -575,7 +563,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Post condition   | Supplier S added  |
 |  Step#        	| Description  		|
 |  1	 |  M wants to add a new supplier in the system			|
-|  2     |  M inserts name, address, phone number			    |
+|  2     |  M inserts name, address, phone number, email, password, VAT			    |
 |  3     |  M confirms the inserted data					    |
 |  4   	 |  S added in the system	 							|
 
@@ -610,8 +598,8 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |					| Supplier S exists in the system	|
 |  Post condition   | Supplier S information are shown			|
 |  Step#        	| Description  								|
-|  1	 |  M wants to supplier informations					|
-|  2     |  M selects the supplier							    |
+|  1	 |  M wants to search supplier S					|
+|  2     |  M selects the supplier S						    |
 |  3     |  Application shows supplier informations			    |
 
 
@@ -948,13 +936,13 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  3	 |  Application shows the warehouse address on a map	 	|
 
 # Glossary
- ![](Class_Diagram.png)
+ ![](Images/Class_Diagram.png)
 
 # System Design
-![](System_Design.png)
+![](Images/System_Design.png)
 
 # Deployment Diagram 
-![](Deployment_Diagram.png)
+![](Images/Deployment_Diagram.png)
 
 
 

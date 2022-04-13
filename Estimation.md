@@ -42,6 +42,7 @@ GANTT: see attached .pod file
 Estimate effort and duration:
 (this are estimatios on based on our previous work and projects from other courses)
 	| task 	| Effort (person hours) |
+	|------|:---------------------:|
 	| Identify stockholders and actors | 6 |
 	| Identify user requirements | 20 |
 	| Identify performance requirements| 10 |
