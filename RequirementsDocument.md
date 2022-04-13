@@ -65,6 +65,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |	Item			| Product that must be managed in the warehouse|
 |	IT manager		| Will be the one to manage the application and its correct use and functionality|
 |	Employee 		| Are the users of the application on a base level and represent the OU when making orders|
+|	Map Service		| Shows the location on a map in the application |
 
 
 # Context Diagram and interfaces
@@ -84,7 +85,8 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | IT Manager	| Graphical User Interface | Screen, keyboard |
 | Quality Office employee	| Graphical User Interface | Screen, Keyboard |
 | Supplier 		| Graphical User Interface | Screen, Keyboard |
-| Item			| ReadBarCode  | Laser Beam (Bar Code Reader) |
+| Item			| ReadBarCode (see NFR7), GUI | Laser Beam (Bar Code Reader) |
+| Map Service	| Google Maps APIs<br>Documentation: https://developers.google.com/maps/documentation/ | Internet Link |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
@@ -108,6 +110,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | 		FR1.2.2 | User level of access authentication |
 |   FR1.3 	| User Log out|
 |	FR1.4 	| User profile management|
+|  FR2		| Show address on a map	|
 |  FR3 		| Warehouse management|
 |   FR3.1 	| Item management|
 |	 FR3.1.1 	| Internal Order management|
@@ -197,8 +200,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | NFR5.2	| Security		| Only authorized users can access to the data. Users must authenticate themselves using their credentials (e-mail + secure password). Basic user must not be able to exploit Manager tasks. <br><br>Secure password constraints: <br>- Minimum length greater (or equal) than 12 characters <br> - Must include: [at least 1 special symbol (e.g. @_#$%), Numbers, Lowercase & Uppercase characters]. <br> - Must be changed every 10 months| All FR |
 | NFR6	| Portability		| The application should run on the majority of the most used browsers in their secure versions <br>(Firefox 88+, Chrome 93+, Safari (macOS) 11.1.1+, Safari (iOS) 12.4.3+, Opera 72+)| All FR |
 | NFR7	| Domain	| The Bar Code number is an UPC-A 12 digits Code. Implementation details can be found at the following link:<br> https://www.gs1.org/docs/barcodes/GS1_General_Specifications.pdf | All FR |
-| NFR8	| Domain 	| Currency is Euro | FR2 |
-
+| NFR8	| Domain 	| Currency is Euro | All FR |
 
 # Use case diagram and use cases
 
@@ -924,6 +926,24 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 |  3	 |  (optional) E selects/inserts the filters 	|
 |  4	 |  Application shows a list of the items	 	|
 
+
+### Use case 13, UC13 - Show address on a map
+
+|  Actors Involved        | Manager |
+|  ------------- |:-------------:|
+|  Precondition		  | Employee E is logged in		|
+|  Post condition     | Address is shown on a map	|
+|  Nominal Scenario   | A map shows the address  	|
+
+##### Scenario 13.1
+| Scenario |  A map shows the address |
+| ------------- |:-------------:|
+|  Precondition     | Employee E is logged in |
+|  Post condition   | Address is shown on a map |
+|  Step#        	| Description  		|
+|  1	 |  E looks at the warehouse details		|
+|  2	 |  Application uses the address to show it on a map |
+|  3	 |  Application shows the location on a map	 	|
 
 # Glossary
 
