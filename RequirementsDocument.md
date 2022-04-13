@@ -61,7 +61,6 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |	Supplier		| Provide the different types of items which the companies and retailers wish to manage|
 |	Quality office employee	| Sets the quality standart and testing of items ordered from different suppliers| 
 |	OU 				| OU(organizational units) are subparts of the company which have the need to ask and manage items from the companys warehouse|
-|	Payment service	| Service which will allow companies to pay directly to their suppliers for the ordered items|
 |	Competitors		| Other applications that provide similar services|
 |	Item			| Product that must be managed in the warehouse|
 |	IT manager		| Will be the one to manage the application and its correct use and functionality|
@@ -86,7 +85,6 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 | Quality Office employee	| Graphical User Interface | Screen, Keyboard |
 | Supplier 		| Graphical User Interface | Screen, Keyboard |
 | Item			| ReadBarCode  | Laser Beam (Bar Code Reader) |
-| Payment service | APIs (e.g: PayPal: https://developer.paypal.com/home)  | Internet Connection  |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
@@ -94,13 +92,7 @@ Actors: Employee, Manager, IT Manager, Quality Office employee, Supplier, Item, 
 \<Persona is-an-instance-of actor>
 
 \<stories will be formalized later as scenarios in use cases>
-Sophie, 43 years old, mother of two daughters. She lives in Milan and works for a pharmaceutical products company, where she is the warehouse Manager based 1 hour from Milan. Using the EzWh application, Sophie is able to keep every aspect of the warehouse under control, but above all she can also do it from the comfort of her home, thus spending more time with her daughters.
 
-Marc, 35 years old, loves racing bikes. He graduated in pharmacy in 2020 and has been working in a Quality Control Office of a pharmaceutical company for a year. Every day at work he takes care of testing products that arrive in the company, to check that the quality is adequate. He has to keep track of all the tests done and those still to be done.
-
-Paul, 47 years old, father of a 7 year old son. He is passionate about gardening and botany, a passion that he loves to cultivate on the weekend with long outdoor walks. Instead, during the week he heads a company that produces raw materials for pharmaceutical products. He has no particular computer skills, but he can easily keep track of all the orders he receives through the application.
-
-Allison, 27 years old. She lives in a rental apartment near Milan with her best friend. She is very patient and has always cared about people's problems. However, she did not choose to be a psychologist, but she works as IT manager of a pharmaceutical company. Thanks to her high IT skills, every day at work she helps employees solve technical problems with the application and manages all accounts, right from the moment they are created.
 
 # Functional and non functional requirements
 
@@ -110,48 +102,44 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 | ------------- |:-------------:| 
 |  FR1 		| User Management |
 |   FR1.1 	| User registration|
-|     FR1.1.1 	| User profile setting|
+|  	  FR1.1.1	| Send user sign up request |
 |	FR1.2 	|User Authentication|
 |   	FR1.2.1 | User Log in|
 | 		FR1.2.2 | User level of access authentication |
 |   FR1.3 	| User Log out|
 |	FR1.4 	| User profile management|
-|  FR2 		| Sales management  |
-|   FR2.1 	| Start sale transaction|
-|	FR2.2 	| Payment management |
-|   FR2.3 	| End sale transaction|
 |  FR3 		| Warehouse management|
 |   FR3.1 	| Item management|
-|	 FR3.1.1 	| Item request management| 
-|	  FR3.1.1.1		| Item internally requested by OU management|
-|	  FR3.1.1.2 	| Item Order to supplier management|
-| 	  FR3.1.1.3 	| Add a new order |
-| 	  FR3.1.1.4 	| Complete an existing order |
-| 	  FR3.1.1.5 	| Cancel an order |
-| 	  FR3.1.1.6 	| List order log |
-| 	   FR3.1.1.6.1 	| Filter order log based on order information |
+|	 FR3.1.1 	| Internal Order management|
+| 	  FR3.1.1.1 	| Add a new order |
+| 	  FR3.1.1.2 	| Complete an existing order |
+| 	  FR3.1.1.3 	| Cancel an order |
+| 	  FR3.1.1.4 	| List order log |
+| 	   FR3.1.1.4.1 	| Filter order log based on order information |
 | 	 FR3.1.2 	| List available items|
 | 	  FR3.1.2.1 	| Filter based upon item information |
 | 	 FR3.1.3	| Add new item to warehouse |
+|	  FR3.1.3.1		| Add using bar code |
 |	 FR3.1.4 	| Delete item from warehouse |
 |	 FR3.1.5 	| Modify or check item information |
-|	  FR3.1.5.1 	| Modify or check item physical location |
-| 	   FR3.1.5.1.1 	| Show item location on a map |
-|	  FR3.1.5.2		| Read bar code on product |
-| 	  FR3.1.6 	| Low supply notification |
+|	  FR3.1.5.1 	| Show item information  |
+| 	  FR3.1.5.2 	| Modify item information  |
+| 	 FR3.1.6 	| Low supply notification |
+|	 FR3.1.7 	| Order to a supplier management|
 | 	FR3.2 	| Add a new warehouse |
 | 	FR3.3 	| Remove a warehouse |
 | 	FR3.4 	| Modify warehouse information |
 | 	FR3.5 	| List warehouses |
-| 	FR3.5 	| Drop Point Management |
-| 	  FR3.5.1	| Add drop point 	|
-| 	  FR3.5.2	| Delete Drop Point |
-| 	  FR3.5.2	| List Drop Points 	|
+| 	FR3.6 	| Drop Point Management |
+| 	  FR3.6.1	| Add drop point 	|
+| 	  FR3.6.2	| Delete Drop Point |
+| 	  FR3.6.2	| List Drop Points 	|
 |  FR4		| Manage suppliers |
 |	 FR4.1 	| Add new supplier to record|
 | 	  FR4.1.1 	| Create new supplier account|
 |	 FR4.2 	|List suppliers|
 |	  FR4.2.1 	| Filter suppliers based on items|
+|	FR4.3 	|List supplier's incoming orders|
 |  FR5 		| Manage quality check |
 |	 FR5.1 	| List items in the quality office domain |
 | 	  FR5.1.1 | Filter based on type of test 	|
@@ -169,14 +157,35 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 
 | ------------- |:-------------:| 
 
+### Access right, actor vs function
+
+| Function | Employee | Manager | IT Manager | Quality Office Employee | Supplier |
+| -------- | ----- | ------------ | ------- | --------| ------------|
+| FR1.1 | no | yes | yes | no | no |
+| FR1.1.1 | yes | yes | yes | yes | yes|
+| FR1.2 | yes  | yes |  yes | yes | yes|
+| FR1.3 | yes  | yes |  yes | yes | yes|
+| FR1.4 | no | no | yes | yes | no |
+| FR3.1 | yes  | yes |  yes | no | no |
+| FR3.1.1 | yes  | yes |  yes | no | no |
+| FR3.1.5.1 | yes  | yes |  yes | yes | yes |
+| FR3.1.5.1 | no  | yes |  yes | yes | yes |
+| FR3.1.7 | no  | yes |  yes | no | no |
+| FR3.2, FR3.3, FR3.4, FR3.5, FR3.6| no  | yes |  yes | no | no |
+| FR4 | no | yes | yes | no| no |
+| FR4.2 | yes  | yes |  yes | yes | yes|
+| FR4.3 | no  | no |  yes | no | yes|
+| FR5 | no  | yes|  yes| yes | no |
+
+
 ## Non Functional Requirements
 
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----| :-----:|
 |  NFR1     | Usability |   A manager should be able to use all the system functions after two hours training| All FR |
-|  NFR2.1     | Efficiency |  Following functional requirements should be completed in less than ½ sec | FR2.X, FR3.1.1.1, FR3.1.1.2, FR3.1.1.3, FR3.1.1.4, FR3.1.1.5, FR3.1.3, FR3.1.4, FR3.1.5, FR3.1.6, FR3.2, FR3.3, FR3.4, FR3.5, FR5.2.X|
-|  NFR2.2     | Efficiency | Following functional requirements should require less than 1 sec| FR1.1, FR1.2, FR3.1.1.6, FR3.1.2, FR4.1.1, FR4.2, FR5.1, FR5.2.3.2.4 |
+|  NFR2.1     | Efficiency |  Following functional requirements should be completed in less than ½ sec | FR3.1, FR3.2, FR3.3, FR3.4, FR3.5, FR3.6, FR5.2.X|
+|  NFR2.2     | Efficiency | Following functional requirements should require less than 1 sec| FR1, FR3.1.1.6, FR3.1.2, FR3.6.2, FR4.2, FR4.3, FR5.1, FR5.2.3.2.4 |
 | NFR2.3 | Efficiency | Menu navigation must be not percepted (response time < 0.1 sec)| All FR | 
 | NFR2.4 | Efficiency | The application should meet the previous performance requirements when there are less than 1000 users connected per hour| All FR |
 | NFR2.5 | Efficiency | Application size < 100 MB| All FR |
@@ -208,7 +217,6 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Variants			|  M modifies an user that is already registered					|
 |  					|  M deletes an	user												|
 |  					|  E sends an user sign up request									|
-
 
 ##### Scenario 1.1
 | Scenario |  User registration |
@@ -333,8 +341,8 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 | ------------- |:-------------:|
 |  Precondition     |  Manager (or Employee) is logged in          	|
 |  Post condition   |             								|  
-|  Nominal Scenario |  Add new item in a warehouse (bar code)	|
-|  Variants			|  Add manually a new item in supplier's offered item list |
+|  Nominal Scenario |  Add manually a new item in supplier's offered item list |
+|  Variants			|  Add new item in a warehouse (bar code)	|
 |					|  Modify item information					|
 |					|  Check item information					|
 |					|  Delete item from warehouse				|
@@ -343,6 +351,17 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Exceptions		|  Add new item in a warehouse - exception  |
 
 ##### Scenario 3.1
+| Scenario |  Add manually a new item in supplier's offered item list|
+| ------------- |:-------------:|
+|  Precondition     | Supplier S logged in	|
+|					| item I does not exist in supplier's offered item list  |
+|  Post condition   | item I added in a warehouse           |
+|  Step#        	| Description  			|
+|  1	 |  Application asks for item informations (Name, Description, price per unit etc) |
+|  3     |  M confirms the inserted/selected data		 |
+|  4   	 |  Item I added in the "supplier's offered item" list 				 |
+
+##### Scenario 3.2
 | Scenario |  Add new item in a warehouse (bar code) |
 | ------------- |:-------------:|
 |  Precondition     | Employee E logged in|
@@ -353,17 +372,6 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  1	 |  E reads the item barcode with the bar code scanner	|
 |  2     |  E confirms										    |
 |  3   	 |  Item I added in the warehouse 						|
-
-##### Scenario 3.2
-| Scenario |  Add manually a new item in supplier's offered item list|
-| ------------- |:-------------:|
-|  Precondition     | Supplier S logged in	|
-|					| item I does not exist in supplier's offered item list  |
-|  Post condition   | item I added in a warehouse           |
-|  Step#        	| Description  			|
-|  1	 |  Application asks for item informations (Name, Description, price per unit etc) |
-|  3     |  M confirms the inserted/selected data		 |
-|  4   	 |  Item I added in the "supplier's offered item" list 				 |
 
 ##### Scenario 3.3
 | Scenario |  Add new item in a warehouse - exception |
@@ -491,7 +499,8 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Nominal Scenario   | Set order status to "Delivered to pick up area" |
 |  Variants			  | Set order status to "Completed" |
 |  					  | Set order status to "Cancelled" |
-|  					  | Set order status to "On Going" |
+|  					  | Set order status to "On Going"  |
+|					  | Show internal order item list	|
 
 ##### Scenario 5.1
 | Scenario | Set order status to "Delivered to pick up area" |
@@ -531,6 +540,16 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Step#        	| Description  			|
 |  1	 |  A "cancel order" notification arrives 	  |
 |  2	 |  Internal Order O is cancelled			  |
+
+##### Scenario 5.4
+| Scenario | Show internal order item list |
+| ------------- |:-------------:|
+|  Precondition     | Employee E is logged in   		     |
+|  Post condition   | list of item showed         	 |
+|  Step#        	| Description  		|
+|  1	 |  E wants to look at the items ordered by an OU	|
+|  2	 |  E selects the internal order	|
+|  3	 |  Application shows an item list	|
 
 
 ### Use case 6, UC6 - Manage Suppliers 
@@ -592,6 +611,16 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  3     |  Application shows supplier informations			    |
 
 
+##### Scenario 6.5
+| Scenario |  Filter suppliers based on items |
+| ------------- |:-------------:|
+|  Precondition     | Manager M logged in |
+|					| Item I exists in the system	|
+|  Post condition   | Suppliers for each item are shown			|
+|  Step#        	| Description  								|
+|  1	 |  M selects a specific item							|
+|  3     |  Application shows suppliers for the selected item   |
+
 ### Use case 7, UC7 - Perform quality test 
 
 | Actors Involved        |  Items, Quality Office employee|
@@ -636,7 +665,6 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Nominal Scenario   | Add new test	   	|
 |  Variants			  | Modify test			|
 |					  | Delete test		 	|
-|					  | Show test information 	|
 
 ##### Scenario 8.1
 | Scenario |  Add new test |
@@ -684,6 +712,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Nominal Scenario   | Add new warehouse  	|
 |  Variants			  | Modify warehouse	|
 |					  | Delete warehouse 	|
+|					  | Show WH details	 	|
 
 ##### Scenario 9.1
 | Scenario |  Add warehouse |
@@ -722,6 +751,15 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  3     |  M confirms the operation						    |
 |  4   	 |  W deleted			 							|
 
+##### Scenario 10.4
+| Scenario | Show WH Details	|
+| ------------- |:-------------:|
+|  Precondition     | Employee E is logged in		 |
+|  Post condition   | Application shows the list 	|
+|  Step#        	| Description  		|
+|  1	 |  S wants to see his orders						|
+|  2	 |  Application shows a list of managers, items, suppliers and shows the position on a map	|
+
 ### Use case 10, UC10 - Issue an order to Supplier
 
 |  Actors Involved        | Manager, Item, Supplier |
@@ -729,6 +767,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  Precondition		  | Manager M is logged in		|
 |  Post condition     | The order of item I is successfully sent 				|
 |  Nominal Scenario   | The order is issued  	|
+|  Variants			  | List supplier's incoming orders	|
 |  Exceptions		  | The order cannot be issued because there is not enough space in the warehouse	|
 
 
@@ -779,6 +818,15 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  4   	 |  M confirms the data entered 					|
 |  5  	 |  The system checks that there is enough space in the warehouse for the order to be issued |
 |  6	 |  The order is successfully issued |
+
+##### Scenario 10.4
+| Scenario | List supplier's incoming orders	|
+| ------------- |:-------------:|
+|  Precondition     | Supplier S is logged in		 |
+|  Post condition   | Application shows the list 	|
+|  Step#        	| Description  		|
+|  1	 |  S wants to see his orders						|
+|  2	 |  Application shows a list of them, with order informations and their status (Read, New, Important etc) 	|
 
 
 ### Use case 11, UC11 - Manage Drop Point
@@ -835,7 +883,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  					  | Test History				|
 |					  | List tested items (filters)	|
 
-##### Scenario 11.1
+##### Scenario 12.1
 | Scenario |  Add item to test |
 | ------------- |:-------------:|
 |  Precondition     | Quality Office Employee E is logged in |
@@ -845,7 +893,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  1	 |  E selects the item		|
 |  2	 |  Application adds the item to the test	 	|
 
-##### Scenario 11.2
+##### Scenario 12.2
 | Scenario |  Remove item from test |
 | ------------- |:-------------:|
 |  Precondition     | Quality Office Employee E is logged in |
@@ -856,7 +904,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  2	 |  E selects the item		|
 |  3	 |  Application removes the item to the test	 	|
 
-##### Scenario 11.3
+##### Scenario 12.3
 | Scenario |  Test History |
 | ------------- |:-------------:|
 |  Precondition     | Quality Office Employee E is logged in |
@@ -865,7 +913,7 @@ Allison, 27 years old. She lives in a rental apartment near Milan with her best 
 |  1	 |  M wants to see the test history		|
 |  2	 |  Application shows a list of executed tests	 	|
 
-##### Scenario 11.4
+##### Scenario 12.4
 | Scenario |  List tested items (filters) |
 | ------------- |:-------------:|
 |  Precondition     | Quality Office Employee E is logged in |
