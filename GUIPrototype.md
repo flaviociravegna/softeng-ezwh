@@ -1,12 +1,19 @@
 # Graphical User Interface Prototype  
 
+<<<<<<< HEAD
 Authors: Group 37
 Date: 11/04/2022
+=======
+Authors:
+
+Date:
+>>>>>>> 564a73f1a48bf38d442c568d93a189cb071ff0fb
 
 Version:
 
 \<Report here the GUI that you propose. You are free to organize it as you prefer. A suggested presentation matches the Use cases and scenarios defined in the Requirement document. The GUI can be shown as a sequence of graphical files (jpg, png)  >
 
+<<<<<<< HEAD
 # UC1: Manage User Account
 ##  Scenarios
 ### **1.1: User registration**
@@ -135,3 +142,5 @@ After selection, open image above (scenario 6.2)
 
 
 
+=======
+>>>>>>> 564a73f1a48bf38d442c568d93a189cb071ff0fb
