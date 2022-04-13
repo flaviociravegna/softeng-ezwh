@@ -32,7 +32,7 @@ Version:
 ### **3.2: Add new item in the warehouse using barcode scanner or manually**
 ![](Images/AddItem.png)
 - If the user presses the button "Add using scanner", all the fields will be automatically filled in, otherwise he can insert them manually.
-- Scenario 3.1 refers to a similar wireframe but for the supplier.
+- Scenario 3.1 refers to a similar wire frame but for the supplier.
 
 ### **3.3: Exception: item already exists**
 ![](Images/AddItemError.png)
@@ -81,6 +81,57 @@ After selection, open image above (scenario 6.2)
 ### **8.2 Modify test**
 ![](Images/ModifyTest.png)
 
-
 ### **8.3 Delete Test**
 ![](Images/TestList.png)
+
+# UC9: 
+## Scenarios
+### **9.1 Add WH**
+![](Images/CreateNewWH.png)
+
+### **9.2 Modify WH**
+![](Images/WHProfile.png)
+
+### **9.3 Delete WH**
+![](Images/SearchWH.png)
+
+### **9.4 Show WH details**
+ See 9.2
+
+# UC10: 
+## Scenarios
+### **10.1 Issue an order to Supplier**
+![](Images/SupplierCart.png)
+
+### **10.4 List supplier's incoming orders**
+![](Images/OrderList.png)
+
+# UC11: 
+## Scenarios
+### **11.1 Add Drop Point**
+![](Images/CreateNewDropPoint.png)
+
+### **11.2-11.3 Delete and List Drop Points**
+![](Images/DropPointList.png)
+
+
+# UC12: 
+## Scenarios
+### **12.1 Add Item to test**
+![](Images/PerformTest.png)
+
+### **12.2 Remove/Cancel Item from test**
+![](Images/ModifyTest.png)
+
+### **12.3 List Tested Items**
+![](Images/TestHistory.png)
+
+
+
+# UC13: 
+## Scenarios
+### **13.1 show WH on a map**
+(see requirement 9.2)
+
+
+
