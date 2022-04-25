@@ -13202,7 +13202,7 @@
 											"top": 1553,
 											"width": 209.17431640625,
 											"height": 13,
-											"text": "-HashPassword",
+											"text": "-HashPassword: String",
 											"horizontalAlignment": 0
 										}
 									],
@@ -20029,7 +20029,8 @@
 								"$ref": "AAAAAAGAYNBFLdxrsdk="
 							},
 							"name": "HashPassword",
-							"visibility": "private"
+							"visibility": "private",
+							"type": "String"
 						}
 					],
 					"operations": [
