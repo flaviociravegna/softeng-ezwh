@@ -1,9 +1,9 @@
 # Design Document 
 
 
-Authors: 
+Authors: Group37
 
-Date:
+Date: 27/04/2022
 
 Version:
 
@@ -17,13 +17,13 @@ Version:
 - [Low level design](#low-level-design)
 - [Verification traceability matrix](#verification-traceability-matrix)
 - [Verification sequence diagrams](#verification-sequence-diagrams)
-  - [Scenario 1.1](#scenario-11)
-  - [Scenario 2.2](#scenario-22)
-  - [Scenario 3.1](#scenario-31)
-  - [Scenarios 4.3](#scenarios-43)
-  - [Scenario 5.2.1](#scenario-521)
-  - [Scenario 6.1](#scenario-61)
-  - [Scenario 9.1](#scenario-91)
+  - [Scenario 1.1: Create SKU S](#scenario-11-create-sku-s)
+  - [Scenario 2.2: Modify positionID of P](#scenario-22-modify-positionid-of-p)
+  - [Scenario 3.1: Restock Order of SKU S issued by quantity](#scenario-31-restock-order-of-sku-s-issued-by-quantity)
+  - [Scenarios 4.3: Delete user](#scenarios-43-delete-user)
+  - [Scenario 5.2.1: Record positive test results of all SKU items of a RestockOrder](#scenario-521-record-positive-test-results-of-all-sku-items-of-a-restockorder)
+  - [Scenario 6.1: Return order of SKU items that failed quality test](#scenario-61-return-order-of-sku-items-that-failed-quality-test)
+  - [Scenario 9.1: Internal Order IO accepted](#scenario-91-internal-order-io-accepted)
 
 # Instructions
 
@@ -31,41 +31,425 @@ The design must satisfy the Official Requirements document, notably functional a
 
 # High level design 
 
-<discuss architectural styles used, if any>
-<report package diagram, if needed>
+```plantuml
+@startuml
+package "        GUI       " as G #DDDDDD {
+}
 
+package "  Application Logic and Data    " as A #DDDDDD {
+ 
+}
+G -[dashed,thickness=2]-> A 
+@enduml
 
-
-
-
+```
+This EzWh design model implements a layered architectural pattern. The base idea is the 3-tier architecture (presentation, application logic layer, data (DBMS) layer): the two lower tiers (application logic and data) are merged together, so the final architectural patter is a 2-tier. There are therefore two packages. The GUI is already defined and interfaces with the other package using HTTP calls, defined in the API. The backend side of the EzWh application is managed in the "Application Logic and Data".
 
 # Low level design
 
-<for each package in high level design, report class diagram. Each class should detail attributes and operations>
 
+```plantuml
+@startuml
+class EzWh{
+  --
+  +getAllSKU(): Array<Object>
+  +getSKUByDescription(in str:description): Object
+  +getSKUById(id :Integer): Object
+  +createNewSKU(description:String, weight:Integer, volume:Integer, notes:String, price:Float, availableQuantity:Integer): void
+  +modifySKU(id:Integer, newDescription:String, newWeight:Integer, newVolume:Integer, newNotes:String, newPrice:Float, newAvailableQuantity:Integer): void
+  +addOrModifyPositionSKU(id:Integer): void
+  +deleteSKU(id:Integer): void
+  --
+  +getAllSKUItems(): Array<Object>
+  +getSKUItemsById(SKUId:Integer): Array<Object>
+  +getSKUItemByRFID(RFID: String): Object
+  +createNewSKUItem(RFID:String, SKUId:Integer, DateOfStock:String): void
+  +modifySKUItem(SKUId:Integer, newRFID:String, newAvailable:Integer, newDateOfStock:String): void
+  +deleteSKUItem(RFID:String): void
+  --
+  +getAllPositions(): Array<Object>
+  +createNewPosition(aisleID:String, row:String, icol:String, maxWeight:Integer, maxVolume:Integer): void
+  +modifyPosition(positionID:String, newAisleID:String, newRow:String, newCol:String, newMaxWeight:Integer, newMaxVolume:Integer, newOccupiedWeight:Integer, newOccupiedVolume:Integer): void
+  +modifyPositionId(oldPositionID:String, newPositionID:String): void
+  +deleteSKUItemByPositionID(positionID): void
+  --
+  +getAllTestDescriptors(): Array<Object>
+  +getTestDescriptorById(id:Integer): Object
+  +createNewTestDescriptor(name:String, procedureDescription:String, idSKU:Integer): void
+  +modifyTestDescriptor(newName:String, newProcedureDescription:String, newIdSKU:Integer): void
+  +deleteTestDescriptor(id:Integer): void
+  --
+  +getAllTestResultsByRFID(RFID:String): Array<Object>
+  +getTestResultByRFID(idTestDescriptor:Integer, RFID:String): Object
+  +createTestResult(RFID:String, idTestDescriptor:Integer, Date:String, Result:Integer): void
+  +modifyTestResult(RFID:String, idTestResult:Integer, newIdTestDescriptor:Integer, newDate:String, newResult:Boolean): void
+  +deleteTestResult(RFID:String, idTestResult:Integer): void
+  --
+  +getUserInfo(): Object
+  +getSuppliers(): Array<Object>
+  +getAllUsers(): Array<Object>
+  +createNewUser(username:String, name:String, surname:String, password:String, type:String): void
+  +managerSessions(username:String, password:String): void
+  +customerSessions(username:String, password:String): void
+  +supplierSessions(username:String, password:String): void
+  +clerkSessions(username:String, password:String): void
+  +qualityEmployeeSessions(username:String, password:String): void
+  +deliveryEmployeeSessions(username:String, password:String): void
+  +logout(): void
+  +modifyUserRight(username:String, newType:String): void
+  +deleteUser(username:String, type:String): void
+  --
+  +getRestockOrders(): Array<Object>
+  +getRestockOrdersIssued(): Array<Object>
+  +getRestockOrderById(id:Integer): Object
+  +getRestockOrderFailedSKUItems(id:Integer): Array<Object>
+  +createRestockOrder(issueDate:String, products:Array<Item>, supplierId:Integer): void
+  +removeSKUItemFromRestockOrder(skuId: Integer, id:Integer): void
+  +modifyRestockOrderState(id:Integer, newState:String): void
+  +addRestockOrderSKUItems(id:Integer, skuItems:Array<SKUItem>): void
+  +issueRestockOrder(id: Integer): void
+  +addRestockOrderTransportNote(id:Integer, transportNote:TransportNote): void
+  +deleteRestockOrder(id:Integer): void
+  --
+  +getReturnOrders(): Array<Object>
+  +getReturnOrderById(id:Integer): Object
+  +createNewReturnOrder(returnDate:String, products:Array<SKUItem>, restockOrderId:Integer): void
+  +commitReturnOrder(id: Integer): void
+  +deleteReturnOrder(id:Integer): void
+  --
+  +getInternalOrders(): Array<Object>
+  +getInternalOrdersIssued(): Array<Object>
+  +getInternalOrdersAccepted(): Array<Object>
+  +getInternalOrderById(id:Integer): void
+  +createNewInternalOrder(issueDate:String, products:Array<Object>, customerId:Integer): void
+  +modifyInternalOrderState(id:Integer, newState:String, [optional] products:Array<Item>): void
+  +issueInternalOrder(id:Integer): void
+  +deleteInternalOrder(id:Integer): void
+  --
+  +getItems(): Array<Object>
+  +getItemById(id:Integer): Object
+  +createNewItem(description:String, price:Float, SKUId:Integer, supplierId:Integer): void
+  +modifyItem(id:Integer, newDescription:String, newPrice:Float): void
+  +deleteItem(id:Integer): void
+}
 
+note right of EzWh
+This class implements the relations with the other classes using lists.
+EzWh acts as a container of other class instances.
+end note
 
+note right of EzWh
+We assume that all the constructors are implemented
+end note
 
+Class Position {
+  -PositionID: String
+  -Aisle: String
+  -Row: String
+  -Column: String
+  -MaxWeight: Integer
+  -MaxVolume: Integer
+  -OccupiedWeight: Integer
+  -OccupiedVolume: Integer
+  --
+  ~setPositionID(ID:String): void
+  ~setAisle(Aisle:String): void
+  ~setRow(Row:String): void
+  ~setColumn(Column:String): void
+  ~setMaxWeight(MaxWeight:Integer): void
+  ~setMaxVolume(MaxVolume:Integer): void
+  ~addWeight(bonusWeight:Integer): void
+  ~changeWeightAndVolume(weight: Integer, volume: Integer): void
+  ~getPositionID(): String
+  ~getAisle(): String
+  ~getRow(): String
+  ~getColumn(): String
+  ~getMaxWeight(): Integer
+  ~getMaxVolume(): Integer
+  ~getOccupiedWeight(): Integer
+  ~getOccupiedVolume(): Integer
+  ~calculatePositionID(Row:String, Column:String, Aisle:String): String
+  ~getPosition(ID: Integer): Position
+}
 
+Class SKU {
+  -ID: Integer
+  -Description: String
+  -Weight: Integer
+  -Volume: Integer
+  -Price: Float
+  -Note: String
+  -positionID: String
+  -availableQuantity: Integer
+  -testDescriptors: Array<TestDescriptor>
+  --
+  ~setID(ID:Integer): Integer
+  ~setDescription(Description:String): void
+  ~setWeight(Weight:Integer): void
+  ~setVolume(Volume:Integer): void
+  ~setPrice(price:float): void
+  ~setNote(Note:String): void
+  ~setAvailability(quantity: Integer): void
+  ~AddTestDescriptor(TestDescriptor:TestDescriptor): void
+  ~getID(): Integer
+  ~getDescription(): String
+  ~getWeight(): Integer
+  ~getVolume(): Integer
+  ~getPrice(): Float
+  ~getNote(): String
+  ~getAvailability(): Integer
+  ~getTestDescriptors(): Array<TestDescriptor>
+  ~getIDByDescription(desc:String): Integer
+}
 
+Class TestDescriptor {
+  -ID: Integer
+  -Name: String
+  -Description: String
+  -idSku: Integer
+  --
+  ~setID(ID:Integer): void
+  ~setName(Name:String): void
+  ~setDescription(Description:String): void
+  ~setIdSku(id:Integer): void
+  ~getID(): Integer
+  ~getName(): String
+  ~getDescription(): String
+  ~getIdSku(): Integer
+}
+
+Class TestResult {
+  -ID: Integer
+  -Date: String
+  -Result: boolean
+  -idTestDescriptor: Integer
+  -SKUId: Integer
+  --
+  ~setID(ID:Integer): void
+  ~setDate(Date:String): void
+  ~setResult(Result:boolean): void
+  ~setIdTestDescriptor(id:Integer): void
+  ~setSkuId(id:Integer): void
+  ~getID(): Integer
+  ~getDate(): String
+  ~getResult(): boolean
+  ~getIdTestDescriptor(): Integer
+  ~getSkuId(): Integer
+}
+
+Class Item {
+  -ID: Integer
+  -Description: String
+  -Price: float
+  -SKUId: Integer
+  -supplierId: Integer
+  --
+  ~getID(): Integer
+  ~getDescription(): String
+  ~getPrice(): float
+  ~getSkuId(): Integer
+  ~getSupplierId(): Integer
+  ~setID(ID:int): void
+  ~setDescription(Description:String): void
+  ~setPrice(price:Float): void
+  ~setSkuId(skuid:Integer): void
+  ~setSupplierId(id:Integer): void
+}
+
+Class InternalOrder {
+  -id: Integer
+  -issueDate: String
+  -State: state
+  -customerId: Integer
+  -products: Array<Object>
+  --
+  ~setId(id:Integer): void
+  ~setDate(Date:String): void
+  ~setState(State:state): void
+  ~setCustomerId(id:Integer): void
+  ~setProducts(products:Array<Object>): void
+  ~getId(): Integer
+  ~getDate(): String
+  ~getState(): String
+  ~getCustomerId(): Integer
+  ~getProducts(): Array<Object>
+}
+
+note right of InternalOrder::products
+  "products" contains objects
+ describing <b>SKU items</b>
+ and their <b>quantity</b>:
+ {SKUItem, quantity}.
+end note
+
+Class SKUItem {
+  -RFID: String
+  -Available: Integer
+  -DateOfStock: String
+  -SKUId: Integer
+  --
+  ~getRFID(): String
+  ~getAvailability(): Integer
+  ~getDateOfStock(): String
+  ~getSkuId(): Integer
+  ~setRFID(RFID:String): void
+  ~setAvailability(Available:Integer): void
+  ~setDateOfStock(date:String): void
+  ~setSkuId(id:Integer): void
+}
+
+Class User {
+  -ID: Integer
+  -Surname: String
+  -Name: String
+  -Email: String
+  -Type: String
+  -HashPassword: String
+  --
+  ~setID(ID:i Integer): void
+  ~setName(name:String): void
+  ~setSurname(surname:String): void
+  ~setPassword(pwd:String): void
+  ~setEmail(Email:String): void
+  ~setType(Type:String): void
+  ~getID(): Integer
+  ~getSurname(): String
+  ~getName(): String
+  ~getFullName(): String
+  ~getEmail(): String
+  ~getType(): String
+  ~getPassword(): Stirng
+}
+
+note left of RestockOrder::products
+  "products" contains objects
+ describing <b>SKUItems</b>
+ and their <b>quantity</b>:
+ {SKUItem, quantity}.
+end note
+
+Class RestockOrder {
+  -id: Integer
+  -IssueDate: String
+  -State: state
+  -products: Array<Object>
+  -supplierId: Integer
+  -TransportNote: TransportNote
+  --
+  ~setID(ID:Integer): void
+  ~setIssueDate(Date:String): void
+  ~setState(State:state): void
+  ~setProducts(products:Array<Object>): void
+  ~setTransportNote(note:TransportNote): void
+  ~getID(): Integer
+  ~getIssueDate(): String
+  ~getState(): String
+  ~getProducts(): Array<Object>
+  ~getTransportNote(): string
+  ~getFailedSKUItems(): Array<SKUItems>
+}
+
+enum restock_state{
+  ISSUED
+  DELIVERY
+  DELIVERED
+  TESTED
+  COMPLETEDRETURN
+  COMPLETED
+}
+
+enum internal_state{
+  ISSUED
+  ACCEPTED
+  REFUSED
+  CANCELLED
+  COMPLETED
+}
+
+Class ReturnOrder {
+  -ID: Integer
+  -ReturnDate: String
+  -restockOrder: RestockOrder
+  --
+  ~setID(in ID:Integer): void
+  ~setReturnDate(in Date:String): void
+  ~setRestockOrder(in order:RestockOrder): void
+  ~getID(): Integer
+  ~getReturnDate(): String
+  ~getRestockOrder(): Object
+}
+
+Class DBHelper {
+  -dbName: String
+  --
+  -connect(): void
+  -createTables(): void
+  --
+  ~loadSKUs(): list<SKU>
+  ~loadSKUItems(): list<SKUItem>
+  ~loadPositions(): list<Position>
+  ~loadTestDescriptors(): list<TestDescriptor>
+  ~loadTestResults(): list<TestResult>
+  ~loadUsers(): list<User>
+  ~loadRestockOrders(): list<RestockOrders>
+  ~loadReturnOrders(): list<ReturnOrders>
+  ~loadInternalOrders(): list<InternalOrders>
+  ~loadItems(): list<Items>
+  --
+  ~store(sql: String): void
+  ~update(sql: String): void
+  ~delete(sql: String): void
+}
+
+EzWh --> Position
+EzWh --> SKU
+EzWh --> SKUItem
+EzWh --> TestDescriptor
+EzWh --> TestResult
+EzWh --> Item
+EzWh --> InternalOrder
+EzWh --> User
+EzWh --> RestockOrder
+EzWh --> ReturnOrder
+EzWh --> DBHelper
+
+SKU <--> "*" TestDescriptor
+SKUItem "*" --> SKU
+
+TestResult --> TestDescriptor
+TestResult --> SKUItem
+Position <-- SKU
+Item "*" --> SKU
+Item --> User
+InternalOrder --> "*" SKUItem
+InternalOrder --> User
+InternalOrder ..> internal_state
+RestockOrder --> "*" SKUItem
+RestockOrder --> User
+RestockOrder ..> restock_state
+ReturnOrder "0..1"--> RestockOrder
+@enduml
+
+```
+
+The pattern used for the Lower Level Design is the *façade pattern*. In this way, the user can only interact with the backend throught *EzWh* class. EzWh manages the user interactions with the backend, hidding the other classes and their attributes.
 
 
 
 # Verification traceability matrix
 
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
 
 |    	| EzWh  | User 	| SKU  	| SKUItem | TestResult | TestDescriptor | Position | RestockOrder | Item | ReturnOrder 	| InternalOrder |
 |----- 	| :---: | :--: 	| :--: 	| :-----: | :--------: | :------------: | :------: | :----------: | :--: |:-----------:	|:-------------:|
 FR1		|   x    |   x   |      	|         |            |                |          |              |      |				|				|
 FR1.1  	|   x    |   x   |      	|         |            |                |          |              |      |||
-FR1.2  	|   x    |   x   |      	|         |            |                |          |              |      |||
+FR1.2  	|   x    |       |      	|         |            |                |          |              |      |||
 FR1.3 	|   x    |   x   |      	|         |            |                |          |              |      |||
 FR1.4 	|   x    |   x   |      	|         |            |                |          |              |      |||
 FR1.5  	|   x    |   x   |      	|         |            |                |          |              |      |||
 FR2    	|   x    |      	|   x   |         |            |                |          |              |      |||
 FR2.1  	|   x    |      	|   x   |         |            |                |          |              |      |||
-FR2.2  	|   x    |      	|   x   |         |            |                |          |              |      |||
+FR2.2  	|   x    |      	|      |         |            |                |          |              |      |||
 FR2.3  	|   x    |      	|   x   |         |            |                |          |              |      |||
 FR2.4  	|   x   |      	|   x   |         |            |                |          |              |      |||
 FR3    	|   x  |      	|      	|         |      x     |         x      |     x    |              |      |||
@@ -77,10 +461,10 @@ FR3.1.4 |   x    |      	|      |         |            |                |    x  
 FR3.2   |   x    |      	|      |         |            |       x         |          |              |      |||
 FR3.2.1 |   x    |      	|      |         |            |      x          |          |              |      |||
 FR3.2.2 |    x   |      	|      |         |            |      x          |          |              |      |||
-FR3.2.3 |    x   |      	|      |         |            |      x          |          |              |      |||
+FR3.2.3 |    x   |      	|      |         |            |                |          |              |      |||
 FR4    	|    x   |  x    |      |         |            |                |          |              |      |||
 FR4.1   |    x   |  x    |      |         |            |                |          |              |      |||
-FR4.2   |    x   |  x    |      |         |            |                |          |              |      |||
+FR4.2   |    x   |      |      |         |            |                |          |              |      |||
 FR4.3   |    x   |  x    |      |         |            |                |          |              |      |||
 FR4.4   |    x   |  x    |      |         |            |                |          |              |      |||
 FR5    	|    x   |      |   x   |     x    |     x       |                |   x       |      x        |    | x ||
@@ -120,10 +504,10 @@ FR7    |     x  |      |      |         |            |                |         
 
 
 # Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
+In all the Sequence Diagrams is assumed that all the data are already loaded from the db.
 
-## Scenario 1.1
+## Scenario 1.1: Create SKU S
 ```plantuml
 @startuml
 autoactivate on
@@ -138,7 +522,7 @@ return success
 @enduml
 ```
 
-## Scenario 2.2
+## Scenario 2.2: Modify positionID of P
 ```plantuml
 @startuml
 autoactivate on
@@ -155,7 +539,7 @@ return success
 ```
 
 
-## Scenario 3.1 
+## Scenario 3.1: Restock Order of SKU S issued by quantity
 ```plantuml
 @startuml
 autoactivate on
@@ -169,7 +553,7 @@ return success
 return success
 @enduml
 ```
-## Scenarios 4.3
+## Scenarios 4.3: Delete user
 ```plantuml
 @startuml
 autoactivate on
@@ -184,7 +568,7 @@ return success
 @enduml
 ```
 
-## Scenario 5.2.1 
+## Scenario 5.2.1: Record positive test results of all SKU items of a RestockOrder
 ```plantuml
 @startuml
 autoactivate on
@@ -208,7 +592,7 @@ return success
 @enduml
 ```
 
-## Scenario 6.1
+## Scenario 6.1: Return order of SKU items that failed quality test
 ```plantuml
 @startuml
 autoactivate on
@@ -234,7 +618,7 @@ return success
 @enduml
 ```
 
-## Scenario 9.1
+## Scenario 9.1: Internal Order IO accepted
 ```plantuml
 @startuml
 autoactivate on
