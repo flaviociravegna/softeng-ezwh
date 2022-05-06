@@ -2,6 +2,7 @@
 
 const sqlite = require('sqlite3');
 const SKU = require('./SKU');
+const TestDescriptor = require('./TestDescriptor');
 const dbname = "./ezwh.db";
 const db = new sqlite.Database(dbname, (err) => { if (err) throw err; });
 
@@ -30,7 +31,7 @@ exports.getSKUById = (id) => {
             if (row == undefined)
                 resolve({ error: 'SKU not found.' });
             else {
-                const sku = new SKU(sku.id, sku.description, sku.weight, sku.volume, sku.notes, sku.positionID, sku.availableQuantity, sku.price);
+                const sku = new SKU(row.id, row.description, row.weight, row.volume, row.notes, row.positionID, row.availableQuantity, row.price);
                 resolve(sku);
             }
         });
@@ -45,12 +46,7 @@ exports.getAllTestDescriptors = () => {
             if (err)
                 reject(err);
             else {
-                const tdList = rows.map(td => ({
-                    id: td.id,
-                    name: td.Name,
-                    procedureDescription: td.Description,
-                    idSKU: td.idSKU
-                }));
+                const tdList = rows.map(td => new TestDescriptor(td.id, td.Name, td.Description, td.idSKU));
                 resolve(tdList);
             }
         });
@@ -59,14 +55,14 @@ exports.getAllTestDescriptors = () => {
 
 exports.getTestDescriptorsIdBySKUId = (skuId) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT id FROM TestDescriptors WHERE idSku = ?', [skuId], (err, rows) => {
+        db.all('SELECT id FROM TestDescriptors WHERE idSku = ?', [skuId], (err, rows) => {
             if (err)
                 reject(err);
 
             if (rows == undefined)
                 resolve({ error: 'SKU not found.' });
             else {
-                const testDescIdsList = rows.map(t => ({ id: t.id }));
+                const testDescIdsList = rows.map(t => t.id);
                 resolve(testDescIdsList);
             }
         });

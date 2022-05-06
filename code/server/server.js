@@ -50,7 +50,7 @@ app.get('/api/skus/:id', async (req, res) => {
       res.status(404).json(sku);
 
     const associatedTestDescriptors = await DB.getTestDescriptorsIdBySKUId(sku.id);
-    associatedTestDescriptors.forEach(td => { sku.testDescriptors.push(td.id) });
+    sku.testDescriptors = [...associatedTestDescriptors];
 
     res.status(200).json(sku);
   } catch (err) {
