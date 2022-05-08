@@ -2,6 +2,8 @@
 
 const sqlite = require('sqlite3');
 const SKU = require('./SKU');
+const RestockOrder = require('./RestockOrder');
+const ReturnOrder = require('./ReturnOrder');
 const TestDescriptor = require('./TestDescriptor');
 const dbname = "./ezwh.db";
 const db = new sqlite.Database(dbname, (err) => { if (err) throw err; });
@@ -117,3 +119,9 @@ exports.getTestDescriptorsIdBySKUId = (skuId) => {
         });
     });
 }
+
+/*************** Return Order ********************/
+
+
+
+/*************** Restock Order ********************/

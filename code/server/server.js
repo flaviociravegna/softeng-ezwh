@@ -104,6 +104,36 @@ app.put('/api/sku/:id/position', async (req, res) => {
 
 // Don't delete an SKU if there are connected SKU items to it
 
-/*******************************************/
+/*********** Restock Order APIs  ********/
+
+app.get('/api/restockOrders',async(req,res)=>{});
+
+app.get('/api/restockOrdersIssued', async (req, res)=>{});
+
+app.get('/api/restockOrders/:id', async (req, res)=>{});
+
+app.get('/api/restockOrders/:id/returnItems', async (req, res)=>{});
+
+app.post('/api/restockOrder', async (req, res)=>{});
+
+app.put(async ('/api/restockOrder/:id',req, res)=>{});
+
+app.put(async ('/api/restockOrder/:id/skuItems', async (req, res)=>{});
+
+app.put(async ('/api/restockOrder/:id/transportNote', async (req, res)=>{});
+
+app.delete('/api/restockOrder/:id', async (req, res)=>{});
+
+/*********** Return Order APIs  ********/
+
+app.get('/api/returnOrders',async(req,res)=>{});
+
+app.get('/api/returnOrders/:id', async (req, res)=>{});
+
+app.post('/api/returnOrder', async (req, res)=>{});
+
+app.delete('/api/returnOrder/:id', async (req, res)=>{});
+
+/*********************************/
 
 module.exports = app;
