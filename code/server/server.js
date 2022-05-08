@@ -11,7 +11,7 @@ const port = 3001;
 // init express
 app.use(express.json());
 
-//GET /api/test
+// GET /api/test
 app.get('/api/hello', (req, res) => {
   let message = {
     message: 'Hello World!'
@@ -25,15 +25,14 @@ app.listen(port, () => {
 });
 
 /**************** SKU APIs *****************/
-//NB: No authN check at the moment (no error <401 Unauthorized>)
+// NB: No authN check at the moment (no error <401 Unauthorized>)
+// To return error 422 a validator should be used 
 
-//Return an array containing all SKUs
+// Return an array containing all SKUs
 app.get('/api/skus', async (req, res) => {
   try {
     let skus = await DB.getAllSKU();
     const test_descriptors = await DB.getAllTestDescriptors();
-    if (skus.error)
-      skus.status(404).json(skus);
 
     skus.forEach(sku => { sku.testDescriptors = test_descriptors.filter(td => td.idSKU == sku.id).map(td => td.id) });
     res.status(200).json(skus);
@@ -42,7 +41,7 @@ app.get('/api/skus', async (req, res) => {
   }
 });
 
-//Return a SKU, given its id
+// Return a SKU, given its id
 app.get('/api/skus/:id', async (req, res) => {
   try {
     let sku = await DB.getSKUById(req.params.id);
@@ -51,12 +50,59 @@ app.get('/api/skus/:id', async (req, res) => {
 
     const associatedTestDescriptors = await DB.getTestDescriptorsIdBySKUId(sku.id);
     sku.testDescriptors = [...associatedTestDescriptors];
-
     res.status(200).json(sku);
   } catch (err) {
     res.status(500).end();
   }
 });
+
+// Creates a new SKU
+app.post('/api/sku', async (req, res) => {
+  try {
+    const lastId = await DB.getLastSKUId();
+    const result = await DB.createNewSKU(lastId + 1, req.body.description, req.body.weight, req.body.volume, req.body.notes, req.body.price, null, req.body.availableQuantity);
+
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(503).end();
+  }
+});
+
+// Modify an existing SKU
+app.put('/api/sku/:id', async (req, res) => {
+  try {
+    // Check if the SKU exists
+    let sku = await DB.getSKUById(req.params.id);
+    if (sku.error)
+      res.status(404).json(sku);
+
+    const result = await DB.modifySKU(req.params.id, req.body.newDescription, req.body.newWeight, req.body.newVolume, req.body.newNotes, req.body.newPrice, req.body.newAvailableQuantity);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(503).end();
+  }
+});
+
+// Add or modify position of a SKU
+app.put('/api/sku/:id/position', async (req, res) => {
+  try {
+    // Check if the SKU exists
+    let sku = await DB.getSKUById(req.params.id);
+    if (sku.error)
+      res.status(404).json(sku);
+
+    //TODO: check if position exists
+    if (false)
+      res.status(404).json(sku);
+
+    const result = await DB.addOrModifyPositionSKU(req.params.id, req.body.position);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(503).end();
+  }
+});
+
+// Don't delete an SKU if there are connected SKU items to it
 
 /*******************************************/
 
