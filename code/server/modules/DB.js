@@ -95,7 +95,7 @@ exports.getAllTestDescriptors = () => {
             if (err)
                 reject(err);
             else {
-                const tdList = rows.map(td => new TestDescriptor(td.id, td.Name, td.Description, td.idSKU));
+                const tdList = rows.map(td => new TestDescriptor(td.id, td.name, td.description, td.idSKU));
                 resolve(tdList);
             }
         });
