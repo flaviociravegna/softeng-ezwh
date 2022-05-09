@@ -2,6 +2,7 @@
 
 const express = require('express');
 const DB = require('./modules/DB');
+const { check, validationResult } = require('express-validator'); // validation middleware
 
 const app = new express();
 const port = 3001;
@@ -42,8 +43,13 @@ app.get('/api/skus', async (req, res) => {
 });
 
 // Return a SKU, given its id
-app.get('/api/skus/:id', async (req, res) => {
+// Validation check of the id
+app.get('/api/skus/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() });
+
     let sku = await DB.getSKUById(req.params.id);
     if (sku.error)
       res.status(404).json(sku);
@@ -57,8 +63,19 @@ app.get('/api/skus/:id', async (req, res) => {
 });
 
 // Creates a new SKU
-app.post('/api/sku', async (req, res) => {
+app.post('/api/sku', [
+  check('description').notEmpty(),
+  check('weight').isInt({ gt: 0 }),
+  check('volume').isInt({ gt: 0 }),
+  check('price').isFloat({ gt: 0 }),
+  check('notes').notEmpty(),
+  check('availableQuantity').isInt({ min: 0 })
+], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() });
+
     const lastId = await DB.getLastSKUId();
     const result = await DB.createNewSKU(lastId + 1, req.body.description, req.body.weight, req.body.volume, req.body.notes, req.body.price, null, req.body.availableQuantity);
 
@@ -69,8 +86,19 @@ app.post('/api/sku', async (req, res) => {
 });
 
 // Modify an existing SKU
-app.put('/api/sku/:id', async (req, res) => {
+app.put('/api/sku/:id', [
+  check('newDescription').notEmpty(),
+  check('newWeight').isInt({ gt: 0 }),
+  check('newVolume').isInt({ gt: 0 }),
+  check('newPrice').isFloat({ gt: 0 }),
+  check('newNotes').notEmpty(),
+  check('newAvailableQuantity').isInt({ min: 0 })
+], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() });
+
     // Check if the SKU exists
     let sku = await DB.getSKUById(req.params.id);
     if (sku.error)
@@ -84,8 +112,19 @@ app.put('/api/sku/:id', async (req, res) => {
 });
 
 // Add or modify position of a SKU
-app.put('/api/sku/:id/position', async (req, res) => {
+app.put('/api/sku/:id/position', [check('position').exists().notEmpty()], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() });
+    //else {
+    /* Check if the position is valid:
+    * 1) Validation of position through the algorithm
+    * 2) Position isn't capable to satisfy volume and weight constraints for available quantity of sku 
+    * 3) Position is already assigned to a sku)
+    */
+    //}
+
     // Check if the SKU exists
     let sku = await DB.getSKUById(req.params.id);
     if (sku.error)
@@ -106,33 +145,33 @@ app.put('/api/sku/:id/position', async (req, res) => {
 
 /*********** Restock Order APIs  ********/
 
-app.get('/api/restockOrders',async(req,res)=>{});
+app.get('/api/restockOrders', async (req, res) => { });
 
-app.get('/api/restockOrdersIssued', async (req, res)=>{});
+app.get('/api/restockOrdersIssued', async (req, res) => { });
 
-app.get('/api/restockOrders/:id', async (req, res)=>{});
+app.get('/api/restockOrders/:id', async (req, res) => { });
 
-app.get('/api/restockOrders/:id/returnItems', async (req, res)=>{});
+app.get('/api/restockOrders/:id/returnItems', async (req, res) => { });
 
-app.post('/api/restockOrder', async (req, res)=>{});
+app.post('/api/restockOrder', async (req, res) => { });
 
-app.put(async ('/api/restockOrder/:id',req, res)=>{});
+app.put('/api/restockOrder/:id', async (req, res) => { });
 
-app.put(async ('/api/restockOrder/:id/skuItems', async (req, res)=>{});
+app.put('/api/restockOrder/:id/skuItems', async (req, res) => { });
 
-app.put(async ('/api/restockOrder/:id/transportNote', async (req, res)=>{});
+app.put('/api/restockOrder/:id/transportNote', async (req, res) => { });
 
-app.delete('/api/restockOrder/:id', async (req, res)=>{});
+app.delete('/api/restockOrder/:id', async (req, res) => { });
 
 /*********** Return Order APIs  ********/
 
-app.get('/api/returnOrders',async(req,res)=>{});
+app.get('/api/returnOrders', async (req, res) => { });
 
-app.get('/api/returnOrders/:id', async (req, res)=>{});
+app.get('/api/returnOrders/:id', async (req, res) => { });
 
-app.post('/api/returnOrder', async (req, res)=>{});
+app.post('/api/returnOrder', async (req, res) => { });
 
-app.delete('/api/returnOrder/:id', async (req, res)=>{});
+app.delete('/api/returnOrder/:id', async (req, res) => { });
 
 /*********************************/
 
