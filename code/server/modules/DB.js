@@ -121,7 +121,74 @@ exports.getTestDescriptorsIdBySKUId = (skuId) => {
 }
 
 /*************** Return Order ********************/
+//needs fixing no items included yet
+//gets all returnOrders
+exports.getReturnOrders = () => {
+    return new Promis((resolve,reject) => {
+        db.all('SELECT * FROM ReturnOrders', [], (err, rows) => {
+            if(err)
+                reject(err);
+            else{
+                const roList = rows.map(ro => new ReturnOrder(ro.id, ro.returnDate, ro.restockOrder));
+                resolve(roList);
+            }
+        });
+    });
 
+}
+//needs fixing needs items
+//gets returnOrder by ID
+exports.getReturnOrderById = (id) => {
+    return new Promis((resolve,reject) => {
+        db.all('SELECT * FROM ReturnOrders WHERE id=?', [id], (err, rows) => {
+            if(err)
+                reject(err);
+            if(rows== undefined)
+                resolve({error:'ReturnOrder not found.'});
+            else{
+                const roList = rows.map(ro => ( ro.returnDate,/* products */ , ro.restockOrder));
+                resolve(roList);
+            }
+        });
+    });
 
+}
+
+//creates a new return order
+// need to generate  RO id, get largest current ID and let id += 1
+// need to insert products into another table. and do the join table
+exports.createNewReturnOrder = (returnDate, products, restockOrderId) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("INSERT INTO ReturnOrders (returnDate, restockOrder) VALUES (?, ?)",
+            [returnDate], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('New ReturnOrder inserted');
+            });
+    });
+
+}
+//exports.commitReturnOrder = (id) => {} not asked by API
+
+//need to implement
+//delete returnOrder given its ID
+exports.deleteReturnOrder = (id) => {}
 
 /*************** Restock Order ********************/
+
+exports.getRestockOrders = () => {
+}
+exports.getRestockOrdersIssued = () => {}
+exports.getRestockOrderById= (Id) => {}
+exports.getRestockOrderFailedSKUItems = (Id) => {}
+exports.createRestockOrder = (issueDate, products, supplierId) => {}
+exports.removeSKUItemFromRestockOrder = (skuId, id) => {}
+exports.modifyRestockOrderState = (id,newState) => {}
+exports.addRestockOrderSKUItems = (id, skuItems) => {}
+exports.issueRestockOrder = (id) => {}
+exports.addRestockOrderTransportNote = (id, transportNote) => {}
+exports.deleteRestockOrder = (id) => {}
+
+
+/***********************************/

@@ -4,7 +4,8 @@ class ReturnOrder{
     constructor(id, returnDate, restockOrder) {
         this.id = id;
         this.returnDate = returnDate;
-        this.restockOrder = restockOrder;
+        this.restockOrderId = restockOrder;
+        this.products = [];
     }
 }
 
