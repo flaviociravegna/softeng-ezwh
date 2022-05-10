@@ -2,6 +2,7 @@
 
 const sqlite = require('sqlite3');
 const SKU = require('./SKU');
+const SKUItem = require('./SKUItem')
 const RestockOrder = require('./RestockOrder');
 const ReturnOrder = require('./ReturnOrder');
 const TestDescriptor = require('./TestDescriptor');
@@ -17,7 +18,7 @@ exports.getLastSKUId = () => {
             if (err)
                 reject(err);
             else
-                resolve(row == undefined ? 1 : row.id);
+                resolve(row == undefined ? 0 : row.id);
         });
     });
 }
@@ -35,7 +36,6 @@ exports.getAllSKU = () => {
     });
 }
 
-// get the SKU identified by {id}
 exports.getSKUById = (id) => {
     return new Promise((resolve, reject) => {
         db.get('SELECT * FROM SKUs WHERE id = ?', [id], (err, row) => {
@@ -52,7 +52,6 @@ exports.getSKUById = (id) => {
     });
 };
 
-// Inserts a new SKU in the DB
 // NB: it's not possible to use arrow function notation with "run"
 exports.createNewSKU = (id, description, weight, volume, notes, price, positionID, availableQuantity) => {
     return new Promise(async (resolve, reject) => {
@@ -78,6 +77,28 @@ exports.modifySKU = (id, newDescription, newWeight, newVolume, newNotes, newPric
     });
 }
 
+exports.decreaseSKUavailableQuantity = (id) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("UPDATE SKUs SET availableQuantity = availableQuantity - 1 WHERE id = ?", [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('SKU updated');
+        });
+    });
+}
+
+exports.increaseSKUavailableQuantity = (id) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("UPDATE SKUs SET availableQuantity = availableQuantity + 1 WHERE id = ?", [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('SKU updated');
+        });
+    });
+}
+
 exports.addOrModifyPositionSKU = (id, positionID) => {
     return new Promise(async (resolve, reject) => {
         db.run("UPDATE SKUs SET positionID = ? WHERE id = ?", [positionID, id], function (err) {
@@ -86,6 +107,82 @@ exports.addOrModifyPositionSKU = (id, positionID) => {
             else
                 resolve('SKU position updated');
         });
+    });
+}
+
+exports.deleteSKU = (id) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM SKUs WHERE id = ?", [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('SKU position deleted');
+        });
+    });
+}
+
+/******************* SKU Items *********************/
+
+exports.getAllSKUItems = () => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM SkuItems', [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const skuItemList = rows.map(skuItem => new SKUItem(skuItem.RFID, skuItem.available, skuItem.dateOfStock, skuItem.skuID));
+                resolve(skuItemList);
+            }
+        });
+    });
+}
+
+exports.getSKUItemsBySkuID = (skuId) => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM SkuItems WHERE skuID = ? AND available = 1', [skuId], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const skuItemList = rows.map(skuItem => new SKUItem(skuItem.RFID, skuItem.dateOfStock, skuItem.skuID));
+                resolve(skuItemList);
+            }
+        });
+    });
+}
+
+exports.getSKUItemByRFID = (RFID) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM SkuItems WHERE RFID = ?', [RFID], (err, row) => {
+            if (err)
+                reject(err);
+            else {
+                const skuItem = new SKUItem(row.RFID, row.available, row.dateOfStock, row.skuID);
+                resolve(skuItem);
+            }
+        });
+    });
+}
+
+exports.createNewSKUItem = (RFID, available, dateOfStock, SKUId) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("INSERT INTO SKUItems (RFID, available, dateOfStock, SKUId) VALUES (?, ?, ?, ?)",
+            [RFID, available, dateOfStock, SKUId], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('New SKU Item inserted');
+            });
+    });
+}
+
+exports.modifySKUItem = (oldRFID, newRFID, newAvailable, newDateOfStock, oldSkuItem) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("UPDATE SKUItems SET RFID = ?, available = ?, dateOfStock = ? WHERE RFID = ?",
+            [newRFID, newAvailable, newDateOfStock, oldRFID], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('SKU Item updated');
+            });
     });
 }
 
@@ -111,7 +208,7 @@ exports.getTestDescriptorsIdBySKUId = (skuId) => {
                 reject(err);
 
             if (rows == undefined)
-                resolve({ error: 'SKU not found.' });
+                resolve({ error: 'Test Descriptors not found.' });
             else {
                 const testDescIdsList = rows.map(t => t.id);
                 resolve(testDescIdsList);
