@@ -2,6 +2,8 @@
 
 const express = require('express');
 const DB = require('./modules/DB');
+const RestockOrder = require('./modules/RestockOrder');
+const ReturnOrder = require('./modules/ReturnOrder');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat')
 const { check, validationResult, body } = require('express-validator'); // validation middleware
@@ -315,33 +317,127 @@ app.delete('/api/skuitems/:rfid', [check('rfid').isNumeric().isLength({ min: 32,
 
 /*********** Restock Order APIs  ********/
 
+
+//Return an array containing all restock orders.
 app.get('/api/restockOrders', async (req, res) => { });
 
-app.get('/api/restockOrdersIssued', async (req, res) => { });
 
-app.get('/api/restockOrders/:id', async (req, res) => { });
+//Returns an array of all restock orders in state = ISSUED.
+app.get('/api/restockOrdersIssued', async (req, res) => {
 
-app.get('/api/restockOrders/:id/returnItems', async (req, res) => { });
+});
 
-app.post('/api/restockOrder', async (req, res) => { });
 
-app.put('/api/restockOrder/:id', async (req, res) => { });
+//Return a restock order, given its id.
+app.get('/api/restockOrders/:id', [check('id').exists().isInt({min:1})], async (req, res) => {
+    try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty())
+                return res.status(422).json({ errors: errors.array() });
 
-app.put('/api/restockOrder/:id/skuItems', async (req, res) => { });
+        let RO = await RestockOrder.getRestockOrderById(req.params.id);
+            if (RO.error)
+                return res.status(404).json(RO);
 
-app.put('/api/restockOrder/:id/transportNote', async (req, res) => { });
+            res.status(200).json(RO);
+        } catch (err) {
+            res.status(500).send(err);
+        }
 
-app.delete('/api/restockOrder/:id', async (req, res) => { });
+});
+
+
+//Return sku items to be returned of a restock order, given its id.
+app.get('/api/restockOrders/:id/returnItems', [check('id').exists().isInt({ min: 1 })],async (req, res) => {
+
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ errors: errors.array() });
+
+        let state = await RestockOrder.getRestockOrderState(req.params.id)
+
+        if (state.error)
+            return res.status(422).json()
+
+        let Items = await RestockOrder.getRestockOrderFailedSKUItems(req.params.id);
+
+        if (Items.error)
+            return res.status(404).json(Items);
+
+        res.status(200).json();
+    } catch (err) {
+        res.status(500).send(err);
+    }
+
+});
+
+
+//Creates a new restock order in state = ISSUED with an empty list of skuItems.
+app.post('/api/restockOrder', async (req, res) => {
+
+
+
+});
+
+
+//Modify the state of a restock order, given its id.
+app.put('/api/restockOrder/:id', async (req, res) => {
+
+
+});
+
+
+//Add a non empty list of skuItems to a restock order, given its id. If a restock order has already a non empty list of skuItems, merge both arrays
+app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
+
+
+});
+
+
+//Add a transport note to a restock order, given its id.
+app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
+
+
+});
+
+
+//Delete a restock order, given its id.
+app.delete('/api/restockOrder/:id', async (req, res) => {
+
+
+});
 
 /*********** Return Order APIs  ********/
+//Return an array containing all return orders.
+// need to get items in return orders.
+app.get('/api/returnOrders', async (req, res) => {
+  try {
+    const ReturnOrders = await ReturnOrder.getReturnOrders();
+    res.status(200).json(ReturnOrders);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+  });
 
-app.get('/api/returnOrders', async (req, res) => { });
 
-app.get('/api/returnOrders/:id', async (req, res) => { });
+//Return a return order, given its id.
+app.get('/api/returnOrders/:id', async (req, res) => {
 
+
+
+});
+
+
+//Creates a new return order.
 app.post('/api/returnOrder', async (req, res) => { });
 
-app.delete('/api/returnOrder/:id', async (req, res) => { });
+
+//Delete a return order, given its id.
+app.delete('/api/returnOrder/:id', async (req, res) => {
+
+
+});
 
 /*********************************/
 
