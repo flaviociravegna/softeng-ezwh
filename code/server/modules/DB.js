@@ -236,25 +236,14 @@ exports.getReturnOrders = () => {
 //needs fixing needs items
 //gets returnOrder by ID
 exports.getReturnOrderById = (id) => {
-<<<<<<< HEAD
     return new Promise((resolve,reject) => {
-=======
-    return new Promis((resolve, reject) => {
->>>>>>> d364151101c17df942ad1e031d576cefcf0a2db1
         db.all('SELECT * FROM ReturnOrders WHERE id=?', [id], (err, rows) => {
             if (err)
                 reject(err);
-<<<<<<< HEAD
-            if(rows == undefined)
-                resolve({error:'ReturnOrder not found.'});
-            else{
-                const roList = rows.map(ro => ( ro.returnDate,/* products */ , ro.restockOrder));
-=======
             if (rows == undefined)
                 resolve({ error: 'ReturnOrder not found.' });
             else {
                 //const roList = rows.map(ro => ( ro.returnDate,/* products */ , ro.restockOrder));
->>>>>>> d364151101c17df942ad1e031d576cefcf0a2db1
                 resolve(roList);
             }
         });
@@ -282,7 +271,6 @@ exports.createNewReturnOrder = (returnDate, products, restockOrderId) => {
 
 //need to implement
 //delete returnOrder given its ID
-<<<<<<< HEAD
 exports.deleteReturnOrder = (id) => {
     db.run("DELETE FROM ReturnOrder WHERE id = ?",
         [id], function (err) {
@@ -293,15 +281,11 @@ exports.deleteReturnOrder = (id) => {
         });
 });
 }
-=======
-exports.deleteReturnOrder = (id) => { }
->>>>>>> d364151101c17df942ad1e031d576cefcf0a2db1
 
 /*************** Restock Order ********************/
 
 exports.getRestockOrders = () => {
 }
-<<<<<<< HEAD
 exports.getRestockOrdersIssued = () => {}
 exports.getRestockOrderById= (Id) => {}
 exports.getRestockOrderFailedSKUItems = (Id) => {}
@@ -341,18 +325,5 @@ exports.deleteRestockOrder = (id) => {
         });
 });
 }
-=======
-exports.getRestockOrdersIssued = () => { }
-exports.getRestockOrderById = (Id) => { }
-exports.getRestockOrderFailedSKUItems = (Id) => { }
-exports.createRestockOrder = (issueDate, products, supplierId) => { }
-exports.removeSKUItemFromRestockOrder = (skuId, id) => { }
-exports.modifyRestockOrderState = (id, newState) => { }
-exports.addRestockOrderSKUItems = (id, skuItems) => { }
-exports.issueRestockOrder = (id) => { }
-exports.addRestockOrderTransportNote = (id, transportNote) => { }
-exports.deleteRestockOrder = (id) => { }
->>>>>>> d364151101c17df942ad1e031d576cefcf0a2db1
-
 
 /***********************************/
