@@ -139,11 +139,11 @@ exports.getReturnOrders = () => {
 //needs fixing needs items
 //gets returnOrder by ID
 exports.getReturnOrderById = (id) => {
-    return new Promis((resolve,reject) => {
+    return new Promise((resolve,reject) => {
         db.all('SELECT * FROM ReturnOrders WHERE id=?', [id], (err, rows) => {
             if(err)
                 reject(err);
-            if(rows== undefined)
+            if(rows == undefined)
                 resolve({error:'ReturnOrder not found.'});
             else{
                 const roList = rows.map(ro => ( ro.returnDate,/* products */ , ro.restockOrder));
@@ -156,7 +156,7 @@ exports.getReturnOrderById = (id) => {
 
 //creates a new return order
 // need to generate  RO id, get largest current ID and let id += 1
-// need to insert products into another table. and do the join table
+// need to insert products into another table. and do the join
 exports.createNewReturnOrder = (returnDate, products, restockOrderId) => {
     return new Promise(async (resolve, reject) => {
         db.run("INSERT INTO ReturnOrders (returnDate, restockOrder) VALUES (?, ?)",
@@ -169,11 +169,21 @@ exports.createNewReturnOrder = (returnDate, products, restockOrderId) => {
     });
 
 }
-//exports.commitReturnOrder = (id) => {} not asked by API
+//exports.commitReturnOrder = (id) => {}
+// not asked by API
 
 //need to implement
 //delete returnOrder given its ID
-exports.deleteReturnOrder = (id) => {}
+exports.deleteReturnOrder = (id) => {
+    db.run("DELETE FROM ReturnOrder WHERE id = ?",
+        [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('ReturnOrder Deleted');
+        });
+});
+}
 
 /*************** Restock Order ********************/
 
@@ -184,11 +194,40 @@ exports.getRestockOrderById= (Id) => {}
 exports.getRestockOrderFailedSKUItems = (Id) => {}
 exports.createRestockOrder = (issueDate, products, supplierId) => {}
 exports.removeSKUItemFromRestockOrder = (skuId, id) => {}
-exports.modifyRestockOrderState = (id,newState) => {}
+exports.modifyRestockOrderState = (id,newState) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("UPDATE RestockOrder SET State = ? WHERE id = ?",
+            [newState, id], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('RequestOrder updated');
+            });
+    });
+}
 exports.addRestockOrderSKUItems = (id, skuItems) => {}
-exports.issueRestockOrder = (id) => {}
-exports.addRestockOrderTransportNote = (id, transportNote) => {}
-exports.deleteRestockOrder = (id) => {}
+//exports.issueRestockOrder = (id) => {}
+//not requested by API
+exports.addRestockOrderTransportNote = (id, transportNote) => {
+    db.run("UPDATE RestockOrder SET TransportNote = ? WHERE id = ?",
+        [transportNote, id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('RequestOrder updated');
+        });
+});
+}
+exports.deleteRestockOrder = (id) => {
+    db.run("DELETE FROM RestockOrder WHERE id = ?",
+        [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('RequestOrder Deleted');
+        });
+});
+}
 
 
 /***********************************/
