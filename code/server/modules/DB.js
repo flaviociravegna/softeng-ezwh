@@ -289,3 +289,36 @@ exports.deleteRestockOrder = (id) => { }
 
 
 /***********************************/
+
+
+/*************** POSITION ********************/
+
+exports.getAllPositions = () => { 
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM positions';
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);   
+                return;
+            }
+            resolve(rows);
+        });
+    });
+};
+
+exports.createNewPosition = (position) => {
+    return new Promise((resolve, reject) => {
+        const sql_query = "INSERT INTO positions(positionID, aisle, row, col, maxWeight, maxVolume, occupiedWeight, occupiedVolume) VALUES(?,?,?,?,?,?,?,?)";
+        db.run(sql_query, [position.positionID, position.aisle, position.row, position.col, position.maxWeight, position.maxVolume, position.occupiedWeight, position.occupiedVolume], (err, rows) => {
+            if(err) {
+                reject(err);
+                return;
+            }
+            resolve(null);
+        });
+    });
+}
+
+/*********************************************/
+
+
