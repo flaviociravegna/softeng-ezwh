@@ -1,7 +1,7 @@
 'use strict';
 
 const dbname = "./ezwh.db";
-const db = new sqlite.Database(dbname, (err) => { if (err) throw err; });
+const db = require('./db');
 const SKUItem = require('./SKUItem')
 
 
@@ -12,20 +12,60 @@ class RestockOrder{
         this.state= state;
         this.products = [];// contains products
         this.supplierID = supplierID;
-        this.transportNote= transportNote;
+        this.transportNote = transportNote;
+        this.skuItems = []// contains skuItemsRequired by API
     }
 }
 
 /*************** Restock Order ********************/
 
+//need to add products & skuItems. would need to add another query to form 2 arrays
 exports.getRestockOrders = () => {
-}
-exports.getRestockOrdersIssued = () => {}
-exports.getRestockOrderById = (Id) => { }
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM RestockOrder", [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                const RestockOrders = rows.map(RO => new RestockOrder(RO.id, RO.issueDate, RO.state, RO.SupplierId, RO.transportNote))
+                resolve(RestockOrders);
+            }
+        });
 
+    });
+}
+
+//same problem as above method
+exports.getRestockOrdersIssued = () => {
+    return new Promise((resolve, reject) => {
+         db.all("SELECT * FROM RestockOrder WHERE state = 'ISSUED' ", [], (err, rows) => {
+             if (err)
+                 reject(err);
+             else {
+                 const RestockOrders = rows.map(RO => new RestockOrder(RO.id, RO.issueDate, RO.state, RO.SupplierId, RO.transportNote))
+                 resolve(RestockOrders);
+             }
+         });
+    
+    });
+}
+//same problem as the 2 above
+exports.getRestockOrderById = (Id) => {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT * FROM RestockOrder WHERE id = ?", [Id], (err, row) => {
+            if (err)
+                reject(err);
+            else {
+                RO = new RestockOrder(row.id, row.issueDate, row.state, row.SupplierId, row.transportNote);
+                resolve(RO);
+            }
+        });
+    });
+}
+
+//need to check if items actually failed tests. need an attribute to mark it
 exports.getRestockOrderFailedSKUItems = (Id) => {
     return new Promise((resolve, reject) => {
-        db.all("SELECT * FROM SkuItems S, SkuItemsOfRestockOrder SR WHERE S.Rfid = SR.Rfid AND SR.Id = ?", [Id], (err, rows) => {
+        db.all("SELECT SKUId, RFID as rfid FROM SKUItems S, RestockOrderSKUItems SR WHERE S.RFID = SR.RFID AND SR.restockOrderID = ?", [Id], (err, rows) => {
             if (err)
                 reject(err);
             else {
@@ -35,9 +75,34 @@ exports.getRestockOrderFailedSKUItems = (Id) => {
     });
 }
 
-exports.createRestockOrder = (issueDate, products, supplierId) => { }
 
-exports.removeSKUItemFromRestockOrder = (skuId, id) => { }
+//need to create an entry for each item in the corresponding table.
+exports.createRestockOrder = (issueDate, products, supplierId) => {
+    return new Promise((resolve, reject) => {
+        db.run("INSERT INTO RestockOrders (id, issueDate, state, supplierId) VALUES (?, ?, ?, ?)",
+            [id, issueDate, 'ISSUED', supplierID], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('New RestockOrder inserted');
+            }
+        );
+    });
+}
+
+exports.removeSKUItemFromRestockOrder = (skuId, id) => {
+    return new Promise((resolve, reject) => {
+        db.run("DELETE FROM RestockOrderSKUItems WHERE restockOrderID = ? AND RFID = ?",
+            [id,skuId], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('Item Deleted from RestockOrder');
+            }
+        );
+    });
+
+}
 
 exports.modifyRestockOrderState = (id,newState) => {
     return new Promise(async (resolve, reject) => {

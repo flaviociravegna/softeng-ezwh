@@ -1,7 +1,7 @@
 'use strict';
 
 const dbname = "./ezwh.db";
-const db = new sqlite.Database(dbname, (err) => { if (err) throw err; });
+const db = require('./db');
 
 
 class ReturnOrder{

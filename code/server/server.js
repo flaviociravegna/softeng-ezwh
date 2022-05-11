@@ -16,6 +16,10 @@ dayjs.extend(customParseFormat);
 /******** General purpose functions ********/
 
 function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/DD HH:mm'], true).isValid(); }
+function CheckifStateValid(State) {
+    let VALIDSTATES = ['ISSUED', 'DELIVERY', 'DELIVERED', 'TESTED', 'COMPLETEDRETURN', 'COMPLETED'];
+    return (State in VALIDSTATES);
+}
 
 /*******************************************/
 
@@ -319,11 +323,26 @@ app.delete('/api/skuitems/:rfid', [check('rfid').isNumeric().isLength({ min: 32,
 
 
 //Return an array containing all restock orders.
-app.get('/api/restockOrders', async (req, res) => { });
+app.get('/api/restockOrders', async (req, res) => {
+    try {
+        const RestockOrders = await RestockOrder.getRestockOrders();
+        res.status(200).json(RestockOrders);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+
+
+});
 
 
 //Returns an array of all restock orders in state = ISSUED.
 app.get('/api/restockOrdersIssued', async (req, res) => {
+    try {
+        const RestockOrders = await RestockOrder.getRestockOrdersIssued();
+        res.status(200).json(RestockOrders);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 
 });
 
@@ -374,22 +393,57 @@ app.get('/api/restockOrders/:id/returnItems', [check('id').exists().isInt({ min:
 
 
 //Creates a new restock order in state = ISSUED with an empty list of skuItems.
-app.post('/api/restockOrder', async (req, res) => {
+// not sure constraints on supplier ID
+// not sure how to acces issueDate
+// assuming supplier exist for now
+app.post('/api/restockOrder', [check('issueDate').optional({nullable: true}), check('products').optional({ nullable: true }), check('supplierId').isNumeric()], async (req, res) => {
+    try {
+        const erros = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ erros: erros.array() });
+        //check date validity
+        else if (req.body.issueDate != null && !CheckIfDateIsValid(req.body.issueDate))
+            return res.status(422).json({ error: "Invalid date format" });
+       
+        await RestockOrder.createRestockOrder(req.body.issueDate, req.body.products, req.body.supplierId);
+        res.status(201).end();
 
+    } catch (err) {
+        res.status(500).send(err);
+    }
 
 
 });
 
 
 //Modify the state of a restock order, given its id.
-app.put('/api/restockOrder/:id', async (req, res) => {
+app.put('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) => {
 
+    try {
+        const erros = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ erros: erros.array() });
+        else if (req.body.newState == null || !CheckifStateValid(req.body.newState))
+            return res.status(422).json({ error: "Invalid State" });
+        else {
+            let RO = await RestockOrder.getRestockOrderById(req.params.id);
+            if (RO == null)
+                return res.status(404).json({ error: "Not Found" });
+        }
 
+        await RestockOrder.modifyRestockOrderState(req.params.id, req.body.newState);
+        res.status(200);
+
+    }
+    catch (err) {
+
+        res.status(500).send(err);
+    }
 });
 
 
 //Add a non empty list of skuItems to a restock order, given its id. If a restock order has already a non empty list of skuItems, merge both arrays
-app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
+app.put('/api/restockOrder/:id/skuItems', [check('id').isNumeric()], async (req, res) => {
 
 
 });
@@ -403,8 +457,25 @@ app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
 
 
 //Delete a restock order, given its id.
-app.delete('/api/restockOrder/:id', async (req, res) => {
+app.delete('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) => {
+    try {
+        const erros = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ erros: erros.array() });
+        else {
+            let RO = await RestockOrder.getRestockOrderById(req.params.id);
+            if (RO == null)
+                return res.status(422).json({ error: "Not Found" });
+        }
 
+        await RestockOrder.deleteRestockOrder(req.params.id);
+        res.status(200);
+
+    }
+    catch (err) {
+
+        res.status(500).send(err);
+    }
 
 });
 
@@ -413,16 +484,17 @@ app.delete('/api/restockOrder/:id', async (req, res) => {
 // need to get items in return orders.
 app.get('/api/returnOrders', async (req, res) => {
   try {
-    const ReturnOrders = await ReturnOrder.getReturnOrders();
-    res.status(200).json(ReturnOrders);
-  } catch (err) {
-    res.status(500).send(err);
+        const ReturnOrders = await ReturnOrder.getReturnOrders();
+        res.status(200).json(ReturnOrders);
   }
-  });
+  catch (err) {
+        res.status(500).send(err);
+  }
+});
 
 
 //Return a return order, given its id.
-app.get('/api/returnOrders/:id', async (req, res) => {
+app.get('/api/returnOrders/:id', [check('id').isNumeric()], async (req, res) => {
 
 
 
@@ -430,7 +502,10 @@ app.get('/api/returnOrders/:id', async (req, res) => {
 
 
 //Creates a new return order.
-app.post('/api/returnOrder', async (req, res) => { });
+app.post('/api/returnOrder', async (req, res) => {
+
+
+});
 
 
 //Delete a return order, given its id.
