@@ -1,4 +1,5 @@
 'use strict';
+const sqlite = require('sqlite3');
 
 const dbname = "./ezwh.db";
 const db = require('./db');

@@ -1,5 +1,5 @@
 'use strict';
-
+const sqlite = require('sqlite3');
 const dbname = "./ezwh.db";
 const db = require('./db');
 
@@ -66,7 +66,7 @@ exports.createNewReturnOrder = (returnDate, products, restockOrderId) => {
 
 //need to implement
 //delete returnOrder given its ID
-exports.deleteReturnOrder = (id) => {
+exports.deleteReturnOrder = ((id) => {
     db.run("DELETE FROM ReturnOrder WHERE id = ?",
         [id], function (err) {
             if (err)
@@ -75,7 +75,7 @@ exports.deleteReturnOrder = (id) => {
                 resolve('ReturnOrder Deleted');
         });
 });
-}
+
 
 
 module.exports = ReturnOrder;
