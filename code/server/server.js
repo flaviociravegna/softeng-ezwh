@@ -4,6 +4,7 @@ const express = require('express');
 const DB = require('./modules/DB');
 const user_db = require('./modules/User');
 const Position = require('./modules/Position')
+const TestResult = require('./modules/TestResult')
 const RestockOrder = require('./modules/RestockOrder');
 const ReturnOrder = require('./modules/ReturnOrder');
 const dayjs = require('dayjs');
@@ -879,6 +880,78 @@ app.delete('/api/position/:positionID', [
   catch (err) {
       response.status(503).json({ error: `Database error while deleting: ${request.params.positionID}.`});
   }
+});
+
+/************* END Position APIs ***************/
+/**********************************************/
+
+/************* TestResult APIs ****************/
+/**********************************************/
+
+// Return an array containing all testResults.
+app.get('/api/skuitems/:rfid/testResults', [
+        check('rfid').isNumeric().isLength({ min: 32, max: 32 })
+    ], async (req, res) => {
+    try {
+      // Check parameter
+      const errors = validationResult(req);
+      if (!errors.isEmpty())
+        return res.status(422).end();
+
+      //Check if SKU Item exists
+      const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
+      if (skuItem.error)
+        return res.status(404).end(); //skuItem not found
+
+      let testResults = await TestResult.getAllTestResultByRFID(req.params.rfid);
+
+      const testResult_array = testResults.map((row) => ({
+        id: row.id,
+        date: row.date,
+        result: row.result,
+        idTestDescriptor: row.idTestDescriptor,
+      }));
+      
+      res.json(testResult_array);
+    }
+    catch (err) {
+      res.status(500).end();
+    }
+});
+
+// Return a Test Result given a RFID.
+app.get('/api/skuitems/:rfid/testResults/:id', [
+  check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
+  check('id').isInt()
+], async (req, res) => {
+    try {
+        // Check parameter
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+          return res.status(422).end();
+
+        //Check if SKU Item exists
+        const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
+        if (skuItem.error)
+          return res.status(404).end(); //skuItem not found
+
+        let testResults = await TestResult.getTestResultById(req.params.rfid, req.params.id);
+
+        if (testResults.length == 0)
+          return res.status(404).end(); //testResult not found
+
+        const testResult_array = testResults.map((row) => ({
+          id: row.id,
+          date: row.date,
+          result: row.result,
+          idTestDescriptor: row.idTestDescriptor,
+        }));
+
+        res.json(testResult_array);
+    }
+      catch (err) {
+        res.status(500).end();
+      }
 });
 
 module.exports = app;

@@ -61,7 +61,6 @@ exports.getAllUsersExceptManagers = () => {
         const sql = 'SELECT users.userId, users.name, users.surname, users.username, users.type FROM users WHERE users.type != "MANAGER"';
         db.all(sql, [], (err, rows) => {
             if (err) {
-                console.log(err);
                 reject(err);   
                 return;
             }

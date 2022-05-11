@@ -152,6 +152,8 @@ exports.getSKUItemByRFID = (RFID) => {
         db.get('SELECT * FROM SkuItems WHERE RFID = ?', [RFID], (err, row) => {
             if (err)
                 reject(err);
+            if (row == undefined)
+                resolve({ error: 'SKUItem not found.' });
             else {
                 const skuItem = new SKUItem(row.RFID, row.available, row.dateOfStock, row.skuID);
                 resolve(skuItem);
