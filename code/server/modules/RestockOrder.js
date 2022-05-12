@@ -20,7 +20,35 @@ class RestockOrder{
 
 /*************** Restock Order ********************/
 
-//need to add products & skuItems. would need to add another query to form 2 arrays
+
+exports.getProducts = (Id) => {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT S.id as SKUId, description, price, quantity as qty  FROM RestockOrdersProducts ROS, SKUs S WHERE ROS.skuID =  S.id AND ROS.restockOrderID = ?",
+            [Id], (err, rows) => {
+                if (err)
+                    reject(err);
+                else {
+                    resolve(rows);
+                }
+            });
+    });
+
+}
+
+exports.getSKUItems = (Id) => {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT S.SKUId as SKUId, S.RFID as rfid FROM RestockOrdersSKUItems ROS, SKUItem S WHERE S.RFID = ROS.RFID AND ROS.restockOrderID = ?",
+            [Id], (err, rows) => {
+                if (err)
+                    reject(err);
+                else {
+                    resolve(rows);
+                }
+            });
+    });
+}
+
+
 exports.getRestockOrders = () => {
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM RestockOrder", [], (err, rows) => {
@@ -28,6 +56,12 @@ exports.getRestockOrders = () => {
                 reject(err);
             else {
                 const RestockOrders = rows.map(RO => new RestockOrder(RO.id, RO.issueDate, RO.state, RO.SupplierId, RO.transportNote))
+                for (RO in RestockOrder) {
+                    RO.products = RestockOrder.getProducts(RO.id);
+                    RO.skuItems = RestockOrder.getSKUItems(RO.id);
+                    if (!RO.products.isArray() || RO.products.error || !RO.skuItems.isArray() || RO.skuItems.error)
+                        reject(Error());
+                }
                 resolve(RestockOrders);
             }
         });
@@ -35,7 +69,6 @@ exports.getRestockOrders = () => {
     });
 }
 
-//same problem as above method
 exports.getRestockOrdersIssued = () => {
     return new Promise((resolve, reject) => {
          db.all("SELECT * FROM RestockOrder WHERE state = 'ISSUED' ", [], (err, rows) => {
@@ -43,13 +76,21 @@ exports.getRestockOrdersIssued = () => {
                  reject(err);
              else {
                  const RestockOrders = rows.map(RO => new RestockOrder(RO.id, RO.issueDate, RO.state, RO.SupplierId, RO.transportNote))
+                 for (RO in RestockOrder) {
+                     RO.products = RestockOrder.getProducts(RO.id);
+                     RO.skuItems = RestockOrder.getSKUItems(RO.id);
+                     if (!RO.products.isArray() || RO.products.error || !RO.skuItems.isArray() || RO.skuItems.error)
+                         reject(Error());
+                 }
+
                  resolve(RestockOrders);
              }
          });
     
     });
 }
-//same problem as the 2 above
+
+
 exports.getRestockOrderById = (Id) => {
     return new Promise((resolve, reject) => {
         db.get("SELECT * FROM RestockOrder WHERE id = ?", [Id], (err, row) => {
@@ -57,7 +98,12 @@ exports.getRestockOrderById = (Id) => {
                 reject(err);
             else {
                 RO = new RestockOrder(row.id, row.issueDate, row.state, row.SupplierId, row.transportNote);
-                resolve(RO);
+                    RO.products = RestockOrder.getProducts(RO.id);
+                    RO.skuItems = RestockOrder.getSKUItems(RO.id);
+                    if (!RO.products.isArray() || RO.products.error || !RO.skuItems.isArray() || RO.skuItems.error)
+                        reject(Error());
+
+                resolve(RestockOrders);
             }
         });
     });
@@ -77,14 +123,62 @@ exports.getRestockOrderFailedSKUItems = (Id) => {
 }
 
 
+exports.getLastPIDInOrder = (id) => {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT MAX(id) as id FROM RestockOrdersProducts WHERE restockOrderID = ?", [id], (err, row) => {
+            if (err)
+                reject(err);
+            else
+                resolve(row == undefined ? 0 : row.id);
+        });
+
+    });
+
+}
+
+exports.insertProductInOrder = (id, product) => {
+    return new Promise((resolve, reject) => {
+        let ROPId = RestockOrder.getLastPIDInOrder(id);
+        db.run("INSERT INTO RestockOrdersProducts(restockOrderId,skuID, quantity, id) VALUES (?,?,?,?)", [id, product.SKUId, product.qty, ROPId], function (err) {
+            if (err)
+                reject(err);
+        });
+
+    });
+
+}
+
+exports.getLastId = () => {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT MAX(id) as id FROM RestockOrders", [], (err, row) => {
+            if (err)
+                reject(err);
+            else
+                resolve(row == undefined ? 0 : row.id);
+        });
+
+    });
+
+}
+
 //need to create an entry for each item in the corresponding table.
+// need to see where to put product description consider creating a class product
 exports.createRestockOrder = (issueDate, products, supplierId) => {
     return new Promise((resolve, reject) => {
+
+        id = RestockOrder.getLastId() + 1;
+
         db.run("INSERT INTO RestockOrders (id, issueDate, state, supplierId) VALUES (?, ?, ?, ?)",
-            [id, issueDate, 'ISSUED', supplierID], function (err) {
+            [id, issueDate, 'ISSUED', supplierId], function (err) {
                 if (err)
                     reject(err);
                 else
+
+                    for (product in products) {
+                        RestockOrder.insertProductInOrder(id, product);
+                        if (err)
+                            reject(err);
+                    }
                     resolve('New RestockOrder inserted');
             }
         );
@@ -148,12 +242,8 @@ exports.getRestockOrderState = (id) => {
             if (err)
                 reject(err);
             else {
-                if (row.State != 'COMPLETEDRETURN')
-                    reject(err);
-                else {
-                    resolve('State COMPLETEDRETURN');
-                }
-            }
+             resolve(row);
+             }
 
         });
         

@@ -46,16 +46,55 @@ exports.getReturnOrderById = (id) => {
 
 }
 
+//gets las ReturnOrderId
+exports.getLastROId = () => {
+
+    return new Promise((resolve, reject) => {
+        db.get("SELECT MAX(id) as id FROM ReturnOrders", [], (err, row) => {
+            if (err)
+                reject(err);
+            else
+                resolve(row == undefined ? 0 : row.id);
+        });
+
+    });
+
+}
+
+exports.insertProductsInRO = (id, product) => {
+
+    return new Promise((resolve, reject) => {
+
+        db.run("INSERT INTO ReturnOrdersProducts (SKUId,description,price,RFID,ReturnOrderID) VALUES (?,?,?,?,?)", [product.SKUId,product.description,product.price,product.RFID,id], function (err) {
+            if (err) reject(err);
+        });
+
+    });
+
+
+
+}
+
+
 //creates a new return order
-// need to generate  RO id, get largest current ID and let id += 1
 // need to insert products into another table. and do the join
 exports.createNewReturnOrder = (returnDate, products, restockOrderId) => {
     return new Promise(async (resolve, reject) => {
-        db.run("INSERT INTO ReturnOrders (returnDate, restockOrder) VALUES (?, ?)",
-            [returnDate], function (err) {
+        let id = ReturnOrder.getLastROId() + 1;
+        if (id.error)
+            reject(id.error);
+        
+        db.run("INSERT INTO ReturnOrders (id, returnDate, restockOrder) VALUES (?, ?, ?)",
+            [id,returnDate,restockOrderId], function (err) {
                 if (err)
                     reject(err);
                 else
+                    for (product in products) {
+                        let s=ReturnOrder.insertProductsInRO(id, product);
+                        if (s.error)
+                            reject(s.error);
+
+                    }
                     resolve('New ReturnOrder inserted');
             });
     });
@@ -64,7 +103,6 @@ exports.createNewReturnOrder = (returnDate, products, restockOrderId) => {
 //exports.commitReturnOrder = (id) => {}
 // not asked by API
 
-//need to implement
 //delete returnOrder given its ID
 exports.deleteReturnOrder = ((id) => {
     db.run("DELETE FROM ReturnOrder WHERE id = ?",

@@ -426,10 +426,10 @@ app.get('/api/restockOrders/:id/returnItems', [check('id').exists().isInt({ min:
         if (!errors.isEmpty())
             return res.status(422).json({ errors: errors.array() });
 
-        let state = await RestockOrder.getRestockOrderState(req.params.id)
+        let state = RestockOrder.getRestockOrderState(req.params.id);
 
-        if (state.error)
-            return res.status(422).json()
+        if (state == null || state.isEmpty() || state != 'COMPLETEDRETURN')
+            return res.status(422).json();
 
         let Items = await RestockOrder.getRestockOrderFailedSKUItems(req.params.id);
 
@@ -450,9 +450,9 @@ app.get('/api/restockOrders/:id/returnItems', [check('id').exists().isInt({ min:
 // assuming supplier exist for now
 app.post('/api/restockOrder', [check('issueDate').optional({nullable: true}), check('products').optional({ nullable: true }), check('supplierId').isNumeric()], async (req, res) => {
     try {
-        const erros = validationResult(req);
+        const errors = validationResult(req);
         if (!errors.isEmpty())
-            return res.status(422).json({ erros: erros.array() });
+            return res.status(422).json({ errors: errors.array() });
         //check date validity
         else if (req.body.issueDate != null && !CheckIfDateIsValid(req.body.issueDate))
             return res.status(422).json({ error: "Invalid date format" });
@@ -472,9 +472,9 @@ app.post('/api/restockOrder', [check('issueDate').optional({nullable: true}), ch
 app.put('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) => {
 
     try {
-        const erros = validationResult(req);
+        const errors = validationResult(req);
         if (!errors.isEmpty())
-            return res.status(422).json({ erros: erros.array() });
+            return res.status(422).json({ errors: errors.array() });
         else if (req.body.newState == null || !CheckifStateValid(req.body.newState))
             return res.status(422).json({ error: "Invalid State" });
         else {
@@ -495,14 +495,67 @@ app.put('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) => 
 
 
 //Add a non empty list of skuItems to a restock order, given its id. If a restock order has already a non empty list of skuItems, merge both arrays
-app.put('/api/restockOrder/:id/skuItems', [check('id').isNumeric()], async (req, res) => {
+app.put('/api/restockOrder/:id/skuItems', [check('id').isNumeric(), check('skuItems').notEmpty()], async (req, res) => {
+
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ errors: errors.array() });
+        else {
+            let RO = await RestockOrder.getRestockOrderById(req.params.id);
+            if (RO == null || RO.isEmpty())
+                return res.status(404).json({ error: "Not Found" });
+            let state = RestockOrder.getRestockOrderState(req.params.id);
+            if (state == null || state.isEmpty() || state != 'DELIVERED')
+                return res.status(422).json({ error: "Unprocessable Entity" });
+        }
+
+        await RestockOrder.addRestockOrderSKUItems(req.params.id, req.body.skuItems);
+        res.status(200);
+
+    }
+    catch (err) {
+
+        res.status(500).send(err);
+    }
 
 
 });
 
 
 //Add a transport note to a restock order, given its id.
-app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
+app.put('/api/restockOrder/:id/transportNote', [check('id').isNumeric(), check('transportNote').notEmpty()], async (req, res) => {
+
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ errors: errors.array() });
+        else {
+            let RO = await RestockOrder.getRestockOrderById(req.params.id);
+            if (RO == null || RO.isEmpty())
+                return res.status(404).json({ error: "Not Found" });
+        }
+
+        let state = RestockOrder.getRestockOrderState(req.params.id);
+        if (!CheckifStateValid(state) || state != 'DELIVERY')
+            return res.status(422).json({ error: "unprocessable Entity" });
+
+        if (!CheckIfDateIsValid(req.body.transportNote.deliveryDate))
+            return res.status(422).json({ error: "unprocessable Entity" });
+        ///////////
+        /////////missing check if date is in correct oreder
+        /////////
+
+
+        await RestockOrder.addRestockOrderTransportNote();
+        res.status(204);
+
+    }
+    catch (err) {
+
+        res.status(503).send(err);
+    }
+
 
 
 });
@@ -511,9 +564,9 @@ app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
 //Delete a restock order, given its id.
 app.delete('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) => {
     try {
-        const erros = validationResult(req);
+        const errors = validationResult(req);
         if (!errors.isEmpty())
-            return res.status(422).json({ erros: erros.array() });
+            return res.status(422).json({ errors: errors.array() });
         else {
             let RO = await RestockOrder.getRestockOrderById(req.params.id);
             if (RO == null)
@@ -521,12 +574,12 @@ app.delete('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) 
         }
 
         await RestockOrder.deleteRestockOrder(req.params.id);
-        res.status(200);
+        res.status(204);
 
     }
     catch (err) {
 
-        res.status(500).send(err);
+        res.status(503).send(err);
     }
 
 });
@@ -548,21 +601,82 @@ app.get('/api/returnOrders', async (req, res) => {
 //Return a return order, given its id.
 app.get('/api/returnOrders/:id', [check('id').isNumeric()], async (req, res) => {
 
+    try {
+        const erros = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ erros: erros.array() });
+        else {
+            let RO = await ReturnOrder.getReturnOrderById(req.params.id);
+            if (RO == null || RO.isEmpty())
+                return res.status(404).json({ error: "Not Found" });
+        }
+
+        await RestockOrder.deleteRestockOrder(req.params.id);
+        res.status(200);
+
+    }
+    catch (err) {
+
+        res.status(500).send(err);
+    }
 
 
 });
 
 
 //Creates a new return order.
-app.post('/api/returnOrder', async (req, res) => {
+app.post('/api/returnOrder', [
+    check('returnDate').notEmpty(),
+    check('products').notEmpty().isArray(),
+    check('restockOrderID').isInt({ gte: 0 }),
+], async (req, res) => {
 
+    try {
+        const erros = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ erros: erros.array() });
+        else {
+
+            let RO = RestockOrder.getRestockOrderById(req.body.restockOrderID);
+            if (RO == null || RO.isEmpty()) {
+                return res.status(404).json({error: "no RestockOrder associated to restockOrderID "});
+            }
+
+            ReturnOrder.createNewReturnOrder(req.body.returnDate, req.body.products, req.body.restockOrderID);
+        }
+
+       
+        res.status(201);
+
+    }
+    catch (err) {
+
+        res.status(503).send(err);
+    }
 
 });
 
 
 //Delete a return order, given its id.
-app.delete('/api/returnOrder/:id', async (req, res) => {
+app.delete('/api/returnOrder/:id', [check('id').isNumeric()], async (req, res) => {
+     try {
+        const erros = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ erros: erros.array() });
+        else {
+            let RO = await ReturnOrder.getReturnOrderById(req.params.id);
+            if (RO == null || RO.isEmpty())
+                return res.status(422).json({ error: "Not Found" });
+        }
 
+        await ReturnOrder.deleteReturnOrder(req.params.id);
+        res.status(204);
+
+    }
+    catch (err) {
+
+        res.status(503).send(err);
+    }
 
 });
 
@@ -995,6 +1109,7 @@ app.get('/api/skuitems/:rfid/testResults', [
 });
 
 // Return a Test Result given a RFID.
+
 app.get('/api/skuitems/:rfid/testResults/:id', [
   check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
   check('id').isInt()
