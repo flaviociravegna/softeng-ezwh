@@ -2,8 +2,13 @@
 const sqlite = require('sqlite3');
 
 const dbname = "./ezwh.db";
-const db = require('./db');
+//const db = require('./db');
 const SKUItem = require('./SKUItem')
+
+const db = new sqlite.Database('ezwh.db', (err) => {
+    if (err) throw err;
+});
+
 
 
 class RestockOrder{
@@ -28,7 +33,14 @@ exports.getProducts = (Id) => {
                 if (err)
                     reject(err);
                 else {
-                    resolve(rows);
+
+                    const result = rows.map((row) => ({
+                        SKUId: row.SKUId,
+                        description: row.description,
+                        price: row.price,
+                        qty: row.qty,
+                    }));
+                    resolve(result);
                 }
             });
     });
@@ -42,7 +54,12 @@ exports.getSKUItems = (Id) => {
                 if (err)
                     reject(err);
                 else {
-                    resolve(rows);
+                    const result = rows.map((row) => ({
+                        SKUId: row.SKUId,
+                        rfid: row.rfid,
+                    }));
+
+                    resolve(result);
                 }
             });
     });
@@ -112,7 +129,7 @@ exports.getRestockOrderById = (Id) => {
 //need to check if items actually failed tests. need an attribute to mark it
 exports.getRestockOrderFailedSKUItems = (Id) => {
     return new Promise((resolve, reject) => {
-        db.all("SELECT SKUId, RFID as rfid FROM SKUItems S, RestockOrderSKUItems SR WHERE S.RFID = SR.RFID AND SR.restockOrderID = ?", [Id], (err, rows) => {
+        db.all("SELECT SKUId, S.RFID as rfid FROM SKUItems S, TestResults TR, RestockOrderSKUItems SR WHERE S.RFID = SR.RFID AND SR.restockOrderID = ? AND TR.RFID = S.RFID AND TR != 0", [Id], (err, rows) => {
             if (err)
                 reject(err);
             else {
