@@ -29,7 +29,18 @@ function CheckifStateValid(State) {
     let VALIDSTATES = ['ISSUED', 'DELIVERY', 'DELIVERED', 'TESTED', 'COMPLETEDRETURN', 'COMPLETED'];
     return (State in VALIDSTATES);
 }
-
+function CheckifTypeValid(type) {
+  let VALIDTYPES = ['CUSTOMER', 'QUALITY_EMPLOYEE', 'MANAGER', 'DELIVERY_EMPLOYEE', 'CLERK', 'SUPPLIER'];
+  return (VALIDTYPES.includes(type));
+}
+function CheckifTypeAllowed(type) {
+  let VALIDTYPES = ['CUSTOMER', 'QUALITY_EMPLOYEE', 'DELIVERY_EMPLOYEE', 'CLERK', 'SUPPLIER'];
+  return (VALIDTYPES.includes(type));
+}
+function BooleanTranslate(bool) { 
+  if (bool == 0) return false;
+  return true;
+}
 /*******************************************/
 
 // init express
@@ -832,9 +843,7 @@ app.post('/api/newUser', [
   check('surname').isString(),
   check('username').isEmail(),
   check('type').custom( val => {
-    if(val === "CUSTOMER" || val === "QUALITY_EMPLOYEE" || val === "MANAGER" || val === "DELIVERY_EMPLOYEE" || val === "CLERK" || val === "SUPPLIER" )
-      return true;
-    return false;
+    return CheckifTypeValid(val);
   }),
   check('password').isString().isLength({ min: 8 }),
   ] ,async (request , response) => {
@@ -878,14 +887,20 @@ app.post('/api/newUser', [
 // MODIFY rights of a user, given its username
 app.put('/api/users/:username', [
   check('username').isEmail(),
+  check('oldType').custom( val => {
+    return CheckifTypeValid(val);
+  }),
+  check('newType').custom( val => {
+    return CheckifTypeValid(val);
+  })
 ], async (req, res) => {
   try {
     // Check parameters
     const errors = validationResult(req);
-    if (!errors.isEmpty() || 
-      !(req.body.oldType === "CUSTOMER" || req.body.oldType === "QUALITY_EMPLOYEE" || req.body.oldType === "MANAGER" || req.body.oldType === "DELIVERY_EMPLOYEE" || req.body.oldType === "CLERK" || req.body.oldType === "SUPPLIER") ||
-      !(req.body.newType === "CUSTOMER" || req.body.newType === "QUALITY_EMPLOYEE" || req.body.newType === "MANAGER" || req.body.newType === "DELIVERY_EMPLOYEE" || req.body.newType === "CLERK" || req.body.newType === "SUPPLIER") )
+
+    if (!errors.isEmpty()){
       return res.status(422).end();
+    }
 
     // Check if the User exists
     let user = await user_db.getUserByUsernameAndType(req.params.username, req.body.oldType);
@@ -904,9 +919,7 @@ app.put('/api/users/:username', [
 app.delete('/api/users/:username/:type', [ 
     check('username').isEmail(),
     check('type').custom( val => {
-      if(val === "CUSTOMER" || val === "QUALITY_EMPLOYEE" || val === "MANAGER" || val === "DELIVERY_EMPLOYEE" || val === "CLERK" || val === "SUPPLIER" )
-        return true;
-      return false;
+      return CheckifTypeAllowed(val);
       }) 
     ], async (request , response) => {
 
@@ -1077,7 +1090,7 @@ app.delete('/api/position/:positionID', [
 /************* TestResult APIs ****************/
 /**********************************************/
 
-// Return an array containing all testResults.
+// Return an array containing all testResults for a SKUItem
 app.get('/api/skuitems/:rfid/testResults', [
         check('rfid').isNumeric().isLength({ min: 32, max: 32 })
     ], async (req, res) => {
@@ -1097,7 +1110,7 @@ app.get('/api/skuitems/:rfid/testResults', [
       const testResult_array = testResults.map((row) => ({
         id: row.id,
         date: row.date,
-        result: row.result,
+        result: BooleanTranslate(row.result),
         idTestDescriptor: row.idTestDescriptor,
       }));
       
@@ -1108,8 +1121,7 @@ app.get('/api/skuitems/:rfid/testResults', [
     }
 });
 
-// Return a Test Result given a RFID.
-
+// Return a Test Result given a RFID and Test Id.
 app.get('/api/skuitems/:rfid/testResults/:id', [
   check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
   check('id').isInt()
@@ -1126,22 +1138,129 @@ app.get('/api/skuitems/:rfid/testResults/:id', [
           return res.status(404).end(); //skuItem not found
 
         let testResults = await TestResult.getTestResultById(req.params.rfid, req.params.id);
+        if (testResults.error)
+          return res.status(404).json({ error: "Test Results not found" }); //testResult not found
 
-        if (testResults.length == 0)
-          return res.status(404).end(); //testResult not found
+        const result = {
+            id: testResults.id,
+            date: testResults.date,
+            result: BooleanTranslate(testResults.result),
+            idTestDescriptor: testResults.idTestDescriptor,
+        };
 
-        const testResult_array = testResults.map((row) => ({
-          id: row.id,
-          date: row.date,
-          result: row.result,
-          idTestDescriptor: row.idTestDescriptor,
-        }));
-
-        res.json(testResult_array);
+        res.json(result);
     }
       catch (err) {
         res.status(500).end();
       }
+});
+
+// CREATE NEW TEST Result
+app.post('/api/skuitems/testResult', [ 
+  check('rfid').isString().isLength({ min: 32, max: 32}),
+  check('idTestDescriptor').isInt(),
+  check('result').isBoolean()
+  ] ,async (req , res) => {
+    
+    const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ errors: errors.array() });
+        //check date validity
+        else if (!CheckIfDateIsValid(req.body.date))
+            return res.status(422).json({ error: "Invalid date format" });
+
+    try {
+    
+      //Check if SKU Item exists
+      const skuItem = await DB.getSKUItemByRFID(req.body.rfid);
+      if (skuItem.error)
+        return res.status(404).json({ error: "SKUItem not found" });
+
+      //Check if TestDescriptor exists
+      const test_descriptor = await DB.getTestDescriptorsIdById(req.body.idTestDescriptor);
+      if (test_descriptor.error)
+        return res.status(404).json({ error: "Test Descriptor not found" }); //test_descriptor not found
+
+      //set max id
+      let max_id = await TestResult.searchMaxID();
+        if(max_id === null) 
+            max_id = 1;
+        else
+            max_id++;
+
+      const new_testResult = {
+        id: max_id,
+        date: req.body.date,
+        result: req.body.result,
+        rfid: req.body.rfid,
+        idTestDescriptor: req.body.idTestDescriptor
+      };
+      
+      await TestResult.createNewTestResult(new_testResult);
+      res.status(201).end();
+      
+    }
+    catch (err) {
+      res.status(503).end();
+    }
+});
+
+// MODIFY a test Result identified by id for a certain sku item identified by RFID.
+app.put('/api/skuitems/:rfid/testResult/:id', [
+  check('rfid').isString().isLength({ min: 32, max: 32}),
+  check('id').isInt(),
+  check('newIdTestDescriptor').isInt(),
+  check('newResult').isBoolean()
+], async (req, res) => {
+  try {
+    // Check parameters
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(422).end();
+    else if (!CheckIfDateIsValid(req.body.newDate))
+      return res.status(422).json({ error: "Invalid date format" });
+
+    // Check if the TestResult exists
+    const testResults = await TestResult.getTestResultById(req.params.rfid, req.params.id);
+      if (testResults.error)
+        return res.status(404).json({ error: "Test Results not found" }); //testResult not found
+
+    //Check if SKU Item exists
+    const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
+      if (skuItem.error)
+        return res.status(404).json({ error: "SKUItem not found" });
+
+    //Check if TestDescriptor exists
+    const test_descriptor = await DB.getTestDescriptorsIdById(req.body.newIdTestDescriptor);
+      if (test_descriptor.error)
+        return res.status(404).json({ error: "Test Descriptor not found" }); //test_descriptor not found
+
+    const result = await TestResult.modifyTestResult(req.params.id, req.body.newIdTestDescriptor, req.body.newResult, req.body.newDate);
+    res.status(200).json(result);
+    
+  } catch (err) {
+    res.status(503).send(err);
+  }
+});
+
+// DELETE a test result, given its id for a certain sku item identified by RFID
+// Why not 404?
+app.delete('/api/skuitems/:rfid/testResult/:id', [ 
+  check('rfid').isString().isLength({ min: 32, max: 32}),
+  check('id').isInt()
+  ], async (request , response) => {
+
+  const errors = validationResult(request);
+  if(!errors.isEmpty())
+    return response.status(422).json({errors: errors.array()});
+
+  try {
+      await TestResult.deleteTestResult(request.params.rfid, request.params.id);
+      response.status(204).end();
+  }
+  catch (err) {
+      response.status(503).json({ error: `Database error while deleting: ${request.params.id}.`});
+  }
 });
 
 module.exports = app;

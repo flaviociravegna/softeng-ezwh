@@ -217,5 +217,18 @@ exports.getTestDescriptorsIdBySKUId = (skuId) => {
     });
 }
 
+exports.getTestDescriptorsIdById = (idTestDescriptor) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT id FROM TestDescriptors WHERE id = ?', [idTestDescriptor], (err, row) => {
+            if (err)
+                reject(err);
+            if (row == undefined)
+                resolve({ error: 'Test Descriptor not found.' });
+            else {
+                resolve(row);
+            }
+        });
+    });
+}
 
 /***********************************/
