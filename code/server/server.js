@@ -945,13 +945,6 @@ app.delete('/api/users/:username/:type', [
 
 
 
-/************** POSITION APIs **************/
-/*******************************************/
-
-
-
-
-
 /************* TestResult APIs ****************/
 /**********************************************/
 
@@ -1084,16 +1077,16 @@ app.put('/api/skuitems/:rfid/testResult/:id', [
       return res.status(422).end();
     else if (!CheckIfDateIsValid(req.body.newDate))
       return res.status(422).json({ error: "Invalid date format" });
+    
+    //Check if SKU Item exists
+    const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
+      if (skuItem.error)
+        return res.status(404).json({ error: "SKUItem not found" });
 
     // Check if the TestResult exists
     const testResults = await TestResult.getTestResultById(req.params.rfid, req.params.id);
       if (testResults.error)
         return res.status(404).json({ error: "Test Results not found" }); //testResult not found
-
-    //Check if SKU Item exists
-    const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
-      if (skuItem.error)
-        return res.status(404).json({ error: "SKUItem not found" });
 
     //Check if TestDescriptor exists
     const test_descriptor = await DB.getTestDescriptorsIdById(req.body.newIdTestDescriptor);
@@ -1109,7 +1102,6 @@ app.put('/api/skuitems/:rfid/testResult/:id', [
 });
 
 // DELETE a test result, given its id for a certain sku item identified by RFID
-// Why not 404?
 app.delete('/api/skuitems/:rfid/testResult/:id', [ 
   check('rfid').isString().isLength({ min: 32, max: 32}),
   check('id').isInt()
