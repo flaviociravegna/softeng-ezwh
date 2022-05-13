@@ -44,6 +44,14 @@ function BooleanTranslate(bool) {
   if (bool == 0) return false;
   return true;
 }
+ function CheckItems (id,skuid,supplierID,itemList){
+   let check = true
+  itemList.forEach(i=>{
+    if(i.id==id)  check= false;
+    else if(i.skuID==skuid&&i.supplierID==supplierID) check= false;
+  })
+  return check;
+}
 /*******************************************/
 
 // init express
@@ -812,5 +820,184 @@ app.delete('/api/skuitems/:rfid/testResult/:id', [
       response.status(503).json({ error: `Database error while deleting: ${request.params.id}.`});
   }
 });
+
+/**************** INTERNAL ORDER *****************/
+
+app.get('/api/internalOrders',async (req,res)=>{
+try {
+    let internalOrders = await DB.getAllInternalOrders();
+    let InternalOrdersProduct = await DB.getAllInternalOrdersProduct();
+    let InternalOrdersSKUItems = await DB.getAllInternalOrdersSKUItems();
+  internalOrders.forEach(io => {if(io.state != "COMPLETED"){
+     //console.log("state is not COMPLETED.");
+    io.products=InternalOrdersProduct.filter(ip => ip.internalOrderID == io.id).map(ip => ip);
+  }
+  else{
+     //console.log("state is COMPLETE.");
+     io.products=InternalOrdersSKUItems.filter(is => is.internalOrderID == io.id).map(is => is);
+  }})
+    res.status(200).json(internalOrders);
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
+app.get('/api/internalOrdersAccepted',async (req,res)=>{
+  try {
+      let internalOrders = await DB.getInternalOrderByState("ACCEPTED");
+      // console.log(internalOrders);
+      res.status(200).json(internalOrders);
+    } catch (err) {
+      res.status(500).end();
+    }
+  });
+
+app.get('/api/internalOrdersIssued',async (req,res)=>{
+  try {
+      let internalOrders = await DB.getInternalOrderByState("ISSUED");
+      // console.log(internalOrders);
+      res.status(200).json(internalOrders);
+    } catch (err) {
+      res.status(500).end();
+    }
+  });
+
+  app.get('/api/internalOrders/:id',async (req,res)=>{
+    try {
+        let internalOrders = await DB.getInternalOrderById(req.params.id);
+        if (internalOrders.error) res.status(404).json(internalOrders);
+
+        let InternalOrdersProduct = await DB.getInternalOrdersProductById(req.params.id);
+        let InternalOrdersSKUItems = await DB.getInternalOrdersSKUItemById(req.params.id);
+        
+        if(internalOrders.state != "COMPLETED"){
+          internalOrders.products=[...InternalOrdersProduct];
+       }
+       else{
+          internalOrders.products=[...InternalOrdersSKUItems];
+       }
+         res.status(200).json(internalOrders);
+       } catch (err) {
+         res.status(500).end();
+       }
+    });
+
+    app.post('/api/internalOrders', async (req, res) => {
+      try {
+        
+         //Verify whether the product is available in the DB
+         for(let p of req.body.products){
+           console.log(p.SKUId);
+          let product = await DB.getInternalOrdersProductBySKUId(p.SKUId);
+           if (product.error){
+             console.log(product);
+             res.status(404).end();
+           }
+          }
+        const lastId = await DB.getLastInternalOrderId()
+        const result = await DB.createNewInternalOrder(lastId + 1, req.body.issueDate,"ISSUED", req.body.customerId);
+        
+        res.status(201).json(result);
+      } catch (err) {
+        res.status(503).end();
+      }
+    });
+
+  
+    
+      app.put('/api/internalOrders/:id',async (req,res)=>{
+        try {
+      
+          let internalOrder = await DB.getInternalOrderById(req.params.id);
+
+          if (internalOrder.error)
+            res.status(404).json(internalOrder);
+          if(req.body.newState=="COMPLETED"){
+            for(const p of req.body.products){
+          const SI = await DB.modifyInternalOrderSKUItems(req.params.id,p.RFID);
+          }}
+          const result = await DB.modifyInternalOrder(req.params.id, req.body.newIssueDate,req.body.newState,req.body.newCustomerId);
+          res.status(200).json(result);
+        } catch (err) {
+          res.status(503).end();
+        }
+        });
+
+      app.delete('/api/internalOrders/:id',async (req,res)=>{
+        try {
+          await DB.deleteInternalOrderByID(req.params.id);
+          res.status(204).end();
+        } catch {
+          res.status(503).end();
+        }
+        });
+      
+        /**************** ITEMS *****************/
+
+      app.get('/api/items',async (req,res)=>{
+        try {
+            let items = await DB.getAllItems();
+            res.status(200).json(items);
+          } catch (err) {
+            res.status(500).end();
+          }
+        });
+
+      
+      app.get('/api/items/:id',async (req,res)=>{
+        try {
+            let items = await DB.getItemsById(req.params.id);
+             res.status(200).json(items);
+            } catch (err) {
+             res.status(500).end();
+          }
+         });
+
+
+         app.post('/api/items',async (req,res)=>{
+          try {
+            
+            let itemList =await DB.getAllItems();
+           if(CheckItems(req.body.id,req.body.SKUId,req.body.supplierId,itemList)!=true){ 
+             res.status(422).json(
+               { 
+               errors: "This supplier already sells an item with the same SKUId or supplier already sells an Item with the same ID." 
+            }
+            );
+          }
+            else{
+              let items = await DB.createNewItem(req.body.id,req.body.price,req.body.SKUId,req.body.supplierId,req.body.description)
+              res.status(201).json(items);}
+            }
+             catch (err) {
+              res.status(503).end();
+            }
+          });
+
+          app.put('/api/items/:id',async (req,res)=>{
+            try {
+      
+              let item = await DB.getItemsById(req.params.id);
+              if (item.error)
+                res.status(404).json(item);
+          
+              const result = await DB.modifyItem(req.params.id, req.body.newPrice,req.body.newSKUId,req.body.newSupplierId,req.body.newDescription);
+              res.status(200).json(result);
+            } catch (err) {
+              res.status(503).end();
+            }
+             });
+
+            app.delete('/api/items/:id',async (req,res)=>{
+              try {
+                let item = await DB.getItemsById(req.params.id);
+              if (item.error)
+                res.status(404).json(item);
+                await DB.deleteItemsByID(req.params.id);
+                res.status(204).end();
+              } catch {
+                res.status(503).end();
+              }
+            });
 
 module.exports = app;
