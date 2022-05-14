@@ -27,7 +27,7 @@ exports.getUserInfo = (username, password) => {
             else if (row === undefined)   //nessun utente trovato all'interno del db
                 resolve(false); 
             else {                        //utente trovato            
-                const user = {id: row.userId, username: row.username, name: row.name};
+                const user = {id: row.userId, username: row.username, name: row.name, type: row.type};
                 bcrypt.compare(password, row.hash).then(result => { //check if the two hashes match with an async call
                     if(result)
                         resolve(user);      //password corretta --> manda info dell'account

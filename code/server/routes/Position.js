@@ -11,7 +11,7 @@ router.use(express.json());
 /*******************************************/
 
 // Return an array containing all positions.
-router.get('/api/positions', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
       let positions = await Position.getAllPositions();
       
@@ -36,7 +36,7 @@ router.get('/api/positions', async (req, res) => {
 // CREATE NEW POSITION
 /// TO DISCUSS: Error 409 not present in API.md
 // TODO: migliorare gestione errori
-router.post('/api/position', [ 
+router.post('/', [ 
   check('positionID').isString().isLength({ min: 12, max: 12}),
   check('aisleID').isString().isLength({ min: 4, max: 4}),
   check('row').isString().isLength({ min: 4, max: 4}),
@@ -80,7 +80,7 @@ router.post('/api/position', [
 
 
 // MODIFY the positionID a position identified by positionID 
-router.put('/api/position/:positionID', [
+router.put('/:positionID', [
   check('positionID').isString().isLength({ min: 12, max: 12}),
   check('newAisleID').isString().isLength({ min: 4, max: 4}),
   check('newRow').isString().isLength({ min: 4, max: 4}),
@@ -111,7 +111,7 @@ router.put('/api/position/:positionID', [
 });
 
 // MODIFY all fields of a position identified by positionID 
-router.put('/api/position/:positionID/changeID', [
+router.put('/:positionID/changeID', [
   check('positionID').isString().isLength({ min: 12, max: 12}),
   check('newPositionID').isString().isLength({ min: 12, max: 12})
 ], async (req, res) => {
@@ -136,10 +136,9 @@ router.put('/api/position/:positionID/changeID', [
 
 // DELETE the position
 // TO BE REVIEWED
-router.delete('/api/position/:positionID', [ 
+router.delete('/:positionID', [ 
   check('positionID').isString().isLength({ min: 12, max: 12})
   ], async (request , response) => {
-
   const errors = validationResult(request);
   if(!errors.isEmpty())
     return response.status(422).json({errors: errors.array()});
