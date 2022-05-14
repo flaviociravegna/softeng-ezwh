@@ -1,7 +1,5 @@
 'use strict';
 const sqlite = require('sqlite3');
-//const dbname = "./ezwh.db";
-const db = require('./db');
 
 const db = new sqlite.Database('ezwh.db', (err) => {
     if (err) throw err;
