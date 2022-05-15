@@ -497,18 +497,18 @@ exports.deleteItemsByID = (id) => {
 //
 exports.getRestockOrderProducts =(id) =>{
     //console.log("THIS IS JUST A TEST");
-    console.log("ID:"+id);
+    //console.log("ID:"+id);
     return new Promise((resolve, reject) => {
-        console.log("getting products");
+        //console.log("getting products");
         db.all("SELECT * FROM RestockOrdersProducts RoS WHERE RoS.restockOrderID = ?",
             [id], (err, rows) => {
-                console.log(rows);
-                console.log("------------------------");
+                //console.log(rows);
+                //console.log("------------------------");
                 if(rows== undefined){
                     resolve([]);
                 }
                 if (err){
-                   // console.log(err);
+                    console.log(err);
                     reject(err);
                 }
         
@@ -635,24 +635,21 @@ exports.getRestockOrderFailedSKUItems = (id) => {
 }
 
 exports.getLastPIDInOrder = (id)=>{
-
-        //console.log("getting PIDI");
-        db.get("SELECT id  FROM RestockOrdersProducts WHERE restockOrderID = ? ORDER BY id DESC LIMIT 1", [id], (err, row) => {
-            if (err){
-                //console.log("Error");
-                return(null);
-
-            }
- 
-            else
-                {
-                    //console.log("-------------------");
-                    //console.log(row == undefined ? 0 : row.id);
-                    //console.log("-------------------");
-                   return (row == undefined ? 0 : row.id);
+        return new Promise((resolve,reject)=>{
+            db.get("SELECT id  FROM RestockOrdersProducts WHERE restockOrderID = ? ORDER BY id DESC LIMIT 1", [id], (err, row) => {
+                if (err){
+                   reject(err);
                 }
-                
+    
+                else
+                    {
+                    resolve (row == undefined ? 0 : row.id);
+                    }
+                    
+            });
         });
+        //console.log("getting PIDI");
+        
 
 }
 
@@ -660,8 +657,11 @@ exports.insertProductInOrder=(id, product, PId) =>{
     return new Promise((resolve, reject) => {
         
         db.run("INSERT INTO RestockOrdersProducts (restockOrderId, skuID, quantity, id) VALUES (?,?,?,?)", [id, product.SKUId, product.qty, PId], function (err) {
-            if (err)
+            if (err){
+                console.log(err);
                 reject(err);
+            }
+                
 
             else resolve('done');
         });
@@ -705,17 +705,7 @@ exports.createRestockOrder = (issueDate, products, supplierId,id) => {
                     reject(err);
                 }   
                 else
-                    //console.log("inserting products");
-                    //console.log(products);
-                    
-                    //console.log(length);
-                    for (let i=0; i<products.length; i++ ) {
-
-                        //console.log("**********");
-                        insertProductInOrder(id, products[i]);
-                        if (err)
-                            reject(err);
-                    }
+        
                 resolve('New RestockOrder inserted');
             }
         );
