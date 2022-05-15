@@ -25,6 +25,7 @@ router.get('/:id', [
     check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
     check('id').isInt()
     ], async (req, res) => {
+
     try {
         // Check parameter
         const errors = validationResult(req);
@@ -38,7 +39,7 @@ router.get('/:id', [
 
         let testResults = await TestResult.getTestResultById(req.params.rfid, req.params.id);
         if (testResults.error)
-        return res.status(404).json({ error: "Test Results not found" }); //testResult not found
+            return res.status(404).json({ error: "Test Results not found" }); //testResult not found
 
         const result = {
             id: testResults.id,
@@ -58,6 +59,7 @@ router.get('/:id', [
 router.get('/', [
     check('rfid').isNumeric().isLength({ min: 32, max: 32 })
     ], async (req, res) => {
+
     try {
         // Check parameter
         const errors = validationResult(req);
@@ -91,14 +93,15 @@ router.post('/', [
     check('idTestDescriptor').isInt(),
     check('result').isBoolean()
     ] ,async (req , res) => {
-    const errors = validationResult(req);
+    
+    try {
+        const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(422).json({ errors: errors.array() });
-        //check date validity
-        else if (!CheckIfDateIsValid(req.body.date))
-            return res.status(422).json({ error: "Invalid date format" });
 
-    try {
+        //check date validity
+        if (!CheckIfDateIsValid(req.body.date))
+            return res.status(422).json({ error: "Invalid date format" });
 
         //Check if SKU Item exists
         const skuItem = await DB.getSKUItemByRFID(req.body.rfid);
@@ -140,13 +143,14 @@ router.put('/:id', [
     check('newIdTestDescriptor').isInt(),
     check('newResult').isBoolean()
     ], async (req, res) => {
+        
     try {
         // Check parameters
         const errors = validationResult(req);
         if (!errors.isEmpty())
-        return res.status(422).end();
-        else if (!CheckIfDateIsValid(req.body.newDate))
-        return res.status(422).json({ error: "Invalid date format" });
+            return res.status(422).end();
+        if (!CheckIfDateIsValid(req.body.newDate))
+            return res.status(422).json({ error: "Invalid date format" });
 
         //Check if SKU Item exists
         const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
@@ -177,13 +181,18 @@ router.delete('/:id', [
     check('id').isInt()
     ], async (request , response) => {
 
-    const errors = validationResult(request);
-    if(!errors.isEmpty())
-    return response.status(422).json({errors: errors.array()});
-
     try {
+        const errors = validationResult(request);
+        if(!errors.isEmpty())
+            return response.status(422).json({errors: errors.array()});
+        
+        let testResults = await TestResult.getTestResultById(request.params.rfid, request.params.id);
+        if (testResults.error) 
+            return response.status(404).json({ error: "Test Results not found" }); //testResult not found
+            
         await TestResult.deleteTestResult(request.params.rfid, request.params.id);
         response.status(204).end();
+
     } catch (err) {
         response.status(503).json({ error: `Database error while deleting: ${request.params.id}.`});
     }
