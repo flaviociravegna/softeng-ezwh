@@ -71,6 +71,9 @@ router.get('/', async (req, res) => {
 // GET /api/internalOrders/:id
 router.get('/:id', async (req, res) => {
     try {
+        if (isNaN(req.params.id)){
+            res.status(422).send("Id is not valid");
+        } 
         let internalOrders = await internalOrder_DAO.getInternalOrderById(req.params.id);
         if (internalOrders.error) res.status(404).json(internalOrders);
 
@@ -92,14 +95,17 @@ router.get('/:id', async (req, res) => {
 // POST /api/internalOrders
 router.post('/', async (req, res) => {
     try {
-
+        if (CheckIfDateIsValid(req.body.issueDate)){
+            res.status(422).send("issueDate is not valid");
+        }
+        if (isNaN(req.body.customerId)){
+            res.status(422).send("customerId is not valid");
+        }  
         //Verify whether the product is available in the internalOrder_DAO
         for (let p of req.body.products) {
-            console.log(p.SKUId);
             let product = await internalOrder_DAO.getInternalOrdersProductBySKUId(p.SKUId);
             if (product.error) {
-                console.log(product);
-                res.status(404).end();
+                res.status(422).end();
             }
         }
         const lastId = await internalOrder_DAO.getLastInternalOrderId()
@@ -114,7 +120,12 @@ router.post('/', async (req, res) => {
 // PUT /api/internalOrders/:id
 router.put('/:id', async (req, res) => {
     try {
-
+        if (isNaN(req.params.id)){
+            res.status(422).send("Id is not valid");
+        } 
+        if (CheckIfDateIsValid(req.body.issueDate)){
+            res.status(422).send("issueDate is not valid");
+        }
         let internalOrder = await internalOrder_DAO.getInternalOrderById(req.params.id);
 
         if (internalOrder.error)
@@ -134,6 +145,15 @@ router.put('/:id', async (req, res) => {
 //DELETE /api/internalOrders/:id
 router.delete('/:id', async (req, res) => {
     try {
+        const errors = validationResult(req);
+        
+        if (isNaN(req.params.id)){
+            res.status(422).send("Id is not valid");
+        } 
+        if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
+        let io =await internalOrder_DAO.getInternalOrderById(req.params.id);
+        if (io.error)
+            return res.status(404).json(io);
         await internalOrder_DAO.deleteInternalOrderByID(req.params.id);
         res.status(204).end();
     } catch (err) {
