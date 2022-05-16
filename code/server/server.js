@@ -25,6 +25,9 @@ const SKU = require('./routes/SKU');
 const app = new express();
 const port = 3001;
 
+//app.use('/', RetO);
+//app.use('/', ResO);
+
 app.use('/api/positions?', pos);
 app.use(['/api/skuitems/:rfid/testResults?', '/api/skuitems/testResult'], testRes);
 //app.use('/api/returnOrders?', returnOrd);
@@ -67,6 +70,7 @@ app.get('/api/hello', (req, res) => {
   let message = {
     message: 'Hello World!'
   }
+  //console.log("testing");
   return res.status(200).json(message);
 });
 
@@ -115,192 +119,7 @@ app.use(passport.session());
 
 // activate the server
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
-
-/*******************************************/
-/*********** Restock Order APIs  ********/
-
-
-//Return an array containing all restock orders.
-app.get('/api/restockOrders', async (req, res) => {
-  try {
-    //console.log("getting restock Orders");
-    const ROs = await DB.getRestockOrders();
-    //console.log("getting restock Orders Products");
-    //console.log(ROs);
-    //console.log(ROs.length);
-    for (let i = 0; i < ROs.length; i++) {
-      // console.log(ROs[i].id + ".getting products");
-      ROs[i].products = await DB.getRestockOrderProducts(ROs[i].id);
-      // console.log(ROs[i].id + ".getting SkuItems")
-      ROs[i].skuItems = await DB.getRestockOrderSkuItems(ROs[i].id);
-      // console.log(ROs[i].id + ".Got SkuItems")
-    }
-
-    const Result = ROs.map((row) => ({
-      id: row.id,
-      issueDate: row.issueDate,
-      state: row.state,
-      products: row.products,
-      supplierId: row.supplierId,
-      transportNote: row.transportNote,
-      skuItems: row.skuItems,
-    }));
-
-
-
-    res.status(200).json(Result);
-
-  } catch (err) {
-    console.log("Error");
-
-    res.status(500).send(err);
-  }
-
-
-});
-
-
-//Returns an array of all restock orders in state = ISSUED.
-app.get('/api/restockOrdersIssued', async (req, res) => {
-  try {
-    const ROs = await DB.getRestockOrdersIssued();
-    for (let i = 0; i < ROs.length; i++) {
-      ROs[i].products = await DB.getRestockOrderProducts(ROs[i].id);
-      //console.log(ROs[i].id + ".getting SkuItems")
-      ROs[i].skuItems = await DB.getRestockOrderSkuItems(ROs[i].id);
-      //console.log(ROs[i].id + ".Got SkuItems") 
-
-    }
-    const Result = ROs.map((row) => ({
-      id: row.id,
-      issueDate: row.issueDate,
-      state: row.state,
-      products: row.products,
-      supplierId: row.supplierId,
-      //transportNote: row.transportNote, // ignored by request of the API
-      skuItems: row.skuItems,
-    }));
-
-
-
-    res.status(200).json(Result);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-
-});
-
-
-//Return a restock order, given its id.
-app.get('/api/restockOrders/:id', [check('id').exists().isNumeric({ min: 1 })], async (req, res) => {
-  try {
-    //console.log("step 1");
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      //console.log("Erros");
-      return res.status(422).json({ errors: errors.array() });
-    }
-    //console.log("step 2");
-
-
-    let RO = await DB.getRestockOrderById(req.params.id);
-    //console.log("step 3");
-    //console.log(RO.error);
-    //console.log("*****************************************");
-    //console.log(RO);
-
-    if (!RO.id)
-      return res.status(404).end();
-    //console.log("No Error");
-    //console.log("step 4");
-    RO.products = await DB.getRestockOrderProducts(RO.id);
-    //console.log("step 5");
-    RO.skuItems = await DB.getRestockOrderSkuItems(RO.id);
-    res.status(200).json(RO);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-
-});
-
-
-//Return sku items to be returned of a restock order, given its id.
-//************************************************** */
-// NEED TESTING
-//************************************************** */
-
-
-app.get('/api/restockOrders/:id/returnItems', [check('id').exists().isNumeric({ min: 1 })], async (req, res) => {
-
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(422).json({ errors: errors.array() });
-
-    let ROs = await DB.getRestockOrderById(req.params.id);
-    //console.log(ROs);
-
-    if (ROs.error)
-      return res.status(404).end();
-
-
-
-    if (ROs.state != 'COMPLETEDRETURN')
-      return res.status(422).json();
-    //console.log("geting items");
-    let Items = await DB.getRestockOrderFailedSKUItems(req.params.id);
-    //console.log("got items");
-    res.status(200).json(Items);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-
-});
-
-
-//Creates a new restock order in state = ISSUED with an empty list of skuItems.
-// not sure constraints on supplier ID
-// not sure how to acces issueDate
-// assuming supplier exist for now
-app.post('/api/restockOrder', [check('issueDate').optional({ nullable: true }), check('products').optional({ nullable: true }), check('supplierId').isNumeric()], async (req, res) => {
-  try {
-    //console.log("Checking Validation");
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      //console.log(errors);
-      return res.status(422).json({ errors: errors.array() });
-    }
-
-    //check date validity
-
-    else if (req.body.issueDate != null && !CheckIfDateIsValid(req.body.issueDate)) {
-      return res.status(422).json({ error: "Invalid date format" });
-    }
-    console.log("Passed Validation");
-    const Id = await DB.getLastIdRsO();
-    console.log("len: " + req.body.products.length);
-    await DB.createRestockOrder(req.body.issueDate, req.body.products, req.body.supplierId, Id + 1);
-    let pId = 0;
-    // console.log("len: "+ req.body.products.length);
-    for (let i = 0; i < req.body.products.length; i++) {
-
-      pId = await DB.getLastPIDInOrder(Id + 1);
-      console.log("PID:" + pId);
-      let temp = await DB.insertProductInOrder(Id + 1, req.body.products[i], pId + 1);
-      console.log("temp" + temp);
-      if (temp.error)
-        res.status(501).send(err);
-
-    }
-    res.status(201).end();
-
-  } catch (err) {
-    res.status(500).send(err);
-  }
-
-
+  //console.log(`Server listening at http://localhost:${port}`);
 });
 
 
@@ -563,6 +382,8 @@ app.delete('/api/returnOrder/:id', [check('id').isNumeric()], async (req, res) =
   }
 
 });
+
+
 
 
 /**************** USER APIs *****************/
