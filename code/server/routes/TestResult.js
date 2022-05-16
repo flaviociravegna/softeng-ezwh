@@ -1,17 +1,17 @@
 'use strict';
 
 const express = require('express');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 const TestResult = require('../modules/testResult_db');
 const DB = require('../modules/DB');
-const { check, validationResult} = require('express-validator'); // validation middleware
+const { check, validationResult } = require('express-validator'); // validation middleware
 router.use(express.json());
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 
 /******** General purpose functions ********/
 function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/DD HH:mm'], true).isValid(); }
-function BooleanTranslate(bool) { 
+function BooleanTranslate(bool) {
     if (bool == 0) return false;
     return true;
 }
@@ -24,7 +24,7 @@ dayjs.extend(customParseFormat);
 router.get('/:id', [
     check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
     check('id').isInt()
-    ], async (req, res) => {
+], async (req, res) => {
 
     try {
         // Check parameter
@@ -58,7 +58,7 @@ router.get('/:id', [
 // Return an array containing all testResults for a SKUItem
 router.get('/', [
     check('rfid').isNumeric().isLength({ min: 32, max: 32 })
-    ], async (req, res) => {
+], async (req, res) => {
 
     try {
         // Check parameter
@@ -79,7 +79,7 @@ router.get('/', [
             result: BooleanTranslate(row.result),
             idTestDescriptor: row.idTestDescriptor,
         }));
-        
+
         res.json(testResult_array);
 
     } catch (err) {
@@ -88,12 +88,12 @@ router.get('/', [
 });
 
 // CREATE NEW TEST Result
-router.post('/', [ 
-    check('rfid').isString().isLength({ min: 32, max: 32}),
+router.post('/', [
+    check('rfid').isString().isLength({ min: 32, max: 32 }),
     check('idTestDescriptor').isInt(),
     check('result').isBoolean()
-    ] ,async (req , res) => {
-    
+], async (req, res) => {
+
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
@@ -115,10 +115,10 @@ router.post('/', [
 
         //set max id
         let max_id = await TestResult.searchMaxID();
-            if(max_id === null) 
-                max_id = 1;
-            else
-                max_id++;
+        if (max_id === null)
+            max_id = 1;
+        else
+            max_id++;
 
         const new_testResult = {
             id: max_id,
@@ -127,10 +127,10 @@ router.post('/', [
             rfid: req.body.rfid,
             idTestDescriptor: req.body.idTestDescriptor
         };
-        
+
         await TestResult.createNewTestResult(new_testResult);
         res.status(201).end();
-    
+
     } catch (err) {
         res.status(503).end();
     }
@@ -138,12 +138,12 @@ router.post('/', [
 
 // MODIFY a test Result identified by id for a certain sku item identified by RFID.
 router.put('/:id', [
-    check('rfid').isString().isLength({ min: 32, max: 32}),
+    check('rfid').isString().isLength({ min: 32, max: 32 }),
     check('id').isInt(),
     check('newIdTestDescriptor').isInt(),
     check('newResult').isBoolean()
-    ], async (req, res) => {
-        
+], async (req, res) => {
+
     try {
         // Check parameters
         const errors = validationResult(req);
@@ -176,25 +176,25 @@ router.put('/:id', [
 });
 
 // DELETE a test result, given its id for a certain sku item identified by RFID
-router.delete('/:id', [ 
-    check('rfid').isString().isLength({ min: 32, max: 32}),
+router.delete('/:id', [
+    check('rfid').isString().isLength({ min: 32, max: 32 }),
     check('id').isInt()
-    ], async (request , response) => {
+], async (request, response) => {
 
     try {
         const errors = validationResult(request);
-        if(!errors.isEmpty())
-            return response.status(422).json({errors: errors.array()});
-        
+        if (!errors.isEmpty())
+            return response.status(422).json({ errors: errors.array() });
+
         let testResults = await TestResult.getTestResultById(request.params.rfid, request.params.id);
-        if (testResults.error) 
+        if (testResults.error)
             return response.status(404).json({ error: "Test Results not found" }); //testResult not found
-            
+
         await TestResult.deleteTestResult(request.params.rfid, request.params.id);
         response.status(204).end();
 
     } catch (err) {
-        response.status(503).json({ error: `Database error while deleting: ${request.params.id}.`});
+        response.status(503).json({ error: `Database error while deleting: ${request.params.id}.` });
     }
 });
 

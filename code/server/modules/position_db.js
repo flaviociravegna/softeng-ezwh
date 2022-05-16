@@ -4,17 +4,17 @@ const sqlite = require('sqlite3');
 
 // open the database 
 const db = new sqlite.Database('ezwh.db', (err) => {
-    if(err) throw err;
-  });
+    if (err) throw err;
+});
 
 /*************** POSITION ********************/
 
-exports.getAllPositions = () => { 
+exports.getAllPositions = () => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM positions';
         db.all(sql, [], (err, rows) => {
             if (err) {
-                reject(err);   
+                reject(err);
                 return;
             }
             resolve(rows);
@@ -26,7 +26,7 @@ exports.createNewPosition = (position) => {
     return new Promise((resolve, reject) => {
         const sql_query = "INSERT INTO positions(positionID, aisle, row, col, maxWeight, maxVolume, occupiedWeight, occupiedVolume) VALUES(?,?,?,?,?,?,?,?)";
         db.run(sql_query, [position.positionID, position.aisle, position.row, position.col, position.maxWeight, position.maxVolume, position.occupiedWeight, position.occupiedVolume], (err, rows) => {
-            if(err) {
+            if (err) {
                 reject(err);
                 return;
             }
@@ -38,27 +38,29 @@ exports.createNewPosition = (position) => {
 exports.getPositionById = (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM positions WHERE positionID = ?';
-        db.all(sql, [id], (err, row) => {
-            if (err) 
+        db.get(sql, [id], (err, row) => {
+            if (err)
                 reject(err);
-            else {
+
+            if (row == undefined)
+                resolve({ error: 'Position not found.' });
+            else
                 resolve(row);
-            }
         });
     });
 };
 
 exports.modifyPosition = (oldPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) => {
-    const newPositionID = newAisleID+newRow+newCol;
+    const newPositionID = newAisleID + newRow + newCol;
     return new Promise((resolve, reject) => {
         const sql_query = "UPDATE positions SET positionID=?, aisle=?, row=?, col=?, maxWeight=?, maxVolume=?, occupiedWeight=?, occupiedVolume=? WHERE positionID=?";
         db.run(sql_query, [newPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume, oldPositionID], (err, rows) => {
-            if(err) {
+            if (err) {
                 reject(err);
                 return;
-              }
-              resolve(null);
-            });
+            }
+            resolve(null);
+        });
     });
 }
 
@@ -70,12 +72,12 @@ exports.modifyPositionID = (oldPositionID, newPositionID) => {
     return new Promise((resolve, reject) => {
         const sql_query = "UPDATE positions SET positionID=?, aisle=?, row=?, col=? WHERE positionID=?";
         db.run(sql_query, [newPositionID, newAisleID, newRow, newCol, oldPositionID], (err, rows) => {
-            if(err) {
+            if (err) {
                 reject(err);
                 return;
-              }
-              resolve(null);
-            });
+            }
+            resolve(null);
+        });
     });
 }
 
@@ -84,11 +86,11 @@ exports.deletePosition = (positionID) => {
     return new Promise((resolve, reject) => {
         const sql_query = "DELETE FROM positions WHERE positionID=?";
         db.run(sql_query, [positionID], (err, rows) => {
-          if(err) {
-            reject(err);
-            return;
-          }
-          resolve(null);
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(null);
         });
     });
 }
