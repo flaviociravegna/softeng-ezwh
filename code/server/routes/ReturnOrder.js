@@ -2,120 +2,136 @@
 
 const express = require('express');
 const router = express.Router();
-const ReturnOrder = require('../modules/ReturnOrder');
-const RestockOrder = require('../modules/RestockOrder');
-const { check, validationResult, body } = require('express-validator'); // validation middleware
+const returnOrder_DAO = require('../modules/ReturnOrder');
+const restockOrder_DAO = require('../modules/RestockOrder');
+const { check, validationResult } = require('express-validator'); // validation middleware
 router.use(express.json());
+const dayjs = require('dayjs');
+const customParseFormat = require('dayjs/plugin/customParseFormat');
 
 function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/DD HH:mm'], true).isValid(); }
 
 
 /*********** Return Order APIs  ********/
 //Return an array containing all return orders.
-router.get('/api/returnOrders', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const ReturnOrders = await ReturnOrder.getReturnOrders();
-        const Result = ReturnOrders.map((row) => ({
-            id: row.id,
-            returnDate: row.returnDate,
-            products: row.products,
-            restockOrderId: row.restockOrderId,
-        }));
-        res.status(200).json(Result);
+      //console.log("step1");
+      const RO = await returnOrder_DAO.getReturnOrders();
+      //console.log("step2");
+  
+      for (let i = 0; i < RO.length; i++) {
+        // console.log("step3");
+        RO[i].products = await returnOrder_DAO.getReturnOrderProducts(RO[i].id);
+        console.log(RO[i].products);
+      }
+      //console.log(RO);
+      res.status(200).json(RO);
+    } catch (err) {
+      res.status(500).send(err);
     }
-    catch (err) {
-        res.status(500).send(err);
-    }
-});
-
-
+  });
+  
+  
 //Return a return order, given its id.
-router.get('/api/returnOrders/:id', [check('id').isNumeric()], async (req, res) => {
-
+router.get('/:id', [
+    check('id').isNumeric()
+], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
-            return res.status(422).json({ erros: erros.array() });
+            res.status(422).json({ erros: errors.array() });
 
-
-        let RO = await ReturnOrder.getReturnOrderById(req.params.id);
-        if (RO == null || RO.isEmpty())
+        //console.log("step1");
+        let RO = await returnOrder_DAO.getReturnOrderById(req.params.id);
+        if (RO.error) {
             return res.status(404).json({ error: "Not Found" });
-
-        const Result = RO.map((row) => ({
-            id: row.id,
-            returnDate: row.returnDate,
-            products: row.products,
-            restockOrderId: row.restockOrderId
-        }));
-       
-        res.status(200).json(Result);;
-
-    }
-    catch (err) {
-
+        }
+  
+        RO.products = await returnOrder_DAO.getReturnOrderProducts(RO.id);
+    
+        res.status(200).json(RO);;
+  
+    } catch (err) {
         res.status(500).send(err);
     }
-
-
 });
-
-
+  
+  
 //Creates a new return order.
-
-router.post('/api/returnOrder', [
+router.post('/', [
     check('returnDate').notEmpty(),
-    check('products').notEmpty().isArray(),
-    check('restockOrderID').isInt({ gte: 0 }),
+    check('products').notEmpty(),
+    check('restockOrderId').isNumeric({ gt: -1 })
 ], async (req, res) => {
-
     try {
-        const erros = validationResult(req);
-        if (!errors.isEmpty())
-            return res.status(422).json({ erros: erros.array() });
-        else {
+        const errors = validationResult(req);
 
-            let RO = RestockOrder.getRestockOrderById(req.body.restockOrderID);
-            if (RO == null || RO.isEmpty()) {
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ erros: errors.array() });
+        } else {
+
+            let RO = await restockOrder_DAO.getRestockOrderById(req.body.restockOrderId);
+            if (RO.error) {
                 return res.status(404).json({ error: "no RestockOrder associated to restockOrderID " });
             }
+
             if (!CheckIfDateIsValid(req.body.returnDate))
-                return res.status(422).json({ erros: erros.array() });
+                return res.status(422).json({ error: "wrong date format" });
 
-            ReturnOrder.createNewReturnOrder(req.body.returnDate, req.body.products, req.body.restockOrderID);
+            let id = await returnOrder_DAO.getLastReturnOrderId();
+            let temp = await returnOrder_DAO.createNewReturnOrder(req.body.returnDate, req.body.restockOrderId, id + 1);
+
+            console.log("created new order");
+            console.log(temp);
+
+            if (temp.error)
+                return res.status(503).send(err);
+
+            for (let i = 0; i < req.body.products.length; i++) {
+                console.log("inserting Products");
+                temp = await returnOrder_DAO.insertProductInRO(req.body.products[i], id + 1);
+                if (temp.error) {
+                    console.log("error inserting product" + i);
+                    res.status(504);
+                }
+            }
         }
+        
+        res.status(201).end();
 
-
-        res.status(201);
-
-    }
-    catch (err) {
-
+    } catch (err) {
+        //console.log("We got an error");
+        console.log(err);
         res.status(503).send(err);
     }
 
 });
-
-
+  
+  
 //Delete a return order, given its id.
-router.delete('/api/returnOrder/:id', [check('id').isNumeric()], async (req, res) => {
+router.delete('/:id', [
+    check('id').isNumeric()
+], async (req, res) => {
     try {
-        const erros = validationResult(req);
+        const errors = validationResult(req);
         if (!errors.isEmpty())
-            return res.status(422).json({ erros: erros.array() });
+            return res.status(422).json({ erros: errors.array() });
         else {
-            let RO = await ReturnOrder.getReturnOrderById(req.params.id);
-            if (RO == null || RO.isEmpty())
+            let RO = await returnOrder_DAO.getReturnOrderById(req.params.id);
+            if (RO.error)
                 return res.status(422).json({ error: "Not Found" });
         }
 
-        await ReturnOrder.deleteReturnOrder(req.params.id);
-        res.status(204);
+        await returnOrder_DAO.deleteReturnOrderProducts(req.params.id);
+        await returnOrder_DAO.deleteReturnOrder(req.params.id);
 
-    }
-    catch (err) {
+        res.status(204).end();
 
+    } catch (err) {
         res.status(503).send(err);
     }
 
 });
+
+module.exports = router;

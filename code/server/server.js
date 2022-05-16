@@ -1,12 +1,7 @@
 'use strict';
 
 const express = require('express');
-const DB = require('./modules/DB');
 const user_db = require('./modules/User');
-const Position = require('./modules/position_db');
-const TestResult = require('./modules/testResult_db');
-const RestockOrder = require('./modules/RestockOrder');
-const ReturnOrder = require('./modules/ReturnOrder');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 const { check, validationResult, body } = require('express-validator'); // validation middleware
@@ -16,36 +11,34 @@ const passport = require('passport'); // auth middleware
 const LocalStrategy = require('passport-local').Strategy; // username and password for login
 const session = require('express-session'); // enable sessions
 
-const pos = require('./routes/Position');
-const testRes = require('./routes/TestResult');
-//const returnOrd = require('./routes/ReturnOrder');
+const position = require('./routes/Position');
+const testResult = require('./routes/TestResult');
+const returnOrder = require('./routes/ReturnOrder');
 const SKUItem = require('./routes/SKUItem');
 const SKU = require('./routes/SKU');
-const TestDescriptor = require('./routes/TestDescriptor');
+const testDescriptor = require('./routes/TestDescriptor');
+const restockOrder = require('./routes/RestockOrder');
+const internalOrder = require('./routes/InternalOrder');
+const item = require('./routes/Item');
 
 const app = new express();
 const port = 3001;
 
-//app.use('/', RetO);
-//app.use('/', ResO);
-
-app.use('/api/positions?', pos);
-app.use(['/api/skuitems/:rfid/testResults?', '/api/skuitems/testResult'], testRes);
-//app.use('/api/returnOrders?', returnOrd);
+app.use('/api/positions?', position);
+app.use(['/api/skuitems/:rfid/testResults?', '/api/skuitems/testResult'], testResult);
+app.use('/api/returnOrders?', returnOrder);
+app.use(['/api/restockOrders?', '/api/restockOrdersIssued'], restockOrder);
 app.use('/api/skuitems?', SKUItem);
 app.use('/api/skus?', SKU);
-app.use('/api/testDescriptors?', TestDescriptor);
+app.use('/api/testDescriptors?', testDescriptor);
+app.use(['/api/internalOrders', '/api/internalOrdersIssued', '/api/internalOrdersAccepted'], internalOrder);
+app.use('/api/items?', item);
 
 
 dayjs.extend(customParseFormat);
 
 /******** General purpose functions ********/
 
-function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/DD HH:mm'], true).isValid(); }
-function CheckifStateValid(State) {
-  let VALIDSTATES = ['ISSUED', 'DELIVERY', 'DELIVERED', 'TESTED', 'COMPLETEDRETURN', 'COMPLETED'];
-  return (VALIDSTATES.includes(State));
-}
 function CheckifTypeValid(type) {
   let VALIDTYPES = ['CUSTOMER', 'QUALITY_EMPLOYEE', 'MANAGER', 'DELIVERY_EMPLOYEE', 'CLERK', 'SUPPLIER'];
   return (VALIDTYPES.includes(type));
@@ -55,14 +48,7 @@ function CheckifTypeAllowed(type) {
   return (VALIDTYPES.includes(type));
 }
 
-function CheckItems(id, skuid, supplierID, itemList) {
-  let check = true
-  itemList.forEach(i => {
-    if (i.id == id) check = false;
-    else if (i.skuID == skuid && i.supplierID == supplierID) check = false;
-  })
-  return check;
-}
+
 /*******************************************/
 
 // init express
@@ -124,269 +110,6 @@ app.use(passport.session());
 app.listen(port, () => {
   //console.log(`Server listening at http://localhost:${port}`);
 });
-
-
-//Modify the state of a restock order, given its id.
-app.put('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) => {
-  console.log("In PUT newState");
-  try {
-    const errors = validationResult(req);
-    console.log("checking errors");
-    if (!errors.isEmpty()) {
-      console.log("In Errors");
-      return res.status(422).json({ errors: errors.array() });
-    }
-
-    else if (req.body.newState == null || !CheckifStateValid(req.body.newState)) {
-      console.log("Problem With newState");
-      return res.status(422).json({ error: "Invalid State" });
-    }
-
-    else {
-      console.log("checking if ROS exists");
-      let RO = await DB.getRestockOrderById(req.params.id);
-      console.log("Got ROs");
-      if (!RO)
-        return res.status(404).json({ error: "Not Found" });
-    }
-    console.log("Modifiying state");
-    await DB.modifyRestockOrderState(req.params.id, req.body.newState);
-    console.log("Modified new state");
-    res.status(200).end();
-
-  }
-  catch (err) {
-
-    res.status(500).send(err);
-  }
-});
-
-
-//Add a non empty list of skuItems to a restock order, given its id. If a restock order has already a non empty list of skuItems, merge both arrays
-app.put('/api/restockOrder/:id/skuItems', [check('id').isNumeric(), check('skuItems').notEmpty()], async (req, res) => {
-
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(422).json({ errors: errors.array() });
-    else {
-      let RO = await DB.getRestockOrderById(req.params.id);
-
-      if (RO.error)
-        return res.status(404).json({ error: "Not Found" });
-      // console.log(RO);
-      if (RO.state != 'DELIVERED')
-        return res.status(422).json({ error: "Unprocessable Entity" });
-    }
-
-    await DB.addRestockOrderSKUItems(req.params.id, req.body.skuItems);
-    res.status(200).end();
-
-  }
-  catch (err) {
-
-    res.status(500).send(err);
-  }
-
-
-});
-
-
-//Add a transport note to a restock order, given its id.
-app.put('/api/restockOrder/:id/transportNote', [check('id').isNumeric({ min: 1 }), check('transportNote').notEmpty()], async (req, res) => {
-
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(422).json({ errors: errors.array() });
-    let ROs = await DB.getRestockOrderById(req.params.id);
-
-    if (ROs.error) {
-      return res.status(404).json({ error: " No restock Order Found)" }).end();
-    }
-
-    if (ROs.state != 'DELIVERY') {
-      return res.status(422).json({ error: "unprocessable Entity" });
-    }
-
-    //console.log("state: " + ROs.state);
-    if (!CheckIfDateIsValid(req.body.transportNote.deliveryDate))
-      return res.status(422).json({ error: "unprocessable Entity" });
-    ///////////
-    /////////missing check if date is in correct oreder
-    /////////
-
-    console.log("putting note");
-    await DB.addRestockOrderTransportNote(req.params.id, req.body.transportNote);
-    console.log("Done");
-    res.status(204).end();
-
-  }
-  catch (err) {
-
-    res.status(503).send(err);
-  }
-
-
-
-});
-
-
-//Delete a restock order, given its id.
-app.delete('/api/restockOrder/:id', [check('id').isNumeric()], async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(422).json({ errors: errors.array() });
-    else {
-      let RO = await DB.getRestockOrderById(req.params.id);
-      if (RO.error)
-        return res.status(422).json({ error: "Not Found" });
-    }
-
-
-    await DB.deleteSkuItemsFromRestockOrder(req.params.id);
-    await DB.deleteProductsFromRestockOrder(req.params.id);
-    await DB.deleteRestockOrder(req.params.id);
-    res.status(204).end();
-
-  }
-  catch (err) {
-
-    res.status(503).send(err);
-  }
-
-});
-
-/*********** Return Order APIs  ********/
-//Return an array containing all return orders.
-app.get('/api/returnOrders', async (req, res) => {
-  try {
-    //console.log("step1");
-    const RO = await DB.getReturnOrders();
-    //console.log("step2");
-
-    for (let i = 0; i < RO.length; i++) {
-      // console.log("step3");
-      RO[i].products = DB.getReturnOrderProducts(RO[i].id);
-    }
-    //console.log(RO);
-    res.status(200).json(RO);
-  }
-  catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-
-//Return a return order, given its id.
-app.get('/api/returnOrders/:id', [check('id').isNumeric()], async (req, res) => {
-
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      res.status(422).json({ erros: errors.array() });
-
-    //console.log("step1");
-    let RO = await DB.getReturnOrderById(req.params.id);
-    if (RO.error) {
-      return res.status(404).json({ error: "Not Found" });
-    }
-
-    RO.products = await DB.getReturnOrderProducts(RO.id);
-
-    res.status(200).json(RO);;
-
-  }
-  catch (err) {
-
-    res.status(500).send(err);
-  }
-
-
-});
-
-
-//Creates a new return order.
-
-app.post('/api/returnOrder', [
-  check('returnDate').notEmpty(),
-  check('products').notEmpty(),
-  check('restockOrderId').isNumeric({ gt: -1 })
-], async (req, res) => {
-
-  try {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ erros: errors.array() });
-    } else {
-
-      let RO = await DB.getRestockOrderById(req.body.restockOrderId);
-      if (RO.error) {
-        return res.status(404).json({ error: "no RestockOrder associated to restockOrderID " });
-      }
-
-      if (!CheckIfDateIsValid(req.body.returnDate))
-        return res.status(422).json({ error: "wrong date format" });
-
-      let id = await DB.getLastReturnOrderId();
-      let temp = await DB.createNewReturnOrder(req.body.returnDate, req.body.restockOrderId, id + 1);
-
-      console.log("created new order");
-      console.log(temp);
-
-      if (temp.error)
-        return res.status(503).send(err);
-
-      for (let i = 0; i < req.body.products.length; i++) {
-        console.log("inserting Products");
-        temp = await DB.insertProductInRO(req.body.products[i], id + 1);
-        if (temp.error) {
-          console.log("error inserting product" + i);
-          res.status(504);
-        }
-
-      }
-
-    }
-    res.status(201).end();
-
-  }
-  catch (err) {
-    //console.log("We got an error");
-    res.status(503).send(err);
-  }
-
-});
-
-
-//Delete a return order, given its id.
-app.delete('/api/returnOrder/:id', [check('id').isNumeric()], async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(422).json({ erros: errors.array() });
-    else {
-      let RO = await DB.getReturnOrderById(req.params.id);
-      if (RO.error)
-        return res.status(422).json({ error: "Not Found" });
-    }
-
-    await DB.deleteReturnOrderProducts(req.params.id);
-    await DB.deleteReturnOrder(req.params.id);
-
-    res.status(204).end();
-
-  }
-  catch (err) {
-
-    res.status(503).send(err);
-  }
-
-});
-
-
 
 
 /**************** USER APIs *****************/
@@ -634,189 +357,5 @@ app.delete('/api/users/:username/:type', [
 
 /************* END Users API ***************/
 /******************************************/
-
-
-/**************** INTERNAL ORDER *****************/
-
-app.get('/api/internalOrders', async (req, res) => {
-  try {
-    let internalOrders = await DB.getAllInternalOrders();
-    let InternalOrdersProduct = await DB.getAllInternalOrdersProduct();
-    let InternalOrdersSKUItems = await DB.getAllInternalOrdersSKUItems();
-    internalOrders.forEach(io => {
-      if (io.state != "COMPLETED") {
-        //console.log("state is not COMPLETED.");
-        io.products = InternalOrdersProduct.filter(ip => ip.internalOrderID == io.id).map(ip => ip);
-      }
-      else {
-        //console.log("state is COMPLETE.");
-        io.products = InternalOrdersSKUItems.filter(is => is.internalOrderID == io.id).map(is => is);
-      }
-    })
-    res.status(200).json(internalOrders);
-  } catch (err) {
-    res.status(500).end();
-  }
-});
-
-app.get('/api/internalOrdersAccepted', async (req, res) => {
-  try {
-    let internalOrders = await DB.getInternalOrderByState("ACCEPTED");
-    // console.log(internalOrders);
-    res.status(200).json(internalOrders);
-  } catch (err) {
-    res.status(500).end();
-  }
-});
-
-app.get('/api/internalOrdersIssued', async (req, res) => {
-  try {
-    let internalOrders = await DB.getInternalOrderByState("ISSUED");
-    // console.log(internalOrders);
-    res.status(200).json(internalOrders);
-  } catch (err) {
-    res.status(500).end();
-  }
-});
-
-app.get('/api/internalOrders/:id', async (req, res) => {
-  try {
-    let internalOrders = await DB.getInternalOrderById(req.params.id);
-    if (internalOrders.error) res.status(404).json(internalOrders);
-
-    let InternalOrdersProduct = await DB.getInternalOrdersProductById(req.params.id);
-    let InternalOrdersSKUItems = await DB.getInternalOrdersSKUItemById(req.params.id);
-
-    if (internalOrders.state != "COMPLETED") {
-      internalOrders.products = [...InternalOrdersProduct];
-    }
-    else {
-      internalOrders.products = [...InternalOrdersSKUItems];
-    }
-    res.status(200).json(internalOrders);
-  } catch (err) {
-    res.status(500).end();
-  }
-});
-
-app.post('/api/internalOrders', async (req, res) => {
-  try {
-
-    //Verify whether the product is available in the DB
-    for (let p of req.body.products) {
-      console.log(p.SKUId);
-      let product = await DB.getInternalOrdersProductBySKUId(p.SKUId);
-      if (product.error) {
-        console.log(product);
-        res.status(404).end();
-      }
-    }
-    const lastId = await DB.getLastInternalOrderId()
-    const result = await DB.createNewInternalOrder(lastId + 1, req.body.issueDate, "ISSUED", req.body.customerId);
-
-    res.status(201).json(result);
-  } catch (err) {
-    res.status(503).end();
-  }
-});
-
-
-
-app.put('/api/internalOrders/:id', async (req, res) => {
-  try {
-
-    let internalOrder = await DB.getInternalOrderById(req.params.id);
-
-    if (internalOrder.error)
-      res.status(404).json(internalOrder);
-    if (req.body.newState == "COMPLETED") {
-      for (const p of req.body.products) {
-        const SI = await DB.modifyInternalOrderSKUItems(req.params.id, p.RFID);
-      }
-    }
-    const result = await DB.modifyInternalOrder(req.params.id, req.body.newIssueDate, req.body.newState, req.body.newCustomerId);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(503).end();
-  }
-});
-
-app.delete('/api/internalOrders/:id', async (req, res) => {
-  try {
-    await DB.deleteInternalOrderByID(req.params.id);
-    res.status(204).end();
-  } catch {
-    res.status(503).end();
-  }
-});
-
-/**************** ITEMS *****************/
-
-app.get('/api/items', async (req, res) => {
-  try {
-    let items = await DB.getAllItems();
-    res.status(200).json(items);
-  } catch (err) {
-    res.status(500).end();
-  }
-});
-
-
-app.get('/api/items/:id', async (req, res) => {
-  try {
-    let items = await DB.getItemsById(req.params.id);
-    res.status(200).json(items);
-  } catch (err) {
-    res.status(500).end();
-  }
-});
-
-
-app.post('/api/items', async (req, res) => {
-  try {
-
-    let itemList = await DB.getAllItems();
-    if (CheckItems(req.body.id, req.body.SKUId, req.body.supplierId, itemList) != true) {
-      res.status(422).json(
-        {
-          errors: "This supplier already sells an item with the same SKUId or supplier already sells an Item with the same ID."
-        }
-      );
-    }
-    else {
-      let items = await DB.createNewItem(req.body.id, req.body.price, req.body.SKUId, req.body.supplierId, req.body.description)
-      res.status(201).json(items);
-    }
-  }
-  catch (err) {
-    res.status(503).end();
-  }
-});
-
-app.put('/api/items/:id', async (req, res) => {
-  try {
-
-    let item = await DB.getItemsById(req.params.id);
-    if (item.error)
-      res.status(404).json(item);
-
-    const result = await DB.modifyItem(req.params.id, req.body.newPrice, req.body.newSKUId, req.body.newSupplierId, req.body.newDescription);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(503).end();
-  }
-});
-
-app.delete('/api/items/:id', async (req, res) => {
-  try {
-    let item = await DB.getItemsById(req.params.id);
-    if (item.error)
-      res.status(404).json(item);
-    await DB.deleteItemsByID(req.params.id);
-    res.status(204).end();
-  } catch {
-    res.status(503).end();
-  }
-});
 
 module.exports = app;
