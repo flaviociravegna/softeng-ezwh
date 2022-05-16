@@ -40,14 +40,16 @@ router.get('/sku/:id', [check('id').exists().isInt({ min: 1 })], async (req, res
         if (sku.error)
             return res.status(404).json(sku);
 
+        let result = [];
         const skuItems = await SKUItem_DAO.getSKUItemsBySkuID(req.params.id);
-        skuItems.map(si => ({
+
+        skuItems.forEach(si => result.push({
             RFID: si.RFID,
             SKUId: si.skuID,
             DateOfStock: si.dateOfStock
         }));
 
-        res.status(200).json(skuItems);
+        res.status(200).json(result);
     } catch (err) {
         res.status(500).send(err);
     }
@@ -64,7 +66,7 @@ router.get('/:rfid', [
 
         const skuItem = await SKUItem_DAO.getSKUItemByRFID(req.params.rfid);
         if (skuItem == undefined)
-            return res.status(404).json(sku);
+            return res.status(404).json(skuItem);
 
         res.status(200).json(skuItem);
     } catch (err) {
@@ -158,7 +160,7 @@ router.delete('/:rfid', [check('rfid').isNumeric().isLength({ min: 32, max: 32 }
         await SKUItem_DAO.deleteSKUItem(req.params.rfid);
 
         res.status(204).end();
-    } catch {
+    } catch (err) {
         res.status(503).send(err);
     }
 });

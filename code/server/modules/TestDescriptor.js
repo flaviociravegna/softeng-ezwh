@@ -87,7 +87,7 @@ exports.createNewTestDescriptor = (id, name, procedureDescription, idSKU) => {
 
 exports.modifyTestDescriptor = (id, newName, newProcedureDescription, newIdSKU) => {
     return new Promise(async (resolve, reject) => {
-        db.run("UPDATE TestDescriptors SET name = ?, procedureDescription = ?, idSKU = ? WHERE id = ?",
+        db.run("UPDATE TestDescriptors SET name = ?, description = ?, idSKU = ? WHERE id = ?",
             [newName, newProcedureDescription, newIdSKU, id], function (err) {
                 if (err)
                     reject(err);

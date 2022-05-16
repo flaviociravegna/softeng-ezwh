@@ -168,7 +168,7 @@ router.delete('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res)
 
         await SKU_DAO.deleteSKU(req.params.id);
         res.status(204).end();
-    } catch {
+    } catch (err) {
         res.status(503).send(err);
     }
 });

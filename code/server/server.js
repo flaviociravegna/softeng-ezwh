@@ -21,6 +21,7 @@ const testRes = require('./routes/TestResult');
 //const returnOrd = require('./routes/ReturnOrder');
 const SKUItem = require('./routes/SKUItem');
 const SKU = require('./routes/SKU');
+const TestDescriptor = require('./routes/TestDescriptor');
 
 const app = new express();
 const port = 3001;
@@ -33,6 +34,8 @@ app.use(['/api/skuitems/:rfid/testResults?', '/api/skuitems/testResult'], testRe
 //app.use('/api/returnOrders?', returnOrd);
 app.use('/api/skuitems?', SKUItem);
 app.use('/api/skus?', SKU);
+app.use('/api/testDescriptors?', TestDescriptor);
+
 
 dayjs.extend(customParseFormat);
 

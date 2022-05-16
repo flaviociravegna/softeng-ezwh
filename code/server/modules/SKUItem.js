@@ -37,7 +37,7 @@ exports.getSKUItemsBySkuID = (skuId) => {
             if (err)
                 reject(err);
             else {
-                const skuItemList = rows.map(skuItem => new SKUItem(skuItem.RFID, skuItem.dateOfStock, skuItem.skuID));
+                const skuItemList = rows.map(skuItem => new SKUItem(skuItem.RFID, skuItem.available, skuItem.dateOfStock, skuItem.skuID));
                 resolve(skuItemList);
             }
         });
