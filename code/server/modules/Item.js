@@ -6,14 +6,13 @@ const db = new sqlite.Database('ezwh.db', (err) => {
     if (err) throw err;
 });
 
-
 class Item {
-    constructor(id,price,skuID,supplierID,description) {
+    constructor(id, price, SKUId, supplierId, description) {
         this.id = id;
         this.price = price;
-        this.skuID = skuID;
-        this.supplierID = supplierID;
-        this.description = description; 
+        this.SKUId = SKUId;
+        this.supplierId = supplierId;
+        this.description = description;
     }
 }
 
@@ -57,11 +56,10 @@ exports.createNewItem = (id, price, skuID, supplierID, description) => {
     });
 }
 
-
 exports.modifyItem = (id, price, skuID, supplierID, description) => {
     return new Promise(async (resolve, reject) => {
         db.run("UPDATE Items SET id = ?, price = ?, skuID = ?, supplierID = ?, description = ? WHERE id = ?",
-            [price, skuID, supplierID, description, id], function (err) {
+            [id, price, skuID, supplierID, description, id], function (err) {
                 if (err)
                     reject(err);
                 else
@@ -69,7 +67,6 @@ exports.modifyItem = (id, price, skuID, supplierID, description) => {
             });
     });
 }
-
 
 exports.deleteItemsByID = (id) => {
     return new Promise(async (resolve, reject) => {

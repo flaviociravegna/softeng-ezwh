@@ -50,7 +50,7 @@ router.get('/:id', [
 
 // Creates a new SKU
 router.post('/', [
-    check('description').notEmpty(),
+    check('description').notEmpty().isString(),
     check('weight').isInt({ gt: 0 }),
     check('volume').isInt({ gt: 0 }),
     check('price').isFloat({ gt: 0 }),
