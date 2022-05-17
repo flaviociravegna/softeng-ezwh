@@ -8,25 +8,25 @@ const db = new sqlite.Database('ezwh.db', (err) => {
 });
 
 class InternalOrder {
-    constructor(id,issueDate,state,customerID,products) {
+    constructor(id, issueDate, state, customerID, products) {
         this.id = id;
         this.issueDate = issueDate;
         this.state = state;
         this.customerID = customerID;
-        this.products = []; 
+        this.products = [];
     }
 }
 
 class InternalOrdersSKUItem {
-    constructor(skuID,description,price,RFID,internalOrderID) {
+    constructor(skuID, description, price, RFID, internalOrderID) {
         this.skuID = skuID;
         this.description = description;
         this.price = price;
         this.RFID = RFID;
-        this.internalOrderID = internalOrderID; 
+        this.internalOrderID = internalOrderID;
     }
     check(skuID) {
-        if(skuID==this.skuID)return false;
+        if (skuID == this.skuID) return false;
         else return true;
     }
 }
@@ -94,7 +94,7 @@ exports.getLastInternalOrderId = () => {
 exports.createNewInternalOrder = (id, issueDate, state, customerID, products) => {
     return new Promise(async (resolve, reject) => {
         db.run("INSERT INTO InternalOrders (id,issueDate,state,customerID) VALUES (?, ?, ?, ?)",
-            [id, issueDate, state, customerID, products], function (err) {
+            [id, issueDate, state, customerID], function (err) {
                 if (err)
                     reject(err);
                 else
@@ -106,7 +106,7 @@ exports.createNewInternalOrder = (id, issueDate, state, customerID, products) =>
 exports.modifyInternalOrder = (id, issueDate, state, customerID) => {
     return new Promise(async (resolve, reject) => {
         db.run("UPDATE InternalOrders SET id = ?, customerID = ?, issueDate = ?, state = ? WHERE id = ?",
-            [id, issueDate, state, customerID], function (err) {
+            [id, customerID, issueDate, state, id], function (err) {
                 if (err)
                     reject(err);
                 else
@@ -136,7 +136,7 @@ exports.getAllInternalOrdersProduct = () => {
             if (err)
                 reject(err);
             else {
-                const productList = rows.map(ip => new Product(ip.skuID, ip.description, ip.price, ip.quantity, ip.internalOrderID));
+                const productList = rows.map(ip => ({ "skuID": ip.skuID, "description": ip.description, "price": ip.price, "quantity": ip.quantity, "internalOrderID": ip.internalOrderID }));
                 resolve(productList);
             }
         });
@@ -152,7 +152,7 @@ exports.getInternalOrdersProductById = (internalOrderID) => {
             if (rows == undefined)
                 resolve({ error: 'ID not found.' });
             else {
-                const productList = rows.map(ip => new Product(ip.skuID, ip.description, ip.price, ip.quantity, ip.internalOrderID));
+                const productList = rows.map(ip => ({ "skuID": ip.skuID, "description": ip.description, "price": ip.price, "quantity": ip.quantity, "internalOrderID": ip.internalOrderID }));
                 resolve(productList);
             }
         });
@@ -168,8 +168,8 @@ exports.getInternalOrdersProductBySKUId = (skuID) => {
             if (row == undefined)
                 resolve({ error: 'SKUID not found.' });
             else {
-                const productList = new Product(row.skuID, row.description, row.price, row.quantity, row.internalOrderID);
-                resolve(productList);
+                const product = { "skuID": ip.skuID, "description": ip.description, "price": ip.price, "quantity": ip.quantity, "internalOrderID": ip.internalOrderID };
+                resolve(product);
             }
         });
     });
@@ -206,6 +206,18 @@ exports.getInternalOrdersSKUItemById = (internalOrderID) => {
     });
 }
 
+exports.addInternalOrdersSKUItems = (internalOrderID, RFID) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("INSERT INTO InternalOrdersSKUItems (internalOrderID, RFID) VALUES (?, ?)",
+            [internalOrderID, RFID], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('New InternalOrder SKU Item inserted');
+            });
+    });
+}
+
 exports.modifyInternalOrderSKUItems = (id, RFID) => {
     return new Promise(async (resolve, reject) => {
         db.run("UPDATE InternalOrdersSKUItems SET internalOrderID = ? WHERE RFID = ?",
@@ -216,5 +228,39 @@ exports.modifyInternalOrderSKUItems = (id, RFID) => {
                     resolve('InternalOrdersSKUItems updated');
 
             });
+    });
+}
+
+exports.addInternalOrdersProducts = (internalOrderID, skuID, quantity) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("INSERT INTO InternalOrdersProducts (internalOrderID, skuID, quantity) VALUES (?, ?, ?)",
+            [internalOrderID, skuID, quantity], function (err) {
+                if (err)
+                    reject(err);
+                else
+                    resolve('New InternalOrder inserted');
+            });
+    });
+}
+
+exports.deleteInternalOrderProducts = (internalOrderID) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM InternalOrdersProducts WHERE internalOrderID = ?", [internalOrderID], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('InternalOrder products deleted');
+        });
+    });
+}
+
+exports.deleteInternalOrderSKUItems = (internalOrderID) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM InternalOrdersSKUItems WHERE internalOrderID = ?", [internalOrderID], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('InternalOrder SKU Items deleted');
+        });
     });
 }
