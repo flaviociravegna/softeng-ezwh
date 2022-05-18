@@ -94,4 +94,18 @@ exports.deletePosition = (positionID) => {
         });
     });
 }
+
+//delete an existing position, given its positionID
+exports.searchPosition = (positionID) => {
+    return new Promise((resolve, reject) => {
+        const sql_query = "SELECT * FROM SKUs WHERE positionID=?";
+        db.all(sql_query, [positionID], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(rows);
+        });
+    });
+}
 /*********************************************/

@@ -21,49 +21,41 @@ class RestockOrder{
 
 /*************** Restock Order ********************/
 //
-exports.getRestockOrderProducts =(id) =>{
-    //console.log("THIS IS JUST A TEST");
-    //console.log("ID:"+id);
+exports.getRestockOrderProducts =(restock_id) =>{
     return new Promise((resolve, reject) => {
-        //console.log("getting products");
-        db.all("SELECT * FROM RestockOrdersProducts RoS WHERE RoS.restockOrderID = ?",
-            [id], (err, rows) => {
-                //console.log(rows);
-                //console.log("------------------------");
-                if(rows== undefined){
-                    resolve([]);
-                }
-                if (err){
-                    console.log(err);
-                    reject(err);
-                }
-        
-                else {
-                   // console.log(rows);
-                    resolve(rows);
-                }
-            });
+        const sql = 'SELECT RS.skuID, RS.quantity, S.description, S.price FROM RestockOrdersProducts RS, SKUs S WHERE RS.restockOrderID = ? AND RS.skuID = S.id'
+        db.all( sql, [restock_id], (err, rows) => {
+            if (err){
+                reject(err);
+            }
+            else {
+                const productsList = rows.map((row) => ({
+                    SKUId: row.skuID,
+                    description: row.description,
+                    price: row.price,
+                    qty: row.quantity,
+                }));
+                resolve(productsList);
+            }
+        });
     });
 
 }
 
 
-exports.getRestockOrderSkuItems = (id) => {
-    //console.log("ID:"+ id);
-    return new Promise((resolve,reject)=>{
-        //console.log("In Promise:"+ id);
-        db.all("SELECT S.RFID, S.skuID FROM RestockOrdersSKUItems ROS, SKUItems S WHERE S.RFID=ROS.RFID AND ROS.restockOrderID = ?",
-        [id], (err,rows)=>{
-            //console.log("in query:"+ id);
-            //console.log(rows);
-            if(rows== undefined)
-                resolve([]);
+exports.getRestockOrderSkuItems = (restock_id) => {
+    return new Promise((resolve,reject) => {
+        const sql = 'SELECT RFID, SKUId FROM RestockOrdersSKUItems WHERE restockOrderID = ?'
+        db.all(sql, [restock_id], (err,rows) => {
+    
             if(err){
-                //console.log("In Error:"+ id);
                 reject(err);
-            }else{
-                //console.log("In Resolve:"+ id);
-                resolve(rows);
+            } else {
+                const SKUItemList = rows.map((row) => ({
+                    SKUId: row.SKUId,
+                    rfid: row.RFID
+                }));
+                resolve(SKUItemList);
             }
         });
        
@@ -71,23 +63,15 @@ exports.getRestockOrderSkuItems = (id) => {
 }
 
 
+
 exports.getRestockOrders = () => {
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM RestockOrders", [], (err, rows) => {
             if (err){
-                //console.log(err);
                 reject(err);
             }    
             else {
-                //console.log("mapping");
                 const RestockOrders = rows.map(RO => new RestockOrder(RO.id, RO.issueDate, RO.state, RO.SupplierId, RO.transportNote));
-                /*for (let RO in RestockOrders) {
-                    RO.products = this.getProducts(RO.id);
-                    RO.skuItems = this.getSKUItems(RO.id);
-                   // if (!RO.products.isArray() || RO.products.error || !RO.skuItems.isArray() || RO.skuItems.error)
-                       // reject(Error());
-                }*/
-                //console.log(RestockOrders);
                 resolve(RestockOrders);
             }
         });
@@ -108,11 +92,9 @@ exports.getRestockOrdersIssued = () => {
                    // if (!RO.products.isArray() || RO.products.error || !RO.skuItems.isArray() || RO.skuItems.error)
                    //     reject(Error());
                 }*/
-
                 resolve(RestockOrders);
             }
         });
-
     });
 }
 
@@ -120,22 +102,16 @@ exports.getRestockOrdersIssued = () => {
 exports.getRestockOrderById = (Id) => {
     return new Promise((resolve, reject) => {
         db.get("SELECT * FROM RestockOrders WHERE id = ?", [Id], (err, row) => {
-            //console.log("qued ROS");
             if (err)
                 reject(err);
-            else {
-                console.log(row);
-                if(row == undefined){
-                    //console.log("going back");
-                    resolve({error : 'error'});
-                }
-                    
-              else{
-                 let RO = new RestockOrder(row.id, row.issueDate, row.state, row.SupplierId, row.transportNote);
-                resolve(RO); 
-              }
-               
+            
+            if(row == undefined){
+                resolve({error : 'Restock Order not found'});
             }
+            else { 
+                let RO = new RestockOrder(row.id, row.issueDate, row.state, row.SupplierId, row.transportNote);
+                resolve(RO);     
+            }        
         });
     });
 }
@@ -143,16 +119,10 @@ exports.getRestockOrderById = (Id) => {
 
 exports.getRestockOrderFailedSKUItems = (id) => {
     return new Promise((resolve, reject) => {
-        //console.log("in query");
-        db.all("SELECT S.skuID, SR.RFID FROM TestResults TR, SKUItems S, RestockOrdersSKUItems SR WHERE S.RFID = SR.RFID AND TR.RFID = S.RFID AND SR.restockOrderID = ?", [id], (err, rows) => {
+        db.all("SELECT RO.SKUId, RO.RFID FROM TestResults TR, RestockOrdersSKUItems RO WHERE RO.RFID = TR.RFID AND TR.result = 0 AND RO.restockOrderID = ? GROUP BY RO.RFID", [id], (err, rows) => {
             if (err){
-                //console.log("Error");
                 reject(err); 
             }
-            
-            if(rows == undefined){
-                resolve([]);
-            }    
             else {
                 resolve(rows);
             }
@@ -166,78 +136,51 @@ exports.getLastPIDInOrder = (id)=>{
                 if (err){
                    reject(err);
                 }
-    
                 else
                     {
                     resolve (row == undefined ? 0 : row.id);
                     }
-                    
             });
         });
-        //console.log("getting PIDI");
 }
 
-exports.insertProductInOrder=(id, product, PId) =>{
+exports.insertProductInOrder = (id, skuID, qty) => {
     return new Promise((resolve, reject) => {
-        
-        db.run("INSERT INTO RestockOrdersProducts (restockOrderId, skuID, quantity, id) VALUES (?,?,?,?)", [id, product.SKUId, product.qty, PId], function (err) {
+        const sql = 'INSERT INTO RestockOrdersProducts (restockOrderId, skuID, quantity) VALUES (?,?,?)';
+        db.run(sql, [id, skuID, qty], (err, row) => {
             if (err){
-                console.log(err);
                 reject(err);
             }
-                
-
-            else resolve('done');
+            else resolve(null);
         });
-
     });
-
 }
 
 exports.getLastIdRsO = () => {
-    //console.log("getting largest id");
     return new Promise((resolve, reject) => {
-        //console.log("QUERY");
         db.get("SELECT id FROM RestockOrders ORDER BY id DESC LIMIT 1", [], (err, row) => {
-            
             if (err){
-               //console.log(err);
                 reject(err); 
             }
             else
                 resolve(row == undefined ? 0 : row.id);
         });
-
     });
-
 }
 
 //need to create an entry for each item in the corresponding table.
 // need to see where to put product description consider creating a class product
-exports.createRestockOrder = (issueDate, products, supplierId,id) => {
-    //console.log("CreateRestockOrder");
-    try{
-        return new Promise((resolve, reject) => {
-        //console.log("creating id");
-       // id = db.getLastId() + 1;
-        //console.log(id);
-        //console.log("inserting restockOrder"); 
+exports.createRestockOrder = (issueDate, supplierId, id) => {
+    return new Promise((resolve, reject) => {
         db.run("INSERT INTO RestockOrders (id, issueDate, state, supplierID) VALUES (?, ?, ?, ?)",
             [id, issueDate, 'ISSUED', supplierId], function (err) {
-                if (err){
-                    //console.log(err);
+                if (err) 
                     reject(err);
-                }   
                 else
-        
-                resolve('New RestockOrder inserted');
+                    resolve('New RestockOrder inserted');
             }
         );
-    });
-    }catch{
-        res.status(500);
-    }
-    
+    });    
 }
 
 exports.removeSKUItemFromRestockOrder = (skuId, id) => {
@@ -255,24 +198,28 @@ exports.removeSKUItemFromRestockOrder = (skuId, id) => {
 }
 
 exports.modifyRestockOrderState = (id, newState) => {
-    //console.log("In Modify newState");
-    //console.log(id + newState);
-    return new Promise(async (resolve, reject) => {
-        //console.log("In Promise");
-        db.run("UPDATE RestockOrders SET State = ? WHERE id = ?",
-            [newState, id], function (err) {
-                //console.log("did Query");
+    return new Promise((resolve, reject) => {
+        db.run("UPDATE RestockOrders SET state = ? WHERE id = ?",
+            [newState, id], (err, rows) => {
                 if (err)
                     reject(err);
                 else
-                    resolve();
+                    resolve(null);
             });
     });
 }
 
-exports.addRestockOrderSKUItems = (id, skuItems) => { }
-//exports.issueRestockOrder = (id) => {}
-//not requested by API
+exports.addRestockOrderSKUItems = (restockOrderID, RFID, SKUId) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("INSERT INTO RestockOrdersSKUItems (restockOrderID, RFID, SKUId) VALUES (?, ?, ?)",
+            [restockOrderID, RFID, SKUId], (err, row) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve('New RestockOrder SKU Item inserted');
+            });
+    });
+}
 
 // for now Transport note is A string should fix it to have it in its own table
 exports.addRestockOrderTransportNote = (id, transportNote) => {
@@ -286,6 +233,7 @@ exports.addRestockOrderTransportNote = (id, transportNote) => {
             });
     });
 };
+
 exports.deleteRestockOrder = (id) => {
     return new Promise((resolve,reject) => {
         db.run("DELETE FROM RestockOrders WHERE id = ?",[id], function (err) {
@@ -298,38 +246,55 @@ exports.deleteRestockOrder = (id) => {
         
 };
 
-
 exports.deleteSkuItemsFromRestockOrder =(id)=>{
-    //console.log("started query");
     return new Promise((resolve, reject)=>{
-        db.run("DELETE FROM RestockOrdersSKUItems WHERE restockOrderID = ?",
-             [id], function (err) {
-        if (err){
-            console.log(err);
+        db.run("DELETE FROM RestockOrdersSKUItems WHERE restockOrderID = ?", [id], function (err) {
+        if (err)
             reject(err);
-        }
-            
         else
-             resolve('Deleted');
+            resolve('Deleted');
         });
-
     });
-
 }
+
 exports.deleteProductsFromRestockOrder = (id) => {
     return new Promise((resolve, reject) => {
-        //console.log("started query");
         db.run("DELETE FROM RestockOrdersProducts WHERE restockOrderID = ?",
              [id], function (err) {
         if (err){
-            console.log(err);
             reject(err);
-        }
-            
+        }  
         else
              resolve('Deleted');
         });
-
     });
-    
+}
+
+exports.getSupplierById = (id) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT userId, username, type FROM users WHERE userId = ? AND type="SUPPLIER"', [id], (err, row) => {
+            if (err)
+                reject(err);
+            if (row == undefined)
+                resolve({ error: 'Supplier not found.' });
+            else 
+                resolve(row);
+        });
+    });
+};
+
+
+exports.getSKUByIdFromRestockOrder = (skuId, restockOrderId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM RestockOrdersProducts WHERE restockOrderID = ? AND skuID = ?';
+        db.get(sql, [restockOrderId, skuId], (err, row) => {
+            if (err) {
+                reject(err);   
+                return;
+            }
+            if (row == undefined)
+                resolve({ error: 'SKU not found.' });
+            else resolve(row);
+        });
+    });
 }

@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
       occupiedVolume: row.occupiedVolume,
     }));
 
-    res.json(positions_array);
+    res.status(200).json(positions_array);
   }
   catch (err) {
     res.status(500).end();
@@ -38,12 +38,12 @@ router.get('/', async (req, res) => {
 /// TO DISCUSS: Error 409 not present in API.md
 // TODO: migliorare gestione errori
 router.post('/', [
-  check('positionID').isString().isLength({ min: 12, max: 12 }),
-  check('aisleID').isString().isLength({ min: 4, max: 4 }),
-  check('row').isString().isLength({ min: 4, max: 4 }),
-  check('col').isString().isLength({ min: 4, max: 4 }),
-  check('maxWeight').isInt(),
-  check('maxVolume').isInt()
+  check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
+  check('aisleID').isNumeric().isLength({ min: 4, max: 4 }),
+  check('row').isNumeric().isLength({ min: 4, max: 4 }),
+  check('col').isNumeric().isLength({ min: 4, max: 4 }),
+  check('maxWeight').isInt({ gt: 0 }),
+  check('maxVolume').isInt({ gt: 0 })
 ], async (request, response) => {
 
   try {
@@ -79,14 +79,14 @@ router.post('/', [
 
 // MODIFY the positionID a position identified by positionID 
 router.put('/:positionID', [
-  check('positionID').isString().isLength({ min: 12, max: 12 }),
-  check('newAisleID').isString().isLength({ min: 4, max: 4 }),
-  check('newRow').isString().isLength({ min: 4, max: 4 }),
-  check('newCol').isString().isLength({ min: 4, max: 4 }),
-  check('newMaxWeight').isInt(),
-  check('newMaxVolume').isInt(),
-  check('newOccupiedWeight').isInt(),
-  check('newOccupiedVolume').isInt()
+  check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
+  check('newAisleID').isNumeric().isLength({ min: 4, max: 4 }),
+  check('newRow').isNumeric().isLength({ min: 4, max: 4 }),
+  check('newCol').isNumeric().isLength({ min: 4, max: 4 }),
+  check('newMaxWeight').isInt({ gt: 0 }),
+  check('newMaxVolume').isInt({ gt: 0 }),
+  check('newOccupiedWeight').isInt({ gt: -1 }),
+  check('newOccupiedVolume').isInt({ gt: -1 })
 ], async (req, res) => {
   try {
     // Check parameter
@@ -101,7 +101,7 @@ router.put('/:positionID', [
 
     const result = await Position.modifyPosition(req.params.positionID, req.body.newAisleID, req.body.newRow, req.body.newCol,
       req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
-    res.status(200).json(result);
+    res.status(200).end();
 
   } catch (err) {
     res.status(503).send(err);
@@ -110,8 +110,8 @@ router.put('/:positionID', [
 
 // MODIFY all fields of a position identified by positionID 
 router.put('/:positionID/changeID', [
-  check('positionID').isString().isLength({ min: 12, max: 12 }),
-  check('newPositionID').isString().isLength({ min: 12, max: 12 })
+  check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
+  check('newPositionID').isNumeric().isLength({ min: 12, max: 12 })
 ], async (req, res) => {
   try {
     // Check parameter
@@ -125,7 +125,7 @@ router.put('/:positionID/changeID', [
       return res.status(404).end(); //position not found
 
     const result = await Position.modifyPositionID(req.params.positionID, req.body.newPositionID);
-    res.status(200).json(result);
+    res.status(200).end();
 
   } catch (err) {
     res.status(503).send(err);
@@ -135,7 +135,7 @@ router.put('/:positionID/changeID', [
 // DELETE the position
 // TO BE REVIEWED
 router.delete('/:positionID', [
-  check('positionID').isString().isLength({ min: 12, max: 12 })
+  check('positionID').isNumeric().isLength({ min: 12, max: 12 })
 ], async (request, response) => {
 
   try {
@@ -149,10 +149,15 @@ router.delete('/:positionID', [
     if (position.error)
       return response.status(404).end(); //position not found
 
+    let positionOccupied = await Position.searchPosition(request.params.positionID);
+    if (positionOccupied.length != 0)
+      return response.status(503).json({ error: `Position not empty - impossible to delete`});
+
     await Position.deletePosition(request.params.positionID);
     response.status(204).end();
 
   } catch (err) {
+    console.log(err)
     response.status(503).json({ error: `Database error while deleting: ${request.params.positionID}.` });
   }
 });

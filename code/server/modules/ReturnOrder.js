@@ -28,7 +28,7 @@ exports.getReturnOrders = () => {
             if (err)
                 reject(err);
             else {
-                const roList = rows.map(ro => new ReturnOrder(ro.id, ro.returnDate, ro.restockOrder));
+                const roList = rows.map(ro => new ReturnOrder(ro.id, ro.returnDate, ro.restockOrderID));
                 resolve(roList);
             }
         });
@@ -54,11 +54,9 @@ exports.getReturnOrderById = (id) => {
 
 exports.getReturnOrderProducts= (id) =>{
     return new Promise((resolve,reject)=>{
-        db.all('SELECT * FROM ReturnOrdersProducts WHERE ReturnOrderID = ?',[id],(err,rows)=>{
+        db.all('SELECT SKUId, description, price, RFID FROM ReturnOrdersProducts WHERE ReturnOrderID = ?',[id],(err,rows)=>{
             if(err)
                 reject(err);
-            if(rows==undefined)
-                resolve([]);
             else
                 resolve(rows)
         });
@@ -71,7 +69,6 @@ exports.getLastReturnOrderId= () =>{
     return new Promise((resolve, reject) => {
         db.get("SELECT id FROM ReturnOrders ORDER BY id DESC LIMIT 1", [], (err, row) => {
             if (err){
-                console.log(err);
                 reject(err); 
             }
             else
@@ -81,14 +78,10 @@ exports.getLastReturnOrderId= () =>{
 }
 
 exports.insertProductInRO = (product,id) => {
-    return new Promise((resolve, reject) => {
-        if(id==undefined){
-             resolve({error:'id problem'})
-        }
-           
-        db.run("INSERT INTO ReturnOrdersProducts (SKUId,description,price,RFID,ReturnOrderID) VALUES (?,?,?,?,?)", [product.SKUId, product.description, product.price, product.RFID, id], function (err) {
+    return new Promise((resolve, reject) => {          
+        db.run("INSERT INTO ReturnOrdersProducts (SKUId,description,price,RFID,ReturnOrderID) VALUES (?,?,?,?,?)", 
+            [product.SKUId, product.description, product.price, product.RFID, id], function (err) {
             if (err) {
-                console.log(err);
                reject(err); 
             }
             else resolve('inserted products');
@@ -105,15 +98,12 @@ exports.createNewReturnOrder = (returnDate, restockOrderId, id) => {
         db.run("INSERT INTO ReturnOrders (id, returnDate, restockOrderID) VALUES (?, ?, ?)",
             [id, returnDate, restockOrderId], function (err) {
                 if (err){
-                    console.log(err);
                     reject(err);
                 }
-                    
                 else
                     resolve({done:'New ReturnOrder inserted'});
             });
     });
-
 }
 //exports.commitReturnOrder = (id) => {}
 // not asked by API
@@ -145,3 +135,17 @@ exports.deleteReturnOrderProducts=(id)=>{
     });
 }
 
+exports.getRFIDFromRestockOrder = (RFID, restockOrderId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM RestockOrdersSKUItems WHERE restockOrderID = ? AND RFID = ?';
+        db.get(sql, [restockOrderId, RFID], (err, row) => {
+            if (err) {
+                reject(err);   
+                return;
+            }
+            if (row == undefined)
+                resolve({ error: 'RFID not found in Restock Order' });
+            else resolve(row);
+        });
+    });
+}

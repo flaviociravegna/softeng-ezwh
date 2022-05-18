@@ -16,16 +16,12 @@ function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/D
 //Return an array containing all return orders.
 router.get('/', async (req, res) => {
     try {
-      //console.log("step1");
       const RO = await returnOrder_DAO.getReturnOrders();
-      //console.log("step2");
-  
-      for (let i = 0; i < RO.length; i++) {
-        // console.log("step3");
-        RO[i].products = await returnOrder_DAO.getReturnOrderProducts(RO[i].id);
-        console.log(RO[i].products);
+
+      for (let returnOrder of RO) {
+        returnOrder.products = await returnOrder_DAO.getReturnOrderProducts(returnOrder.id);
       }
-      //console.log(RO);
+    
       res.status(200).json(RO);
     } catch (err) {
       res.status(500).send(err);
@@ -35,21 +31,19 @@ router.get('/', async (req, res) => {
   
 //Return a return order, given its id.
 router.get('/:id', [
-    check('id').isNumeric()
+    check('id').isNumeric({min: 1})
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
             res.status(422).json({ erros: errors.array() });
 
-        //console.log("step1");
         let RO = await returnOrder_DAO.getReturnOrderById(req.params.id);
         if (RO.error) {
             return res.status(404).json({ error: "Not Found" });
         }
   
-        RO.products = await returnOrder_DAO.getReturnOrderProducts(RO.id);
-    
+        RO.products = await returnOrder_DAO.getReturnOrderProducts(req.params.id);
         res.status(200).json(RO);;
   
     } catch (err) {
@@ -57,12 +51,16 @@ router.get('/:id', [
     }
 });
   
-  
+
 //Creates a new return order.
 router.post('/', [
     check('returnDate').notEmpty(),
-    check('products').notEmpty(),
-    check('restockOrderId').isNumeric({ gt: -1 })
+    check('products').isArray(),
+    check('products.*.SKUId').exists().isInt({ min: 1 }),
+    check('products.*.description').isString(),
+    check('products.*.price').isFloat({ gt: 0 }),
+    check('products.*.RFID').isNumeric().isLength({ min: 32, max: 32 }),
+    check('restockOrderId').isNumeric({ gt: 0 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -79,30 +77,24 @@ router.post('/', [
             if (!CheckIfDateIsValid(req.body.returnDate))
                 return res.status(422).json({ error: "wrong date format" });
 
+            //check if SKUItem exists in Restock Order
+            for (let SKUItem of req.body.products) {
+                let sku = await returnOrder_DAO.getRFIDFromRestockOrder(SKUItem.RFID, req.body.restockOrderId);
+                    if (sku.error)
+                        return res.status(422).send("RFID " + SKUItem.RFID + " not found in restock Order" + req.body.restockOrderId);
+                }
+            }
+
             let id = await returnOrder_DAO.getLastReturnOrderId();
             let temp = await returnOrder_DAO.createNewReturnOrder(req.body.returnDate, req.body.restockOrderId, id + 1);
 
-            console.log("created new order");
-            console.log(temp);
-
-            if (temp.error)
-                return res.status(503).send(err);
-
-            for (let i = 0; i < req.body.products.length; i++) {
-                console.log("inserting Products");
-                temp = await returnOrder_DAO.insertProductInRO(req.body.products[i], id + 1);
-                if (temp.error) {
-                    console.log("error inserting product" + i);
-                    res.status(504);
-                }
+            for (let product of req.body.products) {
+                await returnOrder_DAO.insertProductInRO(product, id + 1);
             }
-        }
         
         res.status(201).end();
 
     } catch (err) {
-        //console.log("We got an error");
-        console.log(err);
         res.status(503).send(err);
     }
 
@@ -111,7 +103,7 @@ router.post('/', [
   
 //Delete a return order, given its id.
 router.delete('/:id', [
-    check('id').isNumeric()
+    check('id').isNumeric({min: 1})
 ], async (req, res) => {
     try {
         const errors = validationResult(req);

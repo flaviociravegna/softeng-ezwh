@@ -3,7 +3,8 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const TestResult = require('../modules/testResult_db');
-const DB = require('../modules/DB');
+const SkuItem_db = require('../modules/SKUItem');
+const TestDesc_db = require('../modules/TestDescriptor');
 const { check, validationResult } = require('express-validator'); // validation middleware
 router.use(express.json());
 const dayjs = require('dayjs');
@@ -23,7 +24,7 @@ dayjs.extend(customParseFormat);
 // Return a Test Result given a RFID and Test Id.
 router.get('/:id', [
     check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
-    check('id').isInt()
+    check('id').isInt({ min: 1 })
 ], async (req, res) => {
 
     try {
@@ -33,7 +34,7 @@ router.get('/:id', [
             return res.status(422).end();
 
         //Check if SKU Item exists
-        const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
+        const skuItem = await SkuItem_db.getSKUItemByRFID(req.params.rfid);
         if (skuItem.error)
             return res.status(404).end(); //skuItem not found
 
@@ -43,8 +44,8 @@ router.get('/:id', [
 
         const result = {
             id: testResults.id,
-            date: testResults.date,
-            result: BooleanTranslate(testResults.result),
+            Date: testResults.date,
+            Result: BooleanTranslate(testResults.result),
             idTestDescriptor: testResults.idTestDescriptor,
         };
 
@@ -67,7 +68,7 @@ router.get('/', [
             return res.status(422).end();
 
         //Check if SKU Item exists
-        const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
+        const skuItem = await SkuItem_db.getSKUItemByRFID(req.params.rfid);
         if (skuItem.error)
             return res.status(404).end(); //skuItem not found
 
@@ -75,8 +76,8 @@ router.get('/', [
 
         const testResult_array = testResults.map((row) => ({
             id: row.id,
-            date: row.date,
-            result: BooleanTranslate(row.result),
+            Date: row.date,
+            Result: BooleanTranslate(row.result),
             idTestDescriptor: row.idTestDescriptor,
         }));
 
@@ -89,9 +90,9 @@ router.get('/', [
 
 // CREATE NEW TEST Result
 router.post('/', [
-    check('rfid').isString().isLength({ min: 32, max: 32 }),
-    check('idTestDescriptor').isInt(),
-    check('result').isBoolean()
+    check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
+    check('idTestDescriptor').isInt({ min: 1 }),
+    check('Result').isBoolean()
 ], async (req, res) => {
 
     try {
@@ -100,16 +101,16 @@ router.post('/', [
             return res.status(422).json({ errors: errors.array() });
 
         //check date validity
-        if (!CheckIfDateIsValid(req.body.date))
+        if (!CheckIfDateIsValid(req.body.Date))
             return res.status(422).json({ error: "Invalid date format" });
 
         //Check if SKU Item exists
-        const skuItem = await DB.getSKUItemByRFID(req.body.rfid);
+        const skuItem = await SkuItem_db.getSKUItemByRFID(req.body.rfid);
         if (skuItem.error)
             return res.status(404).json({ error: "SKUItem not found" });
 
         //Check if TestDescriptor exists
-        const test_descriptor = await DB.getTestDescriptorsIdById(req.body.idTestDescriptor);
+        const test_descriptor = await TestDesc_db.getTestDescriptorById(req.body.idTestDescriptor);
         if (test_descriptor.error)
             return res.status(404).json({ error: "Test Descriptor not found" }); //test_descriptor not found
 
@@ -122,8 +123,8 @@ router.post('/', [
 
         const new_testResult = {
             id: max_id,
-            date: req.body.date,
-            result: req.body.result,
+            date: req.body.Date,
+            result: req.body.Result,
             rfid: req.body.rfid,
             idTestDescriptor: req.body.idTestDescriptor
         };
@@ -132,15 +133,16 @@ router.post('/', [
         res.status(201).end();
 
     } catch (err) {
+        console.log(err)
         res.status(503).end();
     }
 });
 
 // MODIFY a test Result identified by id for a certain sku item identified by RFID.
 router.put('/:id', [
-    check('rfid').isString().isLength({ min: 32, max: 32 }),
-    check('id').isInt(),
-    check('newIdTestDescriptor').isInt(),
+    check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
+    check('id').isInt({ min: 1 }),
+    check('newIdTestDescriptor').isInt({ min: 1 }),
     check('newResult').isBoolean()
 ], async (req, res) => {
 
@@ -153,7 +155,7 @@ router.put('/:id', [
             return res.status(422).json({ error: "Invalid date format" });
 
         //Check if SKU Item exists
-        const skuItem = await DB.getSKUItemByRFID(req.params.rfid);
+        const skuItem = await SkuItem_db.getSKUItemByRFID(req.params.rfid);
         if (skuItem.error)
             return res.status(404).json({ error: "SKUItem not found" });
 
@@ -163,7 +165,7 @@ router.put('/:id', [
             return res.status(404).json({ error: "Test Results not found" }); //testResult not found
 
         //Check if TestDescriptor exists
-        const test_descriptor = await DB.getTestDescriptorsIdById(req.body.newIdTestDescriptor);
+        const test_descriptor = await TestDesc_db.getTestDescriptorById(req.body.newIdTestDescriptor);
         if (test_descriptor.error)
             return res.status(404).json({ error: "Test Descriptor not found" }); //test_descriptor not found
 
@@ -177,8 +179,8 @@ router.put('/:id', [
 
 // DELETE a test result, given its id for a certain sku item identified by RFID
 router.delete('/:id', [
-    check('rfid').isString().isLength({ min: 32, max: 32 }),
-    check('id').isInt()
+    check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
+    check('id').isInt({ min: 1 })
 ], async (request, response) => {
 
     try {
