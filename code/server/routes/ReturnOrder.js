@@ -5,9 +5,11 @@ const router = express.Router();
 const returnOrder_DAO = require('../modules/ReturnOrder');
 const restockOrder_DAO = require('../modules/RestockOrder');
 const { check, validationResult } = require('express-validator'); // validation middleware
-router.use(express.json());
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
+
+router.use(express.json());
+dayjs.extend(customParseFormat);
 
 function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/DD HH:mm'], true).isValid(); }
 
@@ -16,22 +18,20 @@ function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/D
 //Return an array containing all return orders.
 router.get('/', async (req, res) => {
     try {
-      const RO = await returnOrder_DAO.getReturnOrders();
+        const RO = await returnOrder_DAO.getReturnOrders();
+        for (let returnOrder of RO)
+            returnOrder.products = await returnOrder_DAO.getReturnOrderProducts(returnOrder.id);
 
-      for (let returnOrder of RO) {
-        returnOrder.products = await returnOrder_DAO.getReturnOrderProducts(returnOrder.id);
-      }
-    
-      res.status(200).json(RO);
+        res.status(200).json(RO);
     } catch (err) {
-      res.status(500).send(err);
+        res.status(500).send(err);
     }
-  });
-  
-  
+});
+
+
 //Return a return order, given its id.
 router.get('/:id', [
-    check('id').isNumeric({min: 1})
+    check('id').exists().isInt({ min: 1 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -39,18 +39,16 @@ router.get('/:id', [
             res.status(422).json({ erros: errors.array() });
 
         let RO = await returnOrder_DAO.getReturnOrderById(req.params.id);
-        if (RO.error) {
-            return res.status(404).json({ error: "Not Found" });
-        }
-  
+        if (RO.error)
+            return res.status(404).json({ error: "Return order not Found" });
+
         RO.products = await returnOrder_DAO.getReturnOrderProducts(req.params.id);
-        res.status(200).json(RO);;
-  
+        res.status(200).json(RO);
     } catch (err) {
         res.status(500).send(err);
     }
 });
-  
+
 
 //Creates a new return order.
 router.post('/', [
@@ -60,66 +58,58 @@ router.post('/', [
     check('products.*.description').isString(),
     check('products.*.price').isFloat({ gt: 0 }),
     check('products.*.RFID').isNumeric().isLength({ min: 32, max: 32 }),
-    check('restockOrderId').isNumeric({ gt: 0 })
-], async (req, res) => {
-    try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ erros: errors.array() });
-        } else {
-
-            let RO = await restockOrder_DAO.getRestockOrderById(req.body.restockOrderId);
-            if (RO.error) {
-                return res.status(404).json({ error: "no RestockOrder associated to restockOrderID " });
-            }
-
-            if (!CheckIfDateIsValid(req.body.returnDate))
-                return res.status(422).json({ error: "wrong date format" });
-
-            //check if SKUItem exists in Restock Order
-            for (let SKUItem of req.body.products) {
-                let sku = await returnOrder_DAO.getRFIDFromRestockOrder(SKUItem.RFID, req.body.restockOrderId);
-                    if (sku.error)
-                        return res.status(422).send("RFID " + SKUItem.RFID + " not found in restock Order" + req.body.restockOrderId);
-                }
-            }
-
-            let id = await returnOrder_DAO.getLastReturnOrderId();
-            let temp = await returnOrder_DAO.createNewReturnOrder(req.body.returnDate, req.body.restockOrderId, id + 1);
-
-            for (let product of req.body.products) {
-                await returnOrder_DAO.insertProductInRO(product, id + 1);
-            }
-        
-        res.status(201).end();
-
-    } catch (err) {
-        res.status(503).send(err);
-    }
-
-});
-  
-  
-//Delete a return order, given its id.
-router.delete('/:id', [
-    check('id').isNumeric({min: 1})
+    check('restockOrderId').isInt({ gt: 0 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(422).json({ erros: errors.array() });
-        else {
-            let RO = await returnOrder_DAO.getReturnOrderById(req.params.id);
-            if (RO.error)
-                return res.status(422).json({ error: "Not Found" });
+
+        if (!CheckIfDateIsValid(req.body.returnDate))
+            return res.status(422).json({ error: "wrong date format" });
+
+        let RO = await restockOrder_DAO.getRestockOrderById(req.body.restockOrderId);
+        if (RO.error)
+            return res.status(404).json({ error: "no RestockOrder associated to restockOrderID " });
+
+        //check if SKUItem exists in Restock Order
+        for (let SKUItem of req.body.products) {
+            const sku = await returnOrder_DAO.getRFIDFromRestockOrder(SKUItem.RFID, req.body.restockOrderId);
+            if (sku.error)
+                return res.status(422).send("RFID " + SKUItem.RFID + " not found in restock Order" + req.body.restockOrderId);
         }
+
+        const id = await returnOrder_DAO.getLastReturnOrderId();
+        await returnOrder_DAO.createNewReturnOrder(req.body.returnDate, req.body.restockOrderId, id + 1);
+
+        for (let product of req.body.products)
+            await returnOrder_DAO.insertProductInRO(product, id + 1);
+
+        res.status(201).end();
+
+    } catch (err) {
+        res.status(503).send(err);
+    }
+});
+
+
+//Delete a return order, given its id.
+router.delete('/:id', [
+    check('id').exists().isInt({ min: 1 })
+], async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(422).json({ erros: errors.array() });
+
+        const RO = await returnOrder_DAO.getReturnOrderById(req.params.id);
+        if (RO.error)
+            return res.status(422).json({ error: "Not Found" });
 
         await returnOrder_DAO.deleteReturnOrderProducts(req.params.id);
         await returnOrder_DAO.deleteReturnOrder(req.params.id);
 
         res.status(204).end();
-
     } catch (err) {
         res.status(503).send(err);
     }

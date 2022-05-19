@@ -1,11 +1,6 @@
 'use strict';
 
-const sqlite = require('sqlite3');
-
-// open the database 
-const db = new sqlite.Database('ezwh.db', (err) => {
-    if (err) throw err;
-});
+const db = require('./DB');
 
 class SKUItem {
     constructor(RFID, available, dateOfStock, skuID) {
