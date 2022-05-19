@@ -40,7 +40,7 @@ router.get('/:id', [
 
         let RO = await returnOrder_DAO.getReturnOrderById(req.params.id);
         if (RO.error)
-            return res.status(404).json({ error: "Return order not Found" });
+            return res.status(404).end();
 
         RO.products = await returnOrder_DAO.getReturnOrderProducts(req.params.id);
         res.status(200).json(RO);

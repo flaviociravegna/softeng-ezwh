@@ -132,7 +132,7 @@ router.delete('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res)
 
         const item = await item_DAO.getItemsById(req.params.id);
         if (item.error)
-            return res.status(404).json(item);
+            return res.status(422).json(item);
 
         await item_DAO.deleteItemsByID(req.params.id);
         res.status(204).end();

@@ -102,8 +102,8 @@ router.put('/:id', [
             await Position_DAO.modifyPosition(sku.position, pos.aisle, pos.row, pos.col, pos.maxWeight, pos.maxVolume, req.body.newWeight * req.body.newAvailableQuantity, req.body.newVolume * req.body.newAvailableQuantity)
         }
 
-        const result = await SKU_DAO.modifySKU(req.params.id, req.body.newDescription, req.body.newWeight, req.body.newVolume, req.body.newNotes, req.body.newPrice, req.body.newAvailableQuantity);
-        res.status(200).json(result);
+        await SKU_DAO.modifySKU(req.params.id, req.body.newDescription, req.body.newWeight, req.body.newVolume, req.body.newNotes, req.body.newPrice, req.body.newAvailableQuantity);
+        res.status(200).end();
     } catch (err) {
         res.status(503).send(err);
     }
@@ -141,9 +141,9 @@ router.put('/:id/position', [
 
         // Update the occupied volume and weight of the position
         await Position_DAO.modifyPosition(req.body.position, pos.aisle, pos.row, pos.col, pos.maxWeight, pos.maxVolume, sku.weight, sku.volume)
-        const result = await SKU_DAO.addOrModifyPositionSKU(req.params.id, req.body.position);
+        await SKU_DAO.addOrModifyPositionSKU(req.params.id, req.body.position);
 
-        res.status(200).json(result);
+        res.status(200).end();
     } catch (err) {
         res.status(503).send(err);
     }
@@ -159,7 +159,7 @@ router.delete('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res)
         // Check if the SKU exists
         let sku = await SKU_DAO.getSKUById(req.params.id);
         if (sku.error)
-            return res.status(404).json(sku);
+            return res.status(422).json(sku);
 
         // If there are still SKU items -> error
         const skuItems = await SKUItem_DAO.getSKUItemsBySkuID(req.params.id);

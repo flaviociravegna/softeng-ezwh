@@ -37,8 +37,8 @@ router.get('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) =>
 
 // Creates a new TD
 router.post('/', [
-    check('name').isString(),
-    check('procedureDescription').isString(),
+    check('name').notEmpty().isString(),
+    check('procedureDescription').notEmpty().isString(),
     check('idSKU').isInt({ min: 1 })
 ], async (req, res) => {
     try {
@@ -63,9 +63,9 @@ router.post('/', [
 // Modify a testDescriptor, given its id
 router.put('/:id', [
     check('id').exists().isInt({ min: 1 }),
-    check('newName').isString(),
-    check('newProcedureDescription').isString(),
-    check('newIdSKU').isInt({ gt: 0 })
+    check('newName').notEmpty().isString(),
+    check('newProcedureDescription').notEmpty().isString(),
+    check('newIdSKU').isInt({ min: 1 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -82,8 +82,8 @@ router.put('/:id', [
         if (sku.error)
             return res.status(404).json(sku);
 
-        const result = await TestDesc_DAO.modifyTestDescriptor(req.params.id, req.body.newName, req.body.newProcedureDescription, req.body.newIdSKU);
-        res.status(200).json(result);
+        await TestDesc_DAO.modifyTestDescriptor(req.params.id, req.body.newName, req.body.newProcedureDescription, req.body.newIdSKU);
+        res.status(200).end();
     } catch (err) {
         res.status(503).send(err);
     }
@@ -99,7 +99,7 @@ router.delete('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res)
         // Check if the TD exists
         const td = await TestDesc_DAO.getTestDescriptorById(req.params.id);
         if (td.error)
-            return res.status(404).json(td);
+            return res.status(422).end();
 
         await TestDesc_DAO.deleteTestDescriptor(req.params.id);
         res.status(204).end();

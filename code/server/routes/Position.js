@@ -12,7 +12,6 @@ router.use(express.json());
 
 // Return an array containing all positions.
 router.get('/', async (req, res) => {
-
   try {
     let positions = await Position.getAllPositions();
 
@@ -45,15 +44,12 @@ router.post('/', [
   check('maxWeight').isInt({ gt: 0 }),
   check('maxVolume').isInt({ gt: 0 })
 ], async (request, response) => {
-
   try {
-
-    const posId = request.body.aisleID + request.body.row + request.body.col;
     const errors = validationResult(request);
-
     if (!errors.isEmpty())
       return response.status(422).json({ errors: errors.array() });
 
+    const posId = request.body.aisleID + request.body.row + request.body.col;
     if (request.body.positionID != posId)
       return response.status(422).json({ error: "Invalid PositionID" });
 
@@ -70,7 +66,6 @@ router.post('/', [
 
     await Position.createNewPosition(new_position);
     response.status(201).end();
-
   } catch (err) {
     response.status(503).end();
   }
@@ -89,7 +84,7 @@ router.put('/:positionID', [
   check('newOccupiedVolume').isInt({ gt: -1 })
 ], async (req, res) => {
   try {
-    // Check parameter
+    // Check parameters
     const errors = validationResult(req);
     if (!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() });
@@ -99,10 +94,10 @@ router.put('/:positionID', [
     if (position.error)
       return res.status(404).end(); //position not found
 
-    const result = await Position.modifyPosition(req.params.positionID, req.body.newAisleID, req.body.newRow, req.body.newCol,
+    await Position.modifyPosition(req.params.positionID, req.body.newAisleID, req.body.newRow, req.body.newCol,
       req.body.newMaxWeight, req.body.newMaxVolume, req.body.newOccupiedWeight, req.body.newOccupiedVolume);
-    res.status(200).end();
 
+    res.status(200).end();
   } catch (err) {
     res.status(503).send(err);
   }
@@ -124,9 +119,8 @@ router.put('/:positionID/changeID', [
     if (position.error)
       return res.status(404).end(); //position not found
 
-    const result = await Position.modifyPositionID(req.params.positionID, req.body.newPositionID);
+    await Position.modifyPositionID(req.params.positionID, req.body.newPositionID);
     res.status(200).end();
-
   } catch (err) {
     res.status(503).send(err);
   }
@@ -137,9 +131,7 @@ router.put('/:positionID/changeID', [
 router.delete('/:positionID', [
   check('positionID').isNumeric().isLength({ min: 12, max: 12 })
 ], async (request, response) => {
-
   try {
-
     const errors = validationResult(request);
     if (!errors.isEmpty())
       return response.status(422).json({ errors: errors.array() });
@@ -147,17 +139,16 @@ router.delete('/:positionID', [
     // Check if the position exists
     let position = await Position.getPositionById(request.params.positionID);
     if (position.error)
-      return response.status(404).end(); //position not found
+      return response.status(422).end(); //position not found
 
     let positionOccupied = await Position.searchPosition(request.params.positionID);
     if (positionOccupied.length != 0)
-      return response.status(503).json({ error: `Position not empty - impossible to delete`});
+      return response.status(503).json({ error: `Position not empty - impossible to delete` });
 
     await Position.deletePosition(request.params.positionID);
     response.status(204).end();
 
   } catch (err) {
-    console.log(err)
     response.status(503).json({ error: `Database error while deleting: ${request.params.positionID}.` });
   }
 });

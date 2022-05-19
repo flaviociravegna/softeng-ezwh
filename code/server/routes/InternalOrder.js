@@ -34,13 +34,12 @@ router.get('/', skipThisRoute, async (req, res) => {
         let internalOrders = await internalOrder_DAO.getAllInternalOrders();
         let InternalOrdersProduct = await internalOrder_DAO.getAllInternalOrdersProduct();
         let InternalOrdersSKUItems = await internalOrder_DAO.getAllInternalOrdersSKUItems();
+
         internalOrders.forEach(io => {
             if (io.state != "COMPLETED") {
-                //console.log("state is not COMPLETED.");
                 io.products = InternalOrdersProduct.filter(ip => ip.internalOrderID == io.id).map(ip => ({ "SKUId": ip.skuID, "description": ip.description, "price": ip.price, "qty": ip.quantity }));
             } else {
-                //console.log("state is COMPLETE.");
-                io.products = InternalOrdersSKUItems.filter(is => is.internalOrderID == io.id).map(is => ({ "SKUId": is.skuID, "description": is.description, "price": is.price, "RFID": is.quantity }));
+                io.products = InternalOrdersSKUItems.filter(is => is.internalOrderID == io.id).map(is => ({ "SKUId": is.skuID, "description": is.description, "price": is.price, "RFID": is.RFID }));
             }
         });
 
@@ -125,8 +124,8 @@ router.post('/', [
         //Verify whether the SKU is available and is not duplicated in the order
         const array_length = req.body.products.reduce((a, b) => a.SKUId > b.SKUId ? a.SKUId : b.SKUId);
         let array_SKUs_already_found = new Array(array_length).fill(false);
+
         for (let p of req.body.products) {
-            // let product = await internalOrder_DAO.getInternalOrdersProductBySKUId(p.SKUId);
             let product = await SKU_DAO.getSKUById(p.SKUId);
             if (product.error)
                 return res.status(422).send("Product (SKUId: " + p.SKUId + ") not found in the SKU list");
@@ -141,7 +140,7 @@ router.post('/', [
         for (const p of req.body.products)
             await internalOrder_DAO.addInternalOrdersProducts(lastId + 1, p.SKUId, p.qty);
 
-        res.status(201).json(result);
+        res.status(201).end();
     } catch (err) {
         res.status(503).end();
     }
@@ -182,8 +181,8 @@ router.put('/:id', [
             }
         }
 
-        const result = await internalOrder_DAO.modifyInternalOrder(internalOrder.id, internalOrder.issueDate, req.body.newState, internalOrder.customerID);
-        res.status(200).json(result);
+        await internalOrder_DAO.modifyInternalOrder(internalOrder.id, internalOrder.issueDate, req.body.newState, internalOrder.customerID);
+        res.status(200).end();
     } catch (err) {
         res.status(503).end();
     }
@@ -198,7 +197,7 @@ router.delete('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res)
 
         let io = await internalOrder_DAO.getInternalOrderById(req.params.id);
         if (io.error)
-            return res.status(404).json(io);
+            return res.status(422).json(io);
 
         await internalOrder_DAO.deleteInternalOrderByID(req.params.id);
         await internalOrder_DAO.deleteInternalOrderProducts(req.params.id);

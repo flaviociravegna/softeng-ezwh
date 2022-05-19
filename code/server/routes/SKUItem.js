@@ -65,7 +65,7 @@ router.get('/:rfid', [
             return res.status(422).json({ errors: errors.array() });
 
         const skuItem = await SKUItem_DAO.getSKUItemByRFID(req.params.rfid);
-        if (skuItem == undefined)
+        if (skuItem.error)
             return res.status(404).json(skuItem);
 
         res.status(200).json(skuItem);
@@ -119,7 +119,7 @@ router.put('/:rfid', [
         if (skuItem.error)
             return res.status(404).json(skuItem);
 
-        const result = await SKUItem_DAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, req.body.newDateOfStock);
+        await SKUItem_DAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, req.body.newDateOfStock);
 
         const oldAvailable = skuItem.available;
         const sku = await SKU_DAO.getSKUById(skuItem.skuID);
@@ -133,7 +133,7 @@ router.put('/:rfid', [
             await SKUItem_DAO.updatePositionWeightAndVolume(sku.position, position.occupiedWeight + sku.weight, position.occupiedVolume + sku.volume);
         }
 
-        res.status(200).json(result);
+        res.status(200).end();
     } catch (err) {
         res.status(503).send(err);
     }
@@ -149,7 +149,7 @@ router.delete('/:rfid', [check('rfid').isNumeric().isLength({ min: 32, max: 32 }
         // Check if the SKU Item exists
         let skuItem = await SKUItem_DAO.getSKUItemByRFID(req.params.rfid);
         if (skuItem.error)
-            return res.status(404).json(skuItem);
+            return res.status(422).json(skuItem);
 
         // Delete and then decrease the related availableQuantity in SKU table
         const sku = await SKU_DAO.getSKUById(skuItem.skuID);

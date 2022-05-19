@@ -93,7 +93,7 @@ router.get('/:id', [
         } else
             RO.skuItems = await RestockOrder_DAO.getRestockOrderSkuItems(req.params.id);
 
-        res.status(200).end();
+        res.status(200).json(RO);
     } catch (err) {
         res.status(500).send(err);
     }
@@ -175,7 +175,7 @@ router.post('/', [
 
         res.status(201).end();
     } catch (err) {
-        res.status(500).send(err);
+        res.status(503).send(err);
     }
 });
 
@@ -195,12 +195,12 @@ router.put('/:id', [
         //Check if Restock Order exists
         let RO = await RestockOrder_DAO.getRestockOrderById(req.params.id);
         if (RO.error)
-            return res.status(404).json({ error: "Restock Order not Found" });
+            return res.status(404).end();
 
         await RestockOrder_DAO.modifyRestockOrderState(req.params.id, req.body.newState);
         res.status(200).end();
     } catch (err) {
-        res.status(500).send(err);
+        res.status(503).send(err);
     }
 });
 
@@ -220,7 +220,7 @@ router.put('/:id/skuItems', [
         //Check if Restock Order exists
         let RO = await RestockOrder_DAO.getRestockOrderById(req.params.id);
         if (RO.error)
-            return res.status(404).json({ error: "Restock Order not Found" });
+            return res.status(404).end();
 
         if (RO.state != 'DELIVERED')
             return res.status(422).json({ error: "Restock order not delivered" });
@@ -242,7 +242,7 @@ router.put('/:id/skuItems', [
 
         res.status(200).end();
     } catch (err) {
-        res.status(500).send(err);
+        res.status(503).send(err);
     }
 });
 
