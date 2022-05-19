@@ -23,6 +23,8 @@ router.get('/', skipThisRoute, async (req, res) => {
         for (let ro of ROs) {
             ro.products = await RestockOrder_DAO.getRestockOrderProducts(ro.id);
             ro.skuItems = await RestockOrder_DAO.getRestockOrderSkuItems(ro.id);
+
+            ro.transportNote = await RestockOrder_DAO.getRestockOrderTransportNote(ro.id);
         }
 
         const Result = ROs.map((row) => {
@@ -85,6 +87,7 @@ router.get('/:id', [
             return res.status(404).end();
 
         RO.products = await RestockOrder_DAO.getRestockOrderProducts(req.params.id);
+        RO.transportNote = await RestockOrder_DAO.getRestockOrderTransportNote(req.params.id);
 
         if (RO.state == "ISSUED" || RO.state == "DELIVERY") {
             RO.skuItems = []
@@ -92,6 +95,8 @@ router.get('/:id', [
                 delete RO.transportNote;
         } else
             RO.skuItems = await RestockOrder_DAO.getRestockOrderSkuItems(req.params.id);
+
+
 
         res.status(200).json(RO);
     } catch (err) {
@@ -294,6 +299,7 @@ router.delete('/:id', [
 
         await RestockOrder_DAO.deleteSkuItemsFromRestockOrder(req.params.id);
         await RestockOrder_DAO.deleteProductsFromRestockOrder(req.params.id);
+        await RestockOrder_DAO.deleteRestockOrderTransportNote(req.params.id);
         await RestockOrder_DAO.deleteRestockOrder(req.params.id);
         res.status(204).end();
     } catch (err) {

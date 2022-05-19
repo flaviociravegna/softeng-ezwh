@@ -120,7 +120,7 @@ exports.getLastPIDInOrder = () => {
 
 exports.insertProductInOrder = (id, restockOrderId, skuID, qty) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO RestockOrdersProducts (id, restockOrderId, skuID, quantity) VALUES (?,?,?)';
+        const sql = 'REPLACE INTO RestockOrdersProducts (id, restockOrderId, skuID, quantity) VALUES (?,?,?)';
         db.run(sql, [id, restockOrderId, skuID, qty], (err, row) => {
             if (err)
                 reject(err);
@@ -146,7 +146,7 @@ exports.getLastIdRsO = () => {
 // need to see where to put product description consider creating a class product
 exports.createRestockOrder = (issueDate, supplierId, id) => {
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO RestockOrders (id, issueDate, state, supplierID) VALUES (?, ?, ?, ?)",
+        db.run("REPLACE INTO RestockOrders (id, issueDate, state, supplierID) VALUES (?, ?, ?, ?)",
             [id, issueDate, 'ISSUED', supplierId], function (err) {
                 if (err)
                     reject(err);
@@ -185,7 +185,7 @@ exports.modifyRestockOrderState = (id, newState) => {
 
 exports.addRestockOrderSKUItems = (restockOrderID, RFID) => {
     return new Promise(async (resolve, reject) => {
-        db.run("INSERT INTO RestockOrdersSKUItems (restockOrderID, RFID) VALUES (?, ?)",
+        db.run("REPLACE INTO RestockOrdersSKUItems (restockOrderID, RFID) VALUES (?, ?)",
             [restockOrderID, RFID], (err, row) => {
                 if (err)
                     reject(err);
@@ -198,15 +198,27 @@ exports.addRestockOrderSKUItems = (restockOrderID, RFID) => {
 // for now Transport note is A string should fix it to have it in its own table
 exports.addRestockOrderTransportNote = (id, transportNote) => {
     return new Promise((resolve, reject) => {
-        db.run("UPDATE RestockOrders SET TransportNote = ? WHERE id = ?",
-            [JSON.stringify(transportNote), id], function (err) {
+        db.run("REPLACE INTO RestockOrdersTransportNote (RestockOrderID,DeliveryDate) VALUES (?,?)",
+            [id,transportNote.eliveryDate], function (err) {
                 if (err)
                     reject(err);
                 else
                     resolve('RequestOrders updated');
             });
     });
-};
+}
+
+exports.getRestockOrderTransportNote = (id) =>{
+    return new Promise((resolve, reject)=>{
+        db.get("SELECT DeliveryDate FROM RestockOrderTransportNote WHERE RestockOrderID = ?",[id],(err,row)=>{
+            if(err){
+                reject(err);
+            }else{
+                resolve({TransportNote:{deliveryDate:row}});
+            }
+        });
+    });
+}
 
 exports.deleteRestockOrder = (id) => {
     return new Promise((resolve, reject) => {
@@ -223,6 +235,17 @@ exports.deleteRestockOrder = (id) => {
 exports.deleteSkuItemsFromRestockOrder = (id) => {
     return new Promise((resolve, reject) => {
         db.run("DELETE FROM RestockOrdersSKUItems WHERE restockOrderID = ?", [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('Deleted');
+        });
+    });
+}
+
+exports.deleteRestockOrderTransportNote = (id) =>{
+    return new Promise((resolve, reject) => {
+        db.run("DELETE FROM RestockOrderTransportNote WHERE restockOrderID = ?", [id], function (err) {
             if (err)
                 reject(err);
             else
