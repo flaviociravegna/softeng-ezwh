@@ -50,87 +50,7 @@ This EzWh design model implements a layered architectural pattern. The base idea
 
 ```plantuml
 @startuml
-class EzWh{
-  --
-  +getAllSKU(): Array<Object>
-  +getSKUByDescription(in str:description): Object
-  +getSKUById(id :Integer): Object
-  +createNewSKU(description:String, weight:Integer, volume:Integer, notes:String, price:Float, availableQuantity:Integer): void
-  +modifySKU(id:Integer, newDescription:String, newWeight:Integer, newVolume:Integer, newNotes:String, newPrice:Float, newAvailableQuantity:Integer): void
-  +addOrModifyPositionSKU(id:Integer): void
-  +deleteSKU(id:Integer): void
-  --
-  +getAllSKUItems(): Array<Object>
-  +getSKUItemsById(SKUId:Integer): Array<Object>
-  +getSKUItemByRFID(RFID: String): Object
-  +createNewSKUItem(RFID:String, SKUId:Integer, DateOfStock:String): void
-  +modifySKUItem(SKUId:Integer, newRFID:String, newAvailable:Integer, newDateOfStock:String): void
-  +deleteSKUItem(RFID:String): void
-  --
-  +getAllPositions(): Array<Object>
-  +createNewPosition(aisleID:String, row:String, icol:String, maxWeight:Integer, maxVolume:Integer): void
-  +modifyPosition(positionID:String, newAisleID:String, newRow:String, newCol:String, newMaxWeight:Integer, newMaxVolume:Integer, newOccupiedWeight:Integer, newOccupiedVolume:Integer): void
-  +modifyPositionId(oldPositionID:String, newPositionID:String): void
-  +deleteSKUItemByPositionID(positionID): void
-  --
-  +getAllTestDescriptors(): Array<Object>
-  +getTestDescriptorById(id:Integer): Object
-  +createNewTestDescriptor(name:String, procedureDescription:String, idSKU:Integer): void
-  +modifyTestDescriptor(newName:String, newProcedureDescription:String, newIdSKU:Integer): void
-  +deleteTestDescriptor(id:Integer): void
-  --
-  +getAllTestResultsByRFID(RFID:String): Array<Object>
-  +getTestResultByRFID(idTestDescriptor:Integer, RFID:String): Object
-  +createTestResult(RFID:String, idTestDescriptor:Integer, Date:String, Result:Integer): void
-  +modifyTestResult(RFID:String, idTestResult:Integer, newIdTestDescriptor:Integer, newDate:String, newResult:Boolean): void
-  +deleteTestResult(RFID:String, idTestResult:Integer): void
-  --
-  +getUserInfo(): Object
-  +getSuppliers(): Array<Object>
-  +getAllUsers(): Array<Object>
-  +createNewUser(username:String, name:String, surname:String, password:String, type:String): void
-  +managerSessions(username:String, password:String): void
-  +customerSessions(username:String, password:String): void
-  +supplierSessions(username:String, password:String): void
-  +clerkSessions(username:String, password:String): void
-  +qualityEmployeeSessions(username:String, password:String): void
-  +deliveryEmployeeSessions(username:String, password:String): void
-  +logout(): void
-  +modifyUserRight(username:String, newType:String): void
-  +deleteUser(username:String, type:String): void
-  --
-  +getRestockOrders(): Array<Object>
-  +getRestockOrdersIssued(): Array<Object>
-  +getRestockOrderById(id:Integer): Object
-  +getRestockOrderFailedSKUItems(id:Integer): Array<Object>
-  +createRestockOrder(issueDate:String, products:Array<Item>, supplierId:Integer): void
-  +removeSKUItemFromRestockOrder(skuId: Integer, id:Integer): void
-  +modifyRestockOrderState(id:Integer, newState:String): void
-  +addRestockOrderSKUItems(id:Integer, skuItems:Array<SKUItem>): void
-  +issueRestockOrder(id: Integer): void
-  +addRestockOrderTransportNote(id:Integer, transportNote:TransportNote): void
-  +deleteRestockOrder(id:Integer): void
-  --
-  +getReturnOrders(): Array<Object>
-  +getReturnOrderById(id:Integer): Object
-  +createNewReturnOrder(returnDate:String, products:Array<SKUItem>, restockOrderId:Integer): void
-  +commitReturnOrder(id: Integer): void
-  +deleteReturnOrder(id:Integer): void
-  --
-  +getInternalOrders(): Array<Object>
-  +getInternalOrdersIssued(): Array<Object>
-  +getInternalOrdersAccepted(): Array<Object>
-  +getInternalOrderById(id:Integer): void
-  +createNewInternalOrder(issueDate:String, products:Array<Object>, customerId:Integer): void
-  +modifyInternalOrderState(id:Integer, newState:String, [optional] products:Array<Item>): void
-  +issueInternalOrder(id:Integer): void
-  +deleteInternalOrder(id:Integer): void
-  --
-  +getItems(): Array<Object>
-  +getItemById(id:Integer): Object
-  +createNewItem(description:String, price:Float, SKUId:Integer, supplierId:Integer): void
-  +modifyItem(id:Integer, newDescription:String, newPrice:Float): void
-  +deleteItem(id:Integer): void
+class EzWh{  
 }
 
 note right of EzWh
@@ -151,6 +71,12 @@ Class Position {
   -MaxVolume: Integer
   -OccupiedWeight: Integer
   -OccupiedVolume: Integer
+  --
+  +getAllPositions(): Array<Object>
+  +createNewPosition(aisleID:String, row:String, icol:String, maxWeight:Integer, maxVolume:Integer): void
+  +modifyPosition(positionID:String, newAisleID:String, newRow:String, newCol:String, newMaxWeight:Integer, newMaxVolume:Integer, newOccupiedWeight:Integer, newOccupiedVolume:Integer): void
+  +modifyPositionId(oldPositionID:String, newPositionID:String): void
+  +deleteSKUItemByPositionID(positionID): void
   --
   ~setPositionID(ID:String): void
   ~setAisle(Aisle:String): void
@@ -183,6 +109,14 @@ Class SKU {
   -availableQuantity: Integer
   -testDescriptors: Array<TestDescriptor>
   --
+  +getAllSKU(): Array<Object>
+  +getSKUByDescription(in str:description): Object
+  +getSKUById(id :Integer): Object
+  +createNewSKU(description:String, weight:Integer, volume:Integer, notes:String, price:Float, availableQuantity:Integer): void
+  +modifySKU(id:Integer, newDescription:String, newWeight:Integer, newVolume:Integer, newNotes:String, newPrice:Float, newAvailableQuantity:Integer): void
+  +addOrModifyPositionSKU(id:Integer): void
+  +deleteSKU(id:Integer): void
+  --
   ~setID(ID:Integer): Integer
   ~setDescription(Description:String): void
   ~setWeight(Weight:Integer): void
@@ -208,6 +142,12 @@ Class TestDescriptor {
   -Description: String
   -idSku: Integer
   --
+  +getAllTestDescriptors(): Array<Object>
+  +getTestDescriptorById(id:Integer): Object
+  +createNewTestDescriptor(name:String, procedureDescription:String, idSKU:Integer): void
+  +modifyTestDescriptor(newName:String, newProcedureDescription:String, newIdSKU:Integer): void
+  +deleteTestDescriptor(id:Integer): void
+  --
   ~setID(ID:Integer): void
   ~setName(Name:String): void
   ~setDescription(Description:String): void
@@ -224,6 +164,12 @@ Class TestResult {
   -Result: boolean
   -idTestDescriptor: Integer
   -SKUId: Integer
+  --
+  +getAllTestResultsByRFID(RFID:String): Array<Object>
+  +getTestResultByRFID(idTestDescriptor:Integer, RFID:String): Object
+  +createTestResult(RFID:String, idTestDescriptor:Integer, Date:String, Result:Integer): void
+  +modifyTestResult(RFID:String, idTestResult:Integer, newIdTestDescriptor:Integer, newDate:String, newResult:Boolean): void
+  +deleteTestResult(RFID:String, idTestResult:Integer): void
   --
   ~setID(ID:Integer): void
   ~setDate(Date:String): void
@@ -244,6 +190,12 @@ Class Item {
   -SKUId: Integer
   -supplierId: Integer
   --
+  +getItems(): Array<Object>
+  +getItemById(id:Integer): Object
+  +createNewItem(description:String, price:Float, SKUId:Integer, supplierId:Integer): void
+  +modifyItem(id:Integer, newDescription:String, newPrice:Float): void
+  +deleteItem(id:Integer): void
+  --
   ~getID(): Integer
   ~getDescription(): String
   ~getPrice(): float
@@ -262,6 +214,15 @@ Class InternalOrder {
   -State: state
   -customerId: Integer
   -products: Array<Object>
+  --
+  +getInternalOrders(): Array<Object>
+  +getInternalOrdersIssued(): Array<Object>
+  +getInternalOrdersAccepted(): Array<Object>
+  +getInternalOrderById(id:Integer): void
+  +createNewInternalOrder(issueDate:String, products:Array<Object>, customerId:Integer): void
+  +modifyInternalOrderState(id:Integer, newState:String, [optional] products:Array<Item>): void
+  +issueInternalOrder(id:Integer): void
+  +deleteInternalOrder(id:Integer): void
   --
   ~setId(id:Integer): void
   ~setDate(Date:String): void
@@ -288,6 +249,13 @@ Class SKUItem {
   -DateOfStock: String
   -SKUId: Integer
   --
+  +getAllSKUItems(): Array<Object>
+  +getSKUItemsById(SKUId:Integer): Array<Object>
+  +getSKUItemByRFID(RFID: String): Object
+  +createNewSKUItem(RFID:String, SKUId:Integer, DateOfStock:String): void
+  +modifySKUItem(SKUId:Integer, newRFID:String, newAvailable:Integer, newDateOfStock:String): void
+  +deleteSKUItem(RFID:String): void
+  --
   ~getRFID(): String
   ~getAvailability(): Integer
   ~getDateOfStock(): String
@@ -305,6 +273,20 @@ Class User {
   -Email: String
   -Type: String
   -HashPassword: String
+  --
+  +getUserInfo(): Object
+  +getSuppliers(): Array<Object>
+  +getAllUsers(): Array<Object>
+  +createNewUser(username:String, name:String, surname:String, password:String, type:String): void
+  +managerSessions(username:String, password:String): void
+  +customerSessions(username:String, password:String): void
+  +supplierSessions(username:String, password:String): void
+  +clerkSessions(username:String, password:String): void
+  +qualityEmployeeSessions(username:String, password:String): void
+  +deliveryEmployeeSessions(username:String, password:String): void
+  +logout(): void
+  +modifyUserRight(username:String, newType:String): void
+  +deleteUser(username:String, type:String): void
   --
   ~setID(ID:i Integer): void
   ~setName(name:String): void
@@ -335,6 +317,18 @@ Class RestockOrder {
   -products: Array<Object>
   -supplierId: Integer
   -TransportNote: TransportNote
+  --
+  +getRestockOrders(): Array<Object>
+  +getRestockOrdersIssued(): Array<Object>
+  +getRestockOrderById(id:Integer): Object
+  +getRestockOrderFailedSKUItems(id:Integer): Array<Object>
+  +createRestockOrder(issueDate:String, products:Array<Item>, supplierId:Integer): void
+  +removeSKUItemFromRestockOrder(skuId: Integer, id:Integer): void
+  +modifyRestockOrderState(id:Integer, newState:String): void
+  +addRestockOrderSKUItems(id:Integer, skuItems:Array<SKUItem>): void
+  +issueRestockOrder(id: Integer): void
+  +addRestockOrderTransportNote(id:Integer, transportNote:TransportNote): void
+  +deleteRestockOrder(id:Integer): void
   --
   ~setID(ID:Integer): void
   ~setIssueDate(Date:String): void
@@ -370,6 +364,12 @@ Class ReturnOrder {
   -ID: Integer
   -ReturnDate: String
   -restockOrder: RestockOrder
+  --
+  +getReturnOrders(): Array<Object>
+  +getReturnOrderById(id:Integer): Object
+  +createNewReturnOrder(returnDate:String, products:Array<SKUItem>, restockOrderId:Integer): void
+  +commitReturnOrder(id: Integer): void
+  +deleteReturnOrder(id:Integer): void
   --
   ~setID(in ID:Integer): void
   ~setReturnDate(in Date:String): void
