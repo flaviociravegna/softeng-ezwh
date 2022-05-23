@@ -22,7 +22,7 @@ exports.getUserInfo = (username, password) => {
             else if (row === undefined)   //nessun utente trovato all'interno del db
                 resolve(false);
             else {                        //utente trovato            
-                const user = { id: row.userId, username: row.username, name: row.name, type: row.type };
+                const user = { id: row.userId, username: row.username, name: row.name };
                 bcrypt.compare(password, row.hash).then(result => { //check if the two hashes match with an async call
                     if (result)
                         resolve(user);      //password corretta --> manda info dell'account
@@ -53,7 +53,7 @@ exports.getUserInfoById = (id) => {
 
 exports.getAllUsersExceptManagers = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT users.userId, users.name, users.surname, users.username, users.type FROM users WHERE users.type != "MANAGER"';
+        const sql = 'SELECT users.userId, users.name, users.surname, users.username, users.type FROM users WHERE users.type != "manager"';
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
@@ -66,7 +66,7 @@ exports.getAllUsersExceptManagers = () => {
 
 exports.getAllSuppliers = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT users.userId, users.name, users.surname, users.username FROM users WHERE users.type == "SUPPLIER"';
+        const sql = 'SELECT users.userId, users.name, users.surname, users.username FROM users WHERE users.type == "supplier"';
         db.all(sql, [], (err, rows) => {
             if (err) {
                 console.log(err);
