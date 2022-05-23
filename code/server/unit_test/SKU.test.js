@@ -11,6 +11,10 @@ describe("Create a new SKU", () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
+    });
+
     test("new SKU creation", async () => {
         await expect(SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10))
             .resolves.toEqual("New SKU inserted");
@@ -46,6 +50,10 @@ describe("Get last SKU ID", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
+    });
+
     test("get last SKU ID", async () => {
         const res = await SKU_DAO.getLastSKUId();
         expect(res).toEqual(3);
@@ -66,6 +74,10 @@ describe("Get all SKUs", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
+    });
+
     testAllSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10,
         2, "SKU 2", 20, 20, "notes 2", 20.99, "800234523412", 20,
         3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
@@ -77,6 +89,10 @@ describe("Get SKU by ID", () => {
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);
         await SKU_DAO.createNewSKU(2, "SKU 2", 20, 20, "notes 2", 20.99, "800234523412", 20);
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
+    });
+
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
     });
 
     testSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);
@@ -97,6 +113,10 @@ describe("Get SKU ID by Position", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
+    });
+
     test("get SKU ID by Position", async () => {
         const res = await SKU_DAO.getSKUIdByPosition("800234523412");
         expect(res).toEqual(2);
@@ -107,6 +127,10 @@ describe("Modify SKU (not position)", () => {
     beforeEach(async () => {
         await SKU_DAO.deleteAllSKUs();
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);
+    });
+
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
     });
 
     test("modify an SKU", async () => {
@@ -120,6 +144,10 @@ describe("Modify position of an SKU", () => {
     beforeEach(async () => {
         await SKU_DAO.deleteAllSKUs();
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);
+    });
+
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
     });
 
     test("modify position of SKU", async () => {
@@ -137,6 +165,10 @@ describe("Delete an SKU", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
+    });
+
     test("delete SKU", async () => {
         await SKU_DAO.deleteSKU(2);
         const res = await SKU_DAO.getSKUById(2);
@@ -150,6 +182,10 @@ describe("Increase SKU availableQuantity", () => {
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 1);
     });
 
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
+    });
+
     test("increase SKU.availableQuantity", async () => {
         await SKU_DAO.increaseSKUavailableQuantity(1);
         const res = await SKU_DAO.getSKUById(1);
@@ -161,6 +197,10 @@ describe("Decrease SKU availableQuantity", () => {
     beforeEach(async () => {
         await SKU_DAO.deleteAllSKUs();
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 3);
+    });
+
+    afterEach(() => {
+        await SKU_DAO.deleteAllSKUs();
     });
 
     test("decrease SKU.availableQuantity", async () => {
