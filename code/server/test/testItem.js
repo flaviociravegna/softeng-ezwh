@@ -25,6 +25,7 @@ describe('POST /api/sku', function () {
     createNewSKU(201, { "description": "SKU 2", "weight": 20, "volume": 20, "notes": "notes 2", "price": 20.99, "availableQuantity": 1 });
     createNewSKU(201, { "description": "SKU 3", "weight": 30, "volume": 30, "notes": "notes 3", "price": 30.99, "availableQuantity": 1 });
     createNewSKU(201, { "description": "SKU 4", "weight": 40, "volume": 40, "notes": "notes 4", "price": 40.99, "availableQuantity": 1 });
+    createNewSKU(201, { "description": "SKU 5", "weight": 50, "volume": 50, "notes": "notes 5", "price": 50.99, "availableQuantity": 1 });
 });
 
   // POST /api/items (SUCCESS)
@@ -44,6 +45,23 @@ describe('POST /api/sku', function () {
 
 describe('API Test: Item', function () {
     setup();
+
+    //POST /api/items
+     describe('POST /api/items (errors)', function () {
+        // Empty body
+        createNewItem(422);
+
+        // Empty description
+        createNewItem(422, {"id":5, "description": "", "price": 10.99, "SKUId": 5,"supplierId":1 });
+        // Prop description named wrong(same as other props)
+        createNewItem(422, {"id":5, "deion": "item no.5", "price": 10.99, "SKUId": 5,"supplierId":1 });
+        //Illegal price 
+        createNewItem(422, {"id":5, "description": "item no.5", "price": -10, "SKUId": 5,"supplierId":1 });
+        // Illegal skuid(skuid not found in db)
+        createNewItem(404, {"id":5, "description": "item no.5", "price": 10.99, "SKUId": 6,"supplierId":1 });
+        // supplierId and skuid all same with existing data 
+        createNewItem(422, {"id":5, "description": "item no.5", "price": 10.99, "SKUId": 1,"supplierId":1 });
+    });
 
      // GET /api/items/:id
      describe('GET /api/items/:id', function () {
@@ -84,6 +102,7 @@ function clear() {
         deleteSKU(204, 2);
         deleteSKU(204, 3);
         deleteSKU(204, 4);
+        deleteSKU(204, 5);
     });
 
     // DELETE ITEMS
