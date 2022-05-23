@@ -99,3 +99,14 @@ exports.updatePositionWeightAndVolume = (positionID, newOccupiedWeight, newOccup
         });
     });
 }
+
+exports.deleteAllSKUItems=()=>{
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM SKUItems", [], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('SKU Item deleted');
+        });
+    });
+}
