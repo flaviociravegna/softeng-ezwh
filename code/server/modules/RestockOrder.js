@@ -17,7 +17,7 @@ class RestockOrder {
 /*************** Restock Order ********************/
 exports.getRestockOrderProducts = (restock_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT ROP.skuID, ROP.quantity, I.description, I.price FROM RestockOrdersProducts ROP, Items I WHERE ROP.restockOrderID = ? AND ROP.itemID = I.id'
+        const sql = 'SELECT ROP.skuID, ROP.quantity, ROP.description, S.price FROM RestockOrdersProducts ROP, SKU S WHERE ROP.restockOrderID = ? AND ROP.skuID = S.id'
         db.all(sql, [restock_id], (err, rows) => {
             if (err)
                 reject(err);
@@ -199,7 +199,7 @@ exports.addRestockOrderSKUItems = (restockOrderID, RFID) => {
 exports.addRestockOrderTransportNote = (id, transportNote) => {
     return new Promise((resolve, reject) => {
         db.run("REPLACE INTO RestockOrdersTransportNote (RestockOrderID,DeliveryDate) VALUES (?,?)",
-            [id,transportNote.eliveryDate], function (err) {
+            [id, transportNote.eliveryDate], function (err) {
                 if (err)
                     reject(err);
                 else
@@ -208,13 +208,13 @@ exports.addRestockOrderTransportNote = (id, transportNote) => {
     });
 }
 
-exports.getRestockOrderTransportNote = (id) =>{
-    return new Promise((resolve, reject)=>{
-        db.get("SELECT DeliveryDate FROM RestockOrderTransportNote WHERE RestockOrderID = ?",[id],(err,row)=>{
-            if(err){
+exports.getRestockOrderTransportNote = (id) => {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT DeliveryDate FROM RestockOrderTransportNote WHERE RestockOrderID = ?", [id], (err, row) => {
+            if (err) {
                 reject(err);
-            }else{
-                resolve({TransportNote:{deliveryDate:row}});
+            } else {
+                resolve({ TransportNote: { deliveryDate: row } });
             }
         });
     });
@@ -243,7 +243,7 @@ exports.deleteSkuItemsFromRestockOrder = (id) => {
     });
 }
 
-exports.deleteRestockOrderTransportNote = (id) =>{
+exports.deleteRestockOrderTransportNote = (id) => {
     return new Promise((resolve, reject) => {
         db.run("DELETE FROM RestockOrderTransportNote WHERE restockOrderID = ?", [id], function (err) {
             if (err)
