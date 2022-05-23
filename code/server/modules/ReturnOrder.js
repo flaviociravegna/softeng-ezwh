@@ -131,17 +131,26 @@ exports.deleteReturnOrderProducts = (id) => {
     });
 }
 
-exports.getRFIDFromRestockOrder = (RFID, restockOrderId) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM RestockOrdersSKUItems WHERE restockOrderID = ? AND RFID = ?';
-        db.get(sql, [restockOrderId, RFID], (err, row) => {
-            if (err) {
+
+
+exports.deleteAllReturnOrders = () =>{
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM ReturnOrders", [], function (err) {
+            if (err)
                 reject(err);
-                return;
-            }
-            if (row == undefined)
-                resolve({ error: 'RFID not found in Restock Order' });
-            else resolve(row);
+            else
+                resolve('All ReturnOrders deleted');
+        });
+    });
+}
+
+exports.deleteAllReturnOrdersProducts = () =>{
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM ReturnOrdersProducts", [], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('All ReturnOrders Products deleted');
         });
     });
 }
