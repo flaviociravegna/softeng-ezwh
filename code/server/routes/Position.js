@@ -71,8 +71,7 @@ router.post('/', [
   }
 });
 
-
-// MODIFY the positionID a position identified by positionID 
+// MODIFY all fields of a position identified by positionID 
 router.put('/:positionID', [
   check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
   check('newAisleID').isNumeric().isLength({ min: 4, max: 4 }),
@@ -103,7 +102,7 @@ router.put('/:positionID', [
   }
 });
 
-// MODIFY all fields of a position identified by positionID 
+// MODIFY the positionID of a position identified by positionID
 router.put('/:positionID/changeID', [
   check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
   check('newPositionID').isNumeric().isLength({ min: 12, max: 12 })
@@ -127,7 +126,6 @@ router.put('/:positionID/changeID', [
 });
 
 // DELETE the position
-// TO BE REVIEWED
 router.delete('/:positionID', [
   check('positionID').isNumeric().isLength({ min: 12, max: 12 })
 ], async (request, response) => {
@@ -143,7 +141,7 @@ router.delete('/:positionID', [
 
     let positionOccupied = await Position.searchPosition(request.params.positionID);
     if (positionOccupied.length != 0)
-      return response.status(503).json({ error: `Position not empty - impossible to delete` });
+      return response.status(422).json({ error: `Position not empty - impossible to delete` });
 
     await Position.deletePosition(request.params.positionID);
     response.status(204).end();

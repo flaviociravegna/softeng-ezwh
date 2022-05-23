@@ -45,8 +45,8 @@ router.get('/sku/:id', [check('id').exists().isInt({ min: 1 })], async (req, res
 
         skuItems.forEach(si => result.push({
             RFID: si.RFID,
-            SKUId: si.skuID,
-            DateOfStock: si.dateOfStock
+            SKUId: si.SKUId,
+            DateOfStock: si.DateOfStock
         }));
 
         res.status(200).json(result);
@@ -118,6 +118,11 @@ router.put('/:rfid', [
         let skuItem = await SKUItem_DAO.getSKUItemByRFID(req.params.rfid);
         if (skuItem.error)
             return res.status(404).json(skuItem);
+
+        // Check if the SKU Item associated to newRFID exists
+        let newSkuItem = await SKUItem_DAO.getSKUItemByRFID(req.body.newRFID);
+        if (!newSkuItem.error && req.body.newRFID != req.params.rfid)
+            return res.status(422).send("Sku item associated to newRFID already exists");
 
         await SKUItem_DAO.modifySKUItem(req.params.rfid, req.body.newRFID, req.body.newAvailable, req.body.newDateOfStock);
 

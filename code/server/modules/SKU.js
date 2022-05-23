@@ -17,6 +17,7 @@ class SKU {
 }
 
 /**************** SKU Functions *****************/
+
 // NB: sqlite3 supports "LIMIT" clause
 // Table name can't be used as a parameter in sqlite
 exports.getLastSKUId = () => {
@@ -138,6 +139,17 @@ exports.deleteSKU = (id) => {
                 reject(err);
             else
                 resolve('SKU deleted');
+        });
+    });
+}
+
+exports.deleteAllSKUs = () => {
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM SKUs", [], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('All SKUs deleted');
         });
     });
 }

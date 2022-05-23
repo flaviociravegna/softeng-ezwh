@@ -54,7 +54,7 @@ router.post('/', [
     check('weight').isInt({ gt: 0 }),
     check('volume').isInt({ gt: 0 }),
     check('price').isFloat({ gt: 0 }),
-    check('notes').notEmpty(),
+    check('notes').notEmpty().isString(),
     check('availableQuantity').isInt({ min: 0 })
 ], async (req, res) => {
     try {

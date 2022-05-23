@@ -62,7 +62,7 @@ exports.getTestDescriptorById = (idTestDescriptor) => {
             if (row == undefined)
                 resolve({ error: 'Test Descriptor not found.' });
             else {
-                resolve(row);
+                resolve(new TestDescriptor(row.id, row.name, row.description, row.idSKU));
             }
         });
     });

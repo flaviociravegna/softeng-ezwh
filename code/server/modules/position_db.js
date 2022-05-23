@@ -46,10 +46,9 @@ exports.getPositionById = (id) => {
 };
 
 exports.modifyPosition = (oldPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) => {
-    const newPositionID = newAisleID + newRow + newCol;
     return new Promise((resolve, reject) => {
-        const sql_query = "UPDATE positions SET positionID=?, aisle=?, row=?, col=?, maxWeight=?, maxVolume=?, occupiedWeight=?, occupiedVolume=? WHERE positionID=?";
-        db.run(sql_query, [newPositionID, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume, oldPositionID], (err, rows) => {
+        const sql_query = "UPDATE positions SET aisle=?, row=?, col=?, maxWeight=?, maxVolume=?, occupiedWeight=?, occupiedVolume=? WHERE positionID=?";
+        db.run(sql_query, [newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume, oldPositionID], (err, rows) => {
             if (err) {
                 reject(err);
                 return;

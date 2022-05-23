@@ -49,7 +49,7 @@ router.post('/', [
         // Check if the SKU associated to the skuID exists
         const sku = await SKU_DAO.getSKUById(req.body.idSKU);
         if (sku.error)
-            return res.status(404).json(sku);
+            return res.status(404).end();
 
         const lastId = await TestDesc_DAO.getLastTestDescriptorsId();
         await TestDesc_DAO.createNewTestDescriptor(lastId + 1, req.body.name, req.body.procedureDescription, req.body.idSKU);
