@@ -11,7 +11,7 @@ describe("Create a new SKU", () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -50,7 +50,7 @@ describe("Get last SKU ID", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -74,7 +74,7 @@ describe("Get all SKUs", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -91,7 +91,7 @@ describe("Get SKU by ID", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -113,7 +113,7 @@ describe("Get SKU ID by Position", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -129,7 +129,7 @@ describe("Modify SKU (not position)", () => {
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -146,7 +146,7 @@ describe("Modify position of an SKU", () => {
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -165,7 +165,7 @@ describe("Delete an SKU", () => {
         await SKU_DAO.createNewSKU(3, "SKU 3", 30, 30, "notes 3", 30.99, "800234523413", 30);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -182,7 +182,7 @@ describe("Increase SKU availableQuantity", () => {
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 1);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
@@ -199,7 +199,7 @@ describe("Decrease SKU availableQuantity", () => {
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 3);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         await SKU_DAO.deleteAllSKUs();
     });
 
