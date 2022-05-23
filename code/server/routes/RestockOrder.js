@@ -139,7 +139,7 @@ router.post('/', [
     check('supplierId').isInt({ min: 1 }),
     check('products').isArray(),
     check('products.*.SKUId').exists().isInt({ min: 1 }),
-    check('products.*.description').isString(),
+    check('products.*.description').notEmpty().isString(),
     check('products.*.price').isFloat({ gt: 0 }),
     check('products.*.qty').isInt({ min: 1 }),
 ], async (req, res) => {
@@ -255,7 +255,8 @@ router.put('/:id/skuItems', [
 //Add a transport note to a restock order, given its id.
 router.put('/:id/transportNote', [
     check('id').isInt({ min: 1 }),
-    check('transportNote').notEmpty().isObject()
+    check('transportNote').notEmpty().isObject(),
+    check('transportNote.deliveryDate').notEmpty().isString()
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
