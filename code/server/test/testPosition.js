@@ -11,6 +11,7 @@ let position1 = { "positionID": "800234523411", "aisleID": "8002", "row": "3452"
 let position2 = { "positionID": "800234523412", "aisleID": "8002", "row": "3452", "col": "3412", "maxWeight": 1000, "maxVolume": 1000, "occupiedWeight": 100, "occupiedVolume": 100 };
 let position3 = { "positionID": "800234523413", "aisleID": "8002", "row": "3452", "col": "3413", "maxWeight": 1000, "maxVolume": 1000, "occupiedWeight": 100, "occupiedVolume": 100 };
 let position4 = { "positionID": "800234523414", "aisleID": "8002", "row": "3452", "col": "3414", "maxWeight": 1000, "maxVolume": 1000, "occupiedWeight": 100, "occupiedVolume": 100 };
+let position5 = { "positionID": "800234523415", "aisleID": "8002", "row": "3452", "col": "3415", "maxWeight": 1000, "maxVolume": 1000, "occupiedWeight": 100, "occupiedVolume": 100 };
 
 /*****************************************************************/
 
@@ -85,10 +86,14 @@ describe('API Test: Positions', function () {
         getAllPositions(200, N_POSITIONS, [position1, position2, position3, position4]);
     });
 
-    // Change col: 3411 -> 3415
+    // Change col: 3411 -> 3415 (with updatePosition)
     describe('PUT /api/position/:positionID and /api/position/:positionID/changeID', function () {
         updatePosition(200, "800234523411", { "newAisleID": "8002", "newRow": "3452", "newCol": "3415", "newMaxWeight": 1000, "newMaxVolume": 1000, "newOccupiedWeight": 100, "newOccupiedVolume": 100 });
-        updatePositionID(200, "800234523411", { "newPositionID": "800234523415" });
+    });
+
+    // GET /api/positions
+    describe('GET /api/positions (after updates)', function () {
+        getAllPositions(200, N_POSITIONS, [position5, position2, position3, position4]);
     });
 
     // DELETE /api/positions
@@ -96,6 +101,11 @@ describe('API Test: Positions', function () {
         deleteSKU(422, 99);
         deleteSKU(422, -1);
         deleteSKU(422);
+    });
+
+    // Change col: 3415 -> 3411 (with updatePositionID)
+    describe('PUT /api/position/:positionID and /api/position/:positionID/changeID', function () {
+        updatePositionID(200, "800234523415", { "newPositionID": "800234523411" });
     });
 
     clear();
@@ -136,7 +146,7 @@ function clear() {
 
     // DELETE POSITIONS
     describe('DELETE /api/position/:positionID', function () {
-        deletePosition(204, "800234523415");    // Old "800234523411"
+        deletePosition(204, "800234523411");
         deletePosition(204, "800234523412");
         deletePosition(204, "800234523413");
         deletePosition(204, "800234523414");
