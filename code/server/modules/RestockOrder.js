@@ -295,3 +295,18 @@ exports.getSKUByIdFromRestockOrder = (skuId, restockOrderId) => {
         });
     });
 }
+
+exports.getRFIDFromRestockOrder = (RFID, restockOrderId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM RestockOrdersSKUItems WHERE restockOrderID = ? AND RFID = ?';
+        db.get(sql, [restockOrderId, RFID], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined)
+                resolve({ error: 'RFID not found in Restock Order' });
+            else resolve(row);
+        });
+    });
+}
