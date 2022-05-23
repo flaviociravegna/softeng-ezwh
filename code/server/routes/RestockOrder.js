@@ -174,7 +174,7 @@ router.post('/', [
         const Id = await ROProductsTableID.getLastIdRsO();
         await ROProductsTableID.createRestockOrder(req.body.issueDate, req.body.supplierId, Id + 1);
 
-        const ROProductsTableID = await RestockOrder_DAO.getLastPIDInOrder();
+        const ROProductsTableID = await RestockOrder_DAO.getLastPIDInOrder(Id);
         for (const prod of req.body.products)
             await ROProductsTableID.insertProductInOrder(Id + 1, ROProductsTableID, prod.SKUId, prod.qty);
 

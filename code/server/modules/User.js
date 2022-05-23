@@ -149,3 +149,15 @@ exports.deleteUser = (username, type) => {
     });
 }
 
+exports.getSupplierById = (id) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT userId, username, type FROM users WHERE userId = ? AND type="SUPPLIER"', [id], (err, row) => {
+            if (err)
+                reject(err);
+            if (row == undefined)
+                resolve({ error: 'Supplier not found.' });
+            else
+                resolve(row);
+        });
+    });
+};
