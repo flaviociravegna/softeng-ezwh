@@ -72,14 +72,7 @@ describe('API Test: Item', function () {
        
     });
     
-    //why alway 404?
-    //UPDATE /api/items/:id
-    describe('UPDATE /api/items/:id(success)',function(){
-        updateItem(200,1,{
-            "newDescription" : "a new sku",
-            "newPrice" : 10.99
-        })
-    });
+    
 
     // GET /api/items
     describe('GET /api/items', function () {
@@ -96,6 +89,27 @@ describe('API Test: Item', function () {
         getItem(422, -1);
         getItem(422, 0.44);
         getItem(422,"ezwh");
+    });
+
+ //UPDATE /api/items/:id
+     describe('UPDATE /api/items/:id(success)',function(){
+        updateItem(200,1,{
+            "newDescription" : "a new sku",
+            "newPrice" : 10.99
+        })
+    });
+
+      //UPDATE /api/items/:id(FAIL)
+      describe('UPDATE /api/items/:id(erros)',function(){
+          //Illegal price 
+        updateItem(422,1,{"newDescription" : "a new sku","newPrice" : -10.99});
+        // Empty description
+        updateItem(422,1,{"newDescription" : "","newPrice" : 10.99});
+        //wrong id
+        updateItem(404,114,{"newDescription" : "a new sku","newPrice" : 10.99});
+        updateItem(422,"not a number",{"newDescription" : "a new sku","newPrice" : 10.99});
+        // wrong prop's name
+        updateItem(422,4,{"Description" : "a new sku","newPrice" : 10.99});
     });
 
     clear();
@@ -285,7 +299,7 @@ function deleteSKU(expectedHTTPStatus, id) {
 function updateItem(expectedHTTPStatus, id, item) {
     it(`Updating item [id: ${id}] item`, function (done) {
         if (item !== undefined) {
-            agent.put(`/api/items/${id}/item`)
+            agent.put(`/api/items/${id}`)
                 .set('content-type', 'application/json')
                 .send(item)
                 .end(function (err, res) {
@@ -296,7 +310,7 @@ function updateItem(expectedHTTPStatus, id, item) {
                     done();
                 });
         } else {
-            agent.put(`/api/items/${id}/item`)
+            agent.put(`/api/items/${id}`)
                 .end(function (err, res) {
                     if (err)
                         done(err);
