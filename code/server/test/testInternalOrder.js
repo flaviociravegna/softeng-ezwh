@@ -85,6 +85,16 @@ describe('API Test: InternalOrders', function () {
         updateInternalOrder(200, 4, { "newState": "ACCEPTED" });
 
     });
+            
+
+      // PUT /api/internalOrders/:id/IO(FAIL)
+      describe('PUT /api/internalOrders/:id/IO (erros)', function () {
+       //Illegal id
+        updateInternalOrder(422,"should be a number",{"newState":"ACCEPTED"});
+        updateInternalOrder(404,114,{"newState":"ACCEPTED"});
+        //wrong prop's name
+        updateInternalOrder(422,4,{"State":"ACCEPTED"});
+    });
 
     clear();
 });
