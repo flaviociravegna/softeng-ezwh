@@ -66,7 +66,6 @@ router.post('/api/newUser', [
     }),
     check('password').notEmpty().isString().isLength({ min: 8 }),
 ], async (request, response) => {
-
     try {
         const errors = validationResult(request);
         if (!errors.isEmpty())
@@ -238,7 +237,6 @@ router.delete('/api/users/:username/:type', [
         response.status(204).end();
     }
     catch (err) {
-        console.log(err)
         response.status(503).json({ error: `Database error while deleting: ${request.params.username}.` });
     }
 });
