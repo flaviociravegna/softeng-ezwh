@@ -58,13 +58,13 @@ router.get('/api/users', async (req, res) => {
 
 // CREATE NEW USER
 router.post('/api/newUser', [
-    check('name').isString(),
-    check('surname').isString(),
-    check('username').isEmail(),
+    check('name').notEmpty().isString(),
+    check('surname').notEmpty().isString(),
+    check('username').notEmpty().isEmail(),
     check('type').custom(val => {
       return CheckifTypeAllowed(val);
     }),
-    check('password').isString().isLength({ min: 8 }),
+    check('password').notEmpty().isString().isLength({ min: 8 }),
   ], async (request, response) => {
   
     try {
@@ -204,6 +204,11 @@ router.put('/api/users/:username', [
         if (user.length == 0)
             return res.status(404).end(); //user not found
 
+        // Check if the new user-rights exists
+        let new_user = await user_db.getUserByUsernameAndType(req.params.username, req.body.newType);
+        if (new_user.length != 0)
+            return res.status(503).end(); //user already exists
+
         const result = await user_db.modifyUserRights(req.params.username, req.body.oldType, req.body.newType);
         res.status(200).json(result);
 
@@ -225,14 +230,15 @@ router.delete('/api/users/:username/:type', [
         if (!errors.isEmpty())
             return response.status(422).json({ errors: errors.array() });
 
-        let user = await user_db.getUserByUsernameAndType(request.params.username, request.params.oldType);
+        let user = await user_db.getUserByUsernameAndType(request.params.username, request.params.type);
         if (user.length == 0)
-            return res.status(422).end(); //user not found
+            return response.status(422).end(); //user not found
 
         await user_db.deleteUser(request.params.username, request.params.type);
         response.status(204).end();
   }
   catch (err) {
+      console.log(err)
         response.status(503).json({ error: `Database error while deleting: ${request.params.username}.` });
   }
 });
