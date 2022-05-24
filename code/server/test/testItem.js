@@ -37,10 +37,10 @@ describe('POST /api/sku', function () {
     createNewItem(201, {"id":4, "description": "item no.4", "price": 40.99, "SKUId": 4,"supplierId":1 });
 });
 
-    // //PUT/api/newUser
-    // describe('PUT /api/newUser', function () {
-    //     createNewUser(201,{"name":"user1@ezwh.com", "username":"def", "hash":"$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", "type":"SUPPLIER"})
-    // });
+    //PUT/api/newUser
+    describe('PUT /api/newUser', function () {
+        createNewUser(201, { "username": "testUser@testing.it", "name": "Test", "surname": "Test", "password": "testpassword", "type": "supplier" });   
+    });
 }
 
 describe('API Test: Item', function () {
@@ -70,6 +70,15 @@ describe('API Test: Item', function () {
        getItem(200,3,item3);
        getItem(200,4,item4);
        
+    });
+    
+    //why alway 404?
+    //UPDATE /api/items/:id
+    describe('UPDATE /api/items/:id(success)',function(){
+        updateItem(200,1,{
+            "newDescription" : "a new sku",
+            "newPrice" : 10.99
+        })
     });
 
     // GET /api/items
@@ -113,10 +122,10 @@ function clear() {
         deleteItem(204,4);
     });
 
-    // // DELETE SUPPLIER
-    // describe('DELETE /api/users/:username/:type', function () {
-    //     deleteUser(204,"user1@ezwh.com","SUPPLIER")
-    // });
+    // DELETE SUPPLIER
+    describe('DELETE /api/users/:username/:type', function () {
+        deleteUser(204,"testUser@testing.it","supplier")
+    });
 }
 
 
@@ -170,12 +179,12 @@ function createNewSKU(expectedHTTPStatus, SKU) {
     });
 }
 
-function createNewUser(expectedHTTPStatus, User) {
+function createNewUser(expectedHTTPStatus, user) {
     it('Inserting a new User', function (done) {
-        if (User !== undefined) {
+        if (user !== undefined) {
             agent.post('/api/newUser')
                 .set('content-type', 'application/json')
-                .send(User)
+                .send(user)
                 .end(function (err, res) {
                     if (err)
                         done(err);
@@ -196,18 +205,16 @@ function createNewUser(expectedHTTPStatus, User) {
     });
 }
 
-function updatePositionItem(expectedHTTPStatus, id) {
-    it(`Updating Item [id: ${id}]`, function (done) {
-            agent.put(`/api/items/${id}`)
-                .set('content-type', 'application/json')
-                .end(function (err, res) {
-                    if (err)
-                        done(err);
-
-                    res.should.have.status(expectedHTTPStatus);
-                    done();
-                });
-        
+function deleteUser(expectedHTTPStatus, username, type) {
+    it('Deleting a user', function (done) {
+        agent.delete(`/api/users/${username}/${type}`)
+            .end(function (err, res) {
+                if (err)                     
+                    done(err);
+                
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            });
     });
 }
 
@@ -275,6 +282,32 @@ function deleteSKU(expectedHTTPStatus, id) {
     });
 }
 
+function updateItem(expectedHTTPStatus, id, item) {
+    it(`Updating item [id: ${id}] item`, function (done) {
+        if (item !== undefined) {
+            agent.put(`/api/items/${id}/item`)
+                .set('content-type', 'application/json')
+                .send(item)
+                .end(function (err, res) {
+                    if (err)
+                        done(err);
+
+                    res.should.have.status(expectedHTTPStatus);
+                    done();
+                });
+        } else {
+            agent.put(`/api/items/${id}/item`)
+                .end(function (err, res) {
+                    if (err)
+                        done(err);
+
+                    res.should.have.status(expectedHTTPStatus);
+                    done();
+                });
+        }
+    });
+}
+
 function deleteItem(expectedHTTPStatus,id) {
     it('Deleting a item', function (done) {
         agent.delete(`/api/items/${id}`)
@@ -288,18 +321,6 @@ function deleteItem(expectedHTTPStatus,id) {
     });
 }
 
-function deleteUser(expectedHTTPStatus,username,type ) {
-    it('Deleting a User', function (done) {
-        agent.delete(`/api/users/${username}/${type}`)
-            .end(function (err, res) {
-                if (err)
-                    done(err);
-
-                res.should.have.status(expectedHTTPStatus);
-                done();
-            });
-    });
-}
 
 function compareItems(expectedItem, otherItem, checkID) {
     if (checkID && expectedItem.id != otherItem.id) {return false;}
