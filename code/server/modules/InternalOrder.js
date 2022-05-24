@@ -88,7 +88,7 @@ exports.getLastInternalOrderId = () => {
 
 exports.createNewInternalOrder = (id, issueDate, state, customerID, products) => {
     return new Promise(async (resolve, reject) => {
-        
+
         db.run("INSERT INTO InternalOrders (id,issueDate,state,customerID) VALUES (?, ?, ?, ?)",
             [id, issueDate, state, customerID], function (err) {
                 if (err)
@@ -148,7 +148,7 @@ exports.getInternalOrdersProductById = (internalOrderID) => {
             if (rows == undefined)
                 resolve({ error: 'ID not found.' });
             else {
-               // console.log(rows);
+                // console.log(rows);
                 const productList = rows.map(ip => ({ "skuID": ip.skuID, "description": ip.description, "price": ip.price, "quantity": ip.quantity, "internalOrderID": ip.internalOrderID }));
                 resolve(productList);
             }
@@ -166,7 +166,7 @@ exports.getInternalOrdersProductBySKUId = (skuID) => {
                 resolve({ error: 'SKUID not found.' });
             else {
                 //console.log(row);
-                let ip=row;
+                let ip = row;
                 const product = { "skuID": ip.skuID, "description": ip.description, "price": ip.price, "quantity": ip.quantity, "internalOrderID": ip.internalOrderID };
                 resolve(product);
             }
@@ -178,13 +178,13 @@ exports.getInternalOrdersProductBySKUId = (skuID) => {
 
 exports.getAllInternalOrdersSKUItems = () => {
     return new Promise((resolve, reject) => {
-          
-         db.all('SELECT i.internalOrderID as internalOrderID ,si.RFID as RFID,s.description as description,s.price as price, si.skuID as skuID FROM (InternalOrdersSKUItems i INNER JOIN SKUItems si ON i.RFID=si.RFID) INNER JOIN SKUs s ON si.skuID =s.id ', [], (err, rows) => {
-            if (err){
+
+        db.all('SELECT i.internalOrderID as internalOrderID ,si.RFID as RFID,s.description as description,s.price as price, si.skuID as skuID FROM (InternalOrdersSKUItems i INNER JOIN SKUItems si ON i.RFID=si.RFID) INNER JOIN SKUs s ON si.skuID =s.id ', [], (err, rows) => {
+            if (err) {
 
                 reject(err);
             }
-                
+
             else {
 
                 const ItemsList = rows.map(is => new InternalOrdersSKUItem(is.skuID, is.description, is.price, is.RFID, is.internalOrderID));
@@ -269,7 +269,7 @@ exports.deleteInternalOrderSKUItems = (internalOrderID) => {
     });
 }
 
-exports.deleteAllInternalOrders = ()=>{
+exports.deleteAllInternalOrders = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM InternalOrders", [], function (err) {
             if (err)
@@ -279,7 +279,7 @@ exports.deleteAllInternalOrders = ()=>{
         });
     })
 }
-exports.deleteAllInternalOrdersSKUItems = ()=>{
+exports.deleteAllInternalOrdersSKUItems = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM InternalOrdersSKUItems", [], function (err) {
             if (err)
@@ -289,7 +289,7 @@ exports.deleteAllInternalOrdersSKUItems = ()=>{
         });
     })
 }
-exports.deleteAllInternalOrdersProducts = ()=>{
+exports.deleteAllInternalOrdersProducts = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM InternalOrdersProducts", [], function (err) {
             if (err)

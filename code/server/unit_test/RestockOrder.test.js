@@ -4,10 +4,10 @@ const SKU = require('../modules/SKU')
 const SKU_ITEM = require('../modules/SKUItem')
 const TestResults = require('../modules/testResult_db')
 
-beforeAll(async()=>{
+beforeAll(async () => {
     await new Promise(process.nextTick);
 });
-afterAll(async()=>{
+afterAll(async () => {
     await new Promise(process.nextTick);
 });
 

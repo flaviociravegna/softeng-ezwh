@@ -6,10 +6,10 @@ most of the times the promises will resolve, so the coverage of "reject"
  branches can be not so high
 ************************************************************************/
 
-beforeAll(async ()=>{
+beforeAll(async () => {
     await new Promise(process.nextTick);
 });
-afterAll(async ()=>{
+afterAll(async () => {
     await new Promise(process.nextTick);
 });
 
