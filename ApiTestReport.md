@@ -107,5 +107,7 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-|                            |           |
-
+|            NFR9                |     testSkuItem.js &emsp; --> &emsp; "PUT /api/skuitems/:rfid (errors)"      |
+| NFR6 |  testSkuItem.js &emsp; --> &emsp; "GET /api/skus/:id (errors)"|
+| NFR4 | testPosition.js &emsp; --> &emsp; "POST /api/positions (errors)" |
+|  |  |
