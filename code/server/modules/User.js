@@ -95,7 +95,7 @@ exports.createNewUser = (user) => {
 // search the maxId among all users
 exports.searchMaxID = () => {
     return new Promise((resolve, reject) => {
-        const sql_query = "SELECT max(userId) AS max_id FROM users;";
+        const sql_query = "SELECT userId AS max_id FROM users ORDER BY userId DESC LIMIT 1";
         db.all(sql_query, [], (err, rows) => {
             if (err) {
 
@@ -151,7 +151,7 @@ exports.deleteUser = (username, type) => {
 
 exports.getSupplierById = (id) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT userId, username, type FROM users WHERE userId = ? AND type="SUPPLIER"', [id], (err, row) => {
+        db.get('SELECT userId, username, type FROM users WHERE userId = ? AND type="supplier"', [id], (err, row) => {
             if (err)
                 reject(err);
             if (row == undefined)

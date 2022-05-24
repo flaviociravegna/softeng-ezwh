@@ -133,7 +133,6 @@ router.post('/', [
         res.status(201).end();
 
     } catch (err) {
-        console.log(err)
         res.status(503).end();
     }
 });
@@ -178,8 +177,8 @@ router.put('/:id', [
 
 // DELETE a test result, given its id for a certain sku item identified by RFID
 router.delete('/:id', [
-    check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
-    check('id').isInt({ min: 1 })
+    check('rfid').notEmpty().isNumeric().isLength({ min: 32, max: 32 }),
+    check('id').notEmpty().isInt({ min: 1 })
 ], async (request, response) => {
     try {
         const errors = validationResult(request);

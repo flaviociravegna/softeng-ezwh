@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const RestockOrder_DAO = require('../modules/RestockOrder');
-const SKU_db = require('../modules/SKU')
+const SKU_db = require('../modules/SKU');
+const USER_DAO = require('../modules/User');
 const { check, validationResult, body } = require('express-validator'); // validation middleware
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
@@ -33,7 +34,7 @@ router.get('/', skipThisRoute, async (req, res) => {
                 issueDate: row.issueDate,
                 state: row.state,
                 products: row.products,
-                supplierId: row.supplierId,
+                supplierId: row.supplierID,
                 skuItems: (row.state == "ISSUED" || row.state == "DELIVERY") ? [] : row.skuItems
             }
 
@@ -62,7 +63,7 @@ router.get('/', async (req, res) => {
             issueDate: row.issueDate,
             state: row.state,
             products: row.products,
-            supplierId: row.supplierId,
+            supplierId: row.supplierID,
             skuItems: []
         }));
 
@@ -82,9 +83,18 @@ router.get('/:id', [
         if (!errors.isEmpty())
             return res.status(422).json({ errors: errors.array() });
 
-        let RO = await RestockOrder_DAO.getRestockOrderById(req.params.id);
-        if (RO.error)
+        let ResOrd = await RestockOrder_DAO.getRestockOrderById(req.params.id);
+        if (ResOrd.error)
             return res.status(404).end();
+
+        let RO = {
+            id: ResOrd.id,
+            issueDate: ResOrd.issueDate,
+            state: ResOrd.state,
+            products: ResOrd.products,
+            supplierId: ResOrd.supplierID,
+            skuItems: ResOrd.skuItems
+        };
 
         RO.products = await RestockOrder_DAO.getRestockOrderProducts(req.params.id);
         RO.transportNote = await RestockOrder_DAO.getRestockOrderTransportNote(req.params.id);
@@ -95,8 +105,6 @@ router.get('/:id', [
                 delete RO.transportNote;
         } else
             RO.skuItems = await RestockOrder_DAO.getRestockOrderSkuItems(req.params.id);
-
-
 
         res.status(200).json(RO);
     } catch (err) {
@@ -154,7 +162,7 @@ router.post('/', [
 
         //check if supplierId exists
         // Better with 404 error, but not present in API
-        const supplier = await DB.getSupplierById(req.body.supplierId);
+        const supplier = await USER_DAO.getSupplierById(req.body.supplierId);
         if (supplier.error)
             return res.status(422).json({ error: "Supplier Not Found" });
 
@@ -168,15 +176,17 @@ router.post('/', [
             let sku = await SKU_db.getSKUById(prod.SKUId);
             if (sku.error)
                 return res.status(422).send("SKUId " + prod.SKUId + " not found in the db");
-
         }
 
-        const Id = await ROProductsTableID.getLastIdRsO();
-        await ROProductsTableID.createRestockOrder(req.body.issueDate, req.body.supplierId, Id + 1);
+        let RestockOrderId = await RestockOrder_DAO.getLastIdRsO();
+        await RestockOrder_DAO.createRestockOrder(req.body.issueDate, req.body.supplierId, RestockOrderId + 1);
 
-        const ROProductsTableID = await RestockOrder_DAO.getLastPIDInOrder(Id);
+        let ROProductsTableID = await RestockOrder_DAO.getLastPIDInOrder(RestockOrderId);
+        RestockOrderId++;
+        ROProductsTableID++;
+
         for (const prod of req.body.products)
-            await ROProductsTableID.insertProductInOrder(Id + 1, ROProductsTableID, prod.SKUId, prod.qty);
+            await RestockOrder_DAO.insertProductInOrder(ROProductsTableID++, RestockOrderId, prod.SKUId, prod.qty, prod.description);
 
         res.status(201).end();
     } catch (err) {

@@ -109,7 +109,7 @@ exports.getRestockOrderFailedSKUItems = (id) => {
 
 exports.getLastPIDInOrder = (orderId) => {
     return new Promise((resolve, reject) => {
-        db.get("SELECT itemId as id FROM RestockOrdersProducts WHERE restockOrderID =? ORDER BY id DESC LIMIT 1", [orderId], (err, row) => {
+        db.get("SELECT productID as id FROM RestockOrdersProducts WHERE restockOrderID = ? ORDER BY id DESC LIMIT 1", [orderId], (err, row) => {
             if (err)
                 reject(err);
             else
@@ -118,10 +118,10 @@ exports.getLastPIDInOrder = (orderId) => {
     });
 }
 
-exports.insertProductInOrder = (id, restockOrderId, skuID, qty) => {
+exports.insertProductInOrder = (id, restockOrderId, skuID, qty, description) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO RestockOrdersProducts (itemID, restockOrderID, skuID, quantity) VALUES (?,?,?,?)';
-        db.run(sql, [id, restockOrderId, skuID, qty], (err, row) => {
+        const sql = 'INSERT INTO RestockOrdersProducts (productID, restockOrderID, skuID, quantity, description) VALUES (?,?,?,?,?)';
+        db.run(sql, [id, restockOrderId, skuID, qty, description], (err, row) => {
             if (err)
                 reject(err);
             else
@@ -210,17 +210,16 @@ exports.addRestockOrderTransportNote = (id, transportNote) => {
 
 exports.getRestockOrderTransportNote = (id) => {
     return new Promise((resolve, reject) => {
-        db.get("SELECT DeliveryDate FROM RestockOrderTransportNote WHERE RestockOrderID = ?", [id], (err, rows) => {
+        db.get("SELECT deliveryDate FROM RestockOrderTransportNote WHERE RestockOrderID = ?", [id], (err, rows) => {
             if (err) {
                 reject(err);
-            } 
-            if(rows== undefined){
-                resolve({error: 'Transport note not found'}); 
-            }else if(rows.DeliveryDate == undefined)resolve(null);
-            else{
-                resolve({ TransportNote: { 'DeliveryDate':rows.DeliveryDate } });
             }
-            
+            if (rows == undefined)
+                resolve({ error: 'Transport note not found' });
+            else if (rows.deliveryDate == undefined)
+                resolve(null);
+            else
+                resolve({ 'deliveryDate': rows.deliveryDate });
         });
     });
 }
@@ -302,7 +301,7 @@ exports.getRFIDFromRestockOrder = (RFID, restockOrderId) => {
     });
 }
 
-exports.deleteAllRestockOrders = () =>{
+exports.deleteAllRestockOrders = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM RestockOrders", [], function (err) {
             if (err)
@@ -312,7 +311,7 @@ exports.deleteAllRestockOrders = () =>{
         });
     });
 }
-exports.deleteAllRestockOrdersProducts = () =>{
+exports.deleteAllRestockOrdersProducts = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM RestockOrdersProducts", [], function (err) {
             if (err)
@@ -322,7 +321,7 @@ exports.deleteAllRestockOrdersProducts = () =>{
         });
     });
 }
-exports.deleteAllRestockOrdersSKUItems = () =>{
+exports.deleteAllRestockOrdersSKUItems = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM RestockOrdersSKUItems", [], function (err) {
             if (err)
@@ -332,7 +331,7 @@ exports.deleteAllRestockOrdersSKUItems = () =>{
         });
     });
 }
-exports.deleteAllRestockOrderTransportNote = () =>{
+exports.deleteAllRestockOrderTransportNote = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM RestockOrderTransportNote", [], function (err) {
             if (err)

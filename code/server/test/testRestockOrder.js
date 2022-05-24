@@ -1,8 +1,5 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const { createNewItem } = require('../modules/Item');
-const { getRestockOrderSkuItems } = require('../modules/RestockOrder');
-const { createNewTestResult, deleteTestResult } = require('../modules/testResult_db');
 chai.use(chaiHttp);
 chai.should();
 
@@ -31,32 +28,32 @@ let restockOrder1_issued = {
     "id": 1,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 1
+    "supplierId": 2
 };
 
 let restockOrder2_issued = {
     "id": 2,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 1
+    "supplierId": 2
 };
 
 let restockOrder3_delivery = {
     "id": 3,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 1
+    "supplierId": 2
 };
 
 let restockOrder4_delivered = {
     "id": 4,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 1
+    "supplierId": 2
 };
 
 const supplier1 = {
-    "username": "user1@ezwh.com",
+    "username": "supplier1@ezwh.com",
     "name": "Michael",
     "surname": "Jordan",
     "password": "testpassword",
@@ -64,7 +61,7 @@ const supplier1 = {
 };
 
 const supplier2 = {
-    "username": "user2@ezwh.com",
+    "username": "supplier2@ezwh.com",
     "name": "Pippo",
     "surname": "Pluto",
     "password": "testpassword",
@@ -76,7 +73,7 @@ let item1 = {
     "description": "item 1",
     "price": 10.99,
     "SKUId": 1,
-    "supplierId": 1
+    "supplierId": 2         // ID = 1 is assigned to the manager
 };
 
 let item2 = {
@@ -84,7 +81,7 @@ let item2 = {
     "description": "item2",
     "price": 20.99,
     "SKUId": 2,
-    "supplierId": 2
+    "supplierId": 3
 };
 
 /*****************************************************************/
@@ -94,12 +91,17 @@ describe('API Test: RESTOCK ORDER', function () {
 
     const tempSI1 = { "SKUId": SKUItem1.SKUId, "rfid": SKUItem1.RFID };
     const tempSI2 = { "SKUId": SKUItem2.SKUId, "rfid": SKUItem2.RFID };
+    const tempSI3 = { "SKUId": SKUItem3.SKUId, "rfid": SKUItem3.RFID };
+    const tempSI4 = { "SKUId": SKUItem4.SKUId, "rfid": SKUItem4.RFID };
 
     describe('POST /api/restockOrder (success)', function () {
         createNewRestockOrder(201, restockOrder1_issued);
         createNewRestockOrder(201, restockOrder2_issued);
         createNewRestockOrder(201, restockOrder3_delivery);
         createNewRestockOrder(201, restockOrder4_delivered);
+
+        modifyRestockOrderState(200, 3, { "newState": "DELIVERY" });
+        modifyRestockOrderState(200, 4, { "newState": "DELIVERED" });
     });
 
     describe('GET /api/restockOrders', function () {
@@ -129,37 +131,37 @@ describe('API Test: RESTOCK ORDER', function () {
         createNewRestockOrder(422, {
             "issueDate": "2021/11/41 09:33", // Wrong date format
             "products": [product1, product2],
-            "supplierId": 1
+            "supplierId": 2
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 39:33", // Wrong date format
             "products": [product1, product2],
-            "supplierId": 1
+            "supplierId": 2
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33",
             "products": [{ "SKUId": -1, "description": "first sku", "price": 10.99, "qty": 1 }], // Wrong product format
-            "supplierId": 1
+            "supplierId": 2
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33",
             "products": [{ "SKUId": 1, "description": "", "price": 10.99, "qty": 1 }], // Wrong product format
-            "supplierId": 1
+            "supplierId": 2
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33",
             "products": [{ "SKUId": 1, "price": 10.99, "qty": 1 }], // Wrong product format
-            "supplierId": 1
+            "supplierId": 2
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33",
             "products": [{ "SKUId": 1, "description": "desc", "price": "aaaaaaa", "qty": 1 }], // Wrong product format
-            "supplierId": 1
+            "supplierId": 2
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33",
             "products": [{ "SKUId": 1, "description": "desc", "price": 10.99, "qty": "aaaaa" }], // Wrong product format
-            "supplierId": 1
+            "supplierId": 2
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33", "products": [product1, product2],
@@ -176,7 +178,7 @@ describe('API Test: RESTOCK ORDER', function () {
 
     describe('PUT /api/restockOrder/:id (errors)', function () {
         modifyRestockOrderState(422);
-        modifyRestockOrderState(404, 99);
+        modifyRestockOrderState(404, 99, { "newState": "DELIVERED" });
         modifyRestockOrderState(404, 10, { "newState": "DELIVERED" });
         modifyRestockOrderState(422, -1, { "newState": "DELIVERED" });
         modifyRestockOrderState(422, "abc", { "newState": "DELIVERED" });
@@ -184,12 +186,27 @@ describe('API Test: RESTOCK ORDER', function () {
         modifyRestockOrderState(422, 1, { "newState": 1 });
         modifyRestockOrderState(422, 1, {});
         modifyRestockOrderState(422, 1);
-        modifyRestockOrderState(422, 1, { "wrongFieldName": states[1] });
+        modifyRestockOrderState(422, 1, { "wrongFieldName": "DELIVERED" });
     });
 
     describe('PUT /api/restockOrder/:id/skuItems (success)', function () {
-        addRestockOrderSKUItemList(200, 2, [tempSI1, tempSI2]);
+        addRestockOrderSKUItemList(200, 2, { "skuItems": [tempSI1, tempSI2] });
         getRestockOrder(200, 2, { ...restockOrder2_issued, "state": "DELIVERED", "skuItems": [tempSI1, tempSI2], "id": 2 });
+
+        addRestockOrderSKUItemList(200, 4, { "skuItems": [tempSI3] });
+        getRestockOrder(200, 4, { ...restockOrder4_delivered, "state": "DELIVERED", "skuItems": [tempSI3], "id": 4 });
+        addRestockOrderSKUItemList(200, 4, { "skuItems": [tempSI4] });
+        getRestockOrder(200, 4, { ...restockOrder4_delivered, "state": "DELIVERED", "skuItems": [tempSI3, tempSI4], "id": 4 });
+    });
+
+    describe('PUT /api/restockOrder/:id/skuItems (errors)', function () {
+        addRestockOrderSKUItemList(422, 1, { "skuItems": [tempSI1, tempSI2] });
+        addRestockOrderSKUItemList(422, 3, { "skuItems": [tempSI1, tempSI2] });
+        addRestockOrderSKUItemList(422, 3, { "skuItems": "" });
+        addRestockOrderSKUItemList(422);
+        addRestockOrderSKUItemList(422, 1);
+        addRestockOrderSKUItemList(422, -1, { "skuItems": [tempSI1, tempSI2] });
+        addRestockOrderSKUItemList(404, 99, { "skuItems": [tempSI1, tempSI2] });
     });
 
     describe('GET /api/restockOrders/:id/returnItems (success)', function () {
@@ -211,8 +228,8 @@ describe('API Test: RESTOCK ORDER', function () {
     });
 
     describe('PUT /api/restockOrder/:id/transportNote (success)', function () {
-        addTransportNote(200, 3, { "transportNote": { "deliveryDate": "2021/12/29" } })
-        getRestockOrder(200, 2, { ...restockOrder3_delivery, "state": "DELIVERY", "skuItems": [], "id": 3 });
+        addTransportNote(200, 3, { "transportNote": { "deliveryDate": "2021/12/29" } });
+        getRestockOrder(200, 3, { ...restockOrder3_delivery, "state": "DELIVERY", "transportNote": { "deliveryDate": "2021/12/29" }, "skuItems": [], "id": 3 });
     });
 
     describe('PUT /api/restockOrder/:id/transportNote (errors)', function () {
@@ -224,7 +241,7 @@ describe('API Test: RESTOCK ORDER', function () {
         addTransportNote(422, 3, { "transportNote": { "wrongDeliveryDate": "2021/12/29" } });
         addTransportNote(422, 3, { "transportNote": { "deliveryDate": "" } });
 
-        addTransportNote(404, 99, { "transportNote": { "deliveryDate": "" } });
+        addTransportNote(404, 99, { "transportNote": { "deliveryDate": "2021/12/29" } });
     });
 
     describe('DELETE /api/restockOrder/:id (success)', function () {
@@ -238,7 +255,7 @@ describe('API Test: RESTOCK ORDER', function () {
         deleteRestockOrder(422);
         deleteRestockOrder(422, 99);
         deleteRestockOrder(422, -1);
-        deleteRestockOrder(204, "id must be an int");
+        deleteRestockOrder(422, "id must be an int");
     });
 
     clear();
@@ -268,7 +285,7 @@ function setup() {
         createNewSKUItem(201, SKUItem7);
         createNewSKUItem(201, SKUItem8);
 
-        createTestDescriptor(201, { "name": "", "procedureDescription": "Test description 1", "idSKU": 1 });
+        createTestDescriptor(201, { "name": "test 1", "procedureDescription": "Test description 1", "idSKU": 1 });
 
         createNewTestResult(201, {
             "rfid": SKUItem2.RFID,
@@ -328,8 +345,8 @@ function clear() {
     });
 
     describe('Deleting users...', function () {
-        deleteSupplier(201, supplier1.username, supplier1.type);
-        deleteSupplier(201, supplier2.username, supplier2.type);
+        deleteSupplier(204, supplier1.username, supplier1.type);
+        deleteSupplier(204, supplier2.username, supplier2.type);
     });
 }
 
@@ -357,9 +374,8 @@ function getRestockOrders(expectedHTTPStatus, expectedLength, expectedROs) {
                         RO.should.haveOwnProperty("supplierId");
                         RO.should.haveOwnProperty("skuItems");
                         RO.skuItems.should.be.an('array');
-                        RO.should.eventually.haveOwnProperty("transportNote");
 
-                        expectedROs.some((xpctd) => { return compareSKUs(xpctd, RO, 1); }).should.be.equal(true);
+                        expectedROs.some((xpctd) => { return compareRestockOrder(xpctd, RO, 1); }).should.be.equal(true);
                     }
                 }
                 done();
@@ -368,8 +384,8 @@ function getRestockOrders(expectedHTTPStatus, expectedLength, expectedROs) {
 }
 
 function getRestockOrdersIssued(expectedHTTPStatus, expectedLength, expectedROs) {
-    it('Get all Restock Orders', function (done) {
-        agent.get('/api/restockOrders')
+    it('Get all Restock Orders Issued', function (done) {
+        agent.get('/api/restockOrdersIssued')
             .end(function (err, res) {
                 if (err)
                     done(err);
@@ -391,7 +407,7 @@ function getRestockOrdersIssued(expectedHTTPStatus, expectedLength, expectedROs)
                         RO.skuItems.should.be.an('array');
                         RO.skuItems.should.have.lengthOf(0);
 
-                        expectedROs.some((xpctd) => { return compareSKUs(xpctd, RO, 1); }).should.be.equal(true);
+                        expectedROs.some((xpctd) => { return compareRestockOrder(xpctd, RO, 1); }).should.be.equal(true);
                     }
                 }
                 done();
@@ -401,7 +417,7 @@ function getRestockOrdersIssued(expectedHTTPStatus, expectedLength, expectedROs)
 
 function getRestockOrder(expectedHTTPStatus, id, expectedRO) {
     it('Get Restock order with ID = ' + id, function (done) {
-        if (expectedRestockOrder !== undefined) {
+        if (expectedRO !== undefined) {
             agent.get('/api/restockOrders/' + id)
                 .end(function (err, res) {
                     if (err)
@@ -418,7 +434,6 @@ function getRestockOrder(expectedHTTPStatus, id, expectedRO) {
                         res.body.should.haveOwnProperty("supplierId");
                         res.body.should.haveOwnProperty("skuItems");
                         res.body.skuItems.should.be.an('array');
-                        res.body.should.eventually.haveOwnProperty("transportNote");
 
                         compareRestockOrder(expectedRO, res.body, 0).should.be.equal(true);
                     }
@@ -462,18 +477,22 @@ function getRestockOrderSKUItemsToReturn(expectedHTTPStatus, id, expectedLength,
 }
 
 function compareRestockOrder(expectedRO, otherRO, checkID) {
-    if (checkID && expectedRO.id != otherRO.id) return false;
-    if (expectedRO.issueDate != otherRO.issueDate) return false;
-    if (expectedRO.state != otherRO.state) return false;
-    if (expectedRO.supplierId != otherRO.supplierId) return false;
+    if (checkID && expectedRO.id != otherRO.id)
+        return false;
+    if (expectedRO.issueDate != otherRO.issueDate)
+        return false;
+    if (expectedRO.state != otherRO.state)
+        return false;
+    if (expectedRO.supplierId != otherRO.supplierId)
+        return false;
     if (expectedRO.transportNote != undefined && expectedRO.transportNote.deliveryDate != otherRO.transportNote.deliveryDate)
-        return false
+        return false;
 
-    if (expectedRO.products.length != otherRO.products.length) return false;
+    if (expectedRO.products.length != otherRO.products.length)
+        return false;
     for (const expectedProduct of expectedRO.products) {
         const found = otherRO.products.some((prod) => {
-            return expectedProduct.SKUId == prod.SKUId && expectedProduct.description == prod.description &&
-                expectedProduct.price == prod.price && expectedProduct.qty == prod.qty;
+            return expectedProduct.SKUId == prod.SKUId && expectedProduct.price == prod.price && expectedProduct.qty == prod.qty;
         });
 
         if (!found)
@@ -482,7 +501,7 @@ function compareRestockOrder(expectedRO, otherRO, checkID) {
 
     if (expectedRO.skuItems.length != otherRO.skuItems.length) return false;
     for (const expectedSkuItem of expectedRO.skuItems) {
-        const found = otherSKU.testDescriptors.some((SI) => {
+        const found = otherRO.skuItems.some((SI) => {
             return expectedSkuItem.SKUId == SI.SKUId && expectedSkuItem.rfid == SI.rfid;
         });
 
@@ -524,7 +543,7 @@ function modifyRestockOrderState(expectedHTTPStatus, id, newState) {
 function addTransportNote(expectedHTTPStatus, id, transportNote) {
     it(`Adding Restock Order [id: ${id}] transport note`, function (done) {
         if (transportNote != undefined) {
-            agent.post(`/api/restockOrder/${id}/transportNote`)
+            agent.put(`/api/restockOrder/${id}/transportNote`)
                 .set('content-type', 'application/json')
                 .send(transportNote)
                 .end(function (err, res) {
@@ -535,7 +554,7 @@ function addTransportNote(expectedHTTPStatus, id, transportNote) {
                     done();
                 });
         } else {
-            agent.post(`/api/restockOrder/${id}/transportNote`)
+            agent.put(`/api/restockOrder/${id}/transportNote`)
                 .end(function (err, res) {
                     if (err)
                         done(err);
@@ -550,7 +569,7 @@ function addTransportNote(expectedHTTPStatus, id, transportNote) {
 function addRestockOrderSKUItemList(expectedHTTPStatus, id, skuItems) {
     it(`Adding Restock order [id: ${id}] SKU Item list`, function (done) {
         if (skuItems !== undefined) {
-            agent.post(`/api/restockOrder/${id}/skuItems`)
+            agent.put(`/api/restockOrder/${id}/skuItems`)
                 .set('content-type', 'application/json')
                 .send(skuItems)
                 .end(function (err, res) {
@@ -561,7 +580,7 @@ function addRestockOrderSKUItemList(expectedHTTPStatus, id, skuItems) {
                     done();
                 });
         } else {
-            agent.post(`/api/restockOrder/${id}/skuItems`)
+            agent.put(`/api/restockOrder/${id}/skuItems`)
                 .end(function (err, res) {
                     if (err)
                         done(err);
@@ -616,6 +635,32 @@ function createTestDescriptor(expectedHTTPStatus, testDescriptor) {
                 });
         } else {
             agent.post('/api/testDescriptor')
+                .end(function (err, res) {
+                    if (err)
+                        done(err);
+
+                    res.should.have.status(expectedHTTPStatus);
+                    done();
+                });
+        }
+    });
+}
+
+function createNewTestResult(expectedHTTPStatus, testResult) {
+    it('Inserting a new test result', function (done) {
+        if (testResult !== undefined) {
+            agent.post('/api/skuitems/testResult')
+                .set('content-type', 'application/json')
+                .send(testResult)
+                .end(function (err, res) {
+                    if (err)
+                        done(err);
+
+                    res.should.have.status(expectedHTTPStatus);
+                    done();
+                });
+        } else {
+            agent.post('/api/skuitems/testResult')
                 .end(function (err, res) {
                     if (err)
                         done(err);
@@ -801,6 +846,19 @@ function deleteRestockOrder(expectedHTTPStatus, id) {
 function deleteTestDescriptor(expectedHTTPStatus, testDescriptorID) {
     it('Deleting a test descriptor', function (done) {
         agent.delete(`/api/testDescriptor/${testDescriptorID}`)
+            .end(function (err, res) {
+                if (err)
+                    done(err);
+
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            });
+    });
+}
+
+function deleteTestResult(expectedHTTPStatus, rfid, testResultID) {
+    it('Deleting a test result', function (done) {
+        agent.delete(`/api/skuitems/${rfid}/testResult/${testResultID}`)
             .end(function (err, res) {
                 if (err)
                     done(err);

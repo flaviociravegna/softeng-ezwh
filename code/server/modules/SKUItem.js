@@ -100,7 +100,7 @@ exports.updatePositionWeightAndVolume = (positionID, newOccupiedWeight, newOccup
     });
 }
 
-exports.deleteAllSKUItems=()=>{
+exports.deleteAllSKUItems = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM SKUItems", [], function (err) {
             if (err)
