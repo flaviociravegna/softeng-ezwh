@@ -81,7 +81,7 @@ exports.getLastInternalOrderId = () => {
             if (err)
                 reject(err);
             else
-                resolve(row == undefined ? 1 : row.id);
+                resolve(row == undefined ? 0 : row.id);
         });
     });
 }
