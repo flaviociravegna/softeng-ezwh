@@ -102,3 +102,14 @@ exports.deleteTestDescriptor = (id) => {
         });
     });
 }
+
+exports.deleteAllTestDescriptors = (id) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM TestDescriptors", [id], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve('Test Descriptors deleted');
+        });
+    });
+}

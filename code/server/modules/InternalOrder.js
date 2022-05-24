@@ -268,7 +268,6 @@ exports.deleteInternalOrderSKUItems = (internalOrderID) => {
         });
     });
 }
-<<<<<<< HEAD
 
 exports.deleteAllInternalOrders = ()=>{
     return new Promise(async (resolve, reject) => {
@@ -300,5 +299,3 @@ exports.deleteAllInternalOrdersProducts = ()=>{
         });
     })
 }
-=======
->>>>>>> 384b3d8cffd76e3cafd634e20f4819398dfc6187
