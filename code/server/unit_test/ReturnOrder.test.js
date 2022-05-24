@@ -1,5 +1,10 @@
 const RO = require('../modules/ReturnOrder');
-
+beforeAll(async()=>{
+    await new Promise(process.nextTick);
+});
+afterAll(async()=>{
+    await new Promise(process.nextTick);
+});
 
 describe("Create new Return Orders", () => {
     beforeEach(async () => {
