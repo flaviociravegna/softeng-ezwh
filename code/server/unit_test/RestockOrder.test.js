@@ -4,6 +4,13 @@ const SKU = require('../modules/SKU')
 const SKU_ITEM = require('../modules/SKUItem')
 const TestResults = require('../modules/testResult_db')
 
+beforeAll(async () => {
+    await new Promise(process.nextTick);
+});
+afterAll(async () => {
+    await new Promise(process.nextTick);
+});
+
 describe('Create and get new RestockOrders', () => {
     beforeEach(async () => {
         await RO.deleteAllRestockOrders();

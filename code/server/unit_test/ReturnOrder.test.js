@@ -1,5 +1,11 @@
 const RO = require('../modules/ReturnOrder');
 
+beforeAll(async () => {
+    await new Promise(process.nextTick);
+});
+afterAll(async () => {
+    await new Promise(process.nextTick);
+});
 
 describe("Create new Return Orders", () => {
     beforeEach(async () => {
@@ -139,8 +145,8 @@ describe('ReturnOrder Products', () => {
     });
 });
 
-describe('delete a return order Product',()=>{
-    beforeEach(async()=>{
+describe('delete a return order Product', () => {
+    beforeEach(async () => {
         await RO.deleteAllReturnOrders();
         await RO.deleteAllReturnOrdersProducts();
         await RO.createNewReturnOrder('19/11/2020', 1, 1);
@@ -155,12 +161,12 @@ describe('delete a return order Product',()=>{
 
     test('delete a return Order', async () => {
         await expect(RO.deleteReturnOrder(2)).resolves.toBe('ReturnOrder Deleted');
-        
-        await expect(RO.getReturnOrders()).resolves.toEqual([{"id":1,"returnDate":'19/11/2020',"products":[],"restockOrderId":1},
-        {"id":3,"returnDate":'11/01/2022',"products":[],"restockOrderId":3}]);
+
+        await expect(RO.getReturnOrders()).resolves.toEqual([{ "id": 1, "returnDate": '19/11/2020', "products": [], "restockOrderId": 1 },
+        { "id": 3, "returnDate": '11/01/2022', "products": [], "restockOrderId": 3 }]);
     });
 
-    test('delete a return Order that doesnt exist',async()=>{
+    test('delete a return Order that doesnt exist', async () => {
         // the sql query just doesnt find a RO, but it doesnt send an error
         await expect(RO.deleteReturnOrder(4)).resolves.toBe('ReturnOrder Deleted');
     });
@@ -168,35 +174,35 @@ describe('delete a return order Product',()=>{
 
 });
 
-describe('delete a return order',()=>{
-    beforeEach(async()=>{
+describe('delete a return order', () => {
+    beforeEach(async () => {
         await RO.deleteAllReturnOrders();
         await RO.deleteAllReturnOrdersProducts();
-        await RO.createNewReturnOrder('19/11/2020',1,1);
-        await RO.createNewReturnOrder('20/10/2021',2,2);
-        await RO.createNewReturnOrder('11/01/2022',3,3);
-        await RO.insertProductInRO({'SKUId':1,'description':"a description.",'price':19.99, 'RFID':12341234},1);
-        
+        await RO.createNewReturnOrder('19/11/2020', 1, 1);
+        await RO.createNewReturnOrder('20/10/2021', 2, 2);
+        await RO.createNewReturnOrder('11/01/2022', 3, 3);
+        await RO.insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': 12341234 }, 1);
+
     });
-    afterEach(async()=>{
+    afterEach(async () => {
         await RO.deleteAllReturnOrders();
         await RO.deleteAllReturnOrdersProducts();
     });
 
-    test('delete a return Order products',async()=>{
-        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{"RFID": "12341234", "SKUId": 1, "description": "a description.", "price": 19.99}]);
+    test('delete a return Order products', async () => {
+        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{ "RFID": "12341234", "SKUId": 1, "description": "a description.", "price": 19.99 }]);
         await expect(RO.deleteReturnOrderProducts(1)).resolves.toBe('ReturnOrderProducts Deleted');
-        
+
         await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([]);
     });
 
-    test('delete a return Order products of an empty order',async()=>{
+    test('delete a return Order products of an empty order', async () => {
         // the sql query just doesnt find a RO, but it doesnt send an error
         await expect(RO.getReturnOrderProducts(2)).resolves.toEqual([]);
         await expect(RO.deleteReturnOrderProducts(2)).resolves.toBe('ReturnOrderProducts Deleted');
         await expect(RO.getReturnOrderProducts(2)).resolves.toEqual([]);
     });
-    test('delete a return Order products of a non existing order',async()=>{
+    test('delete a return Order products of a non existing order', async () => {
         // the sql query just doesnt find a RO, but it doesnt send an error
         await expect(RO.deleteReturnOrderProducts(4)).resolves.toBe('ReturnOrderProducts Deleted');
     });
