@@ -1162,6 +1162,175 @@ deleteReturnOrder(1);
     |delete a return order:delete a return order|
 |   f  |I |deleteReturn(4);|delete a return order :delete a return Order that doesnt exist|
 
+### **Class *Position* - method *createNewPosition***
+
+**Criteria for method *createNewPosition*:**
+ - ID is unique - ID
+ - position is not null - P
+
+**Predicates for method *createNewPosition*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID    |     t     |
+|          |     f     |
+|P|t|
+||f|
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  | P | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   t  | t |V | createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}) ;
+getPositionById(id)   | Create Positions: Create new Position, then get by Id     |
+||f|I| createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}); 
+createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV});     |   Create Positions:  Position creation error: PositionId duplicated  |
+|   f  | t |I |  createNewPosition(position{id=null,aisle,row,col, maxW,maxV,oW,oV})   |   Create Positions: Position creation error: null positionID   |
+||f|I|      | Create Positions: Position creation error: null positionID     |
+
+### **Class *Position* - method *getPositionById***
+
+**Criteria for method *getPositionById*:**
+ - ID exists in DB - ID
+ -
+
+**Predicates for method *getPositionById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID    |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   t  | V |   | Create Positions: Create new Position, then get by Id     |
+|f|I|  getPositionById("300090007000");   |   Get Position by Id:  Get position: position not found |
+
+### **Class *Position* - method *modifyPosition***
+
+**Criteria for method *modifyPosition*:**
+ - position exists in DB - P
+ - new ID doesnt exists in DB - ID
+
+**Predicates for method *modifyPosition*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  P   |     t     |
+|          |     f     |
+|  ID   |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   P | ID| Valid / Invalid | Description of the test case | Jest test case |
+|-------|--|-----|-------|-------|-------|
+|   t | t | V | modifyPosition("800090007000", "7000", "5000", "3000", 100, 100, 0, 0);
+ getPositionById("700050003000"); | Modify Position: Modify position   |
+|    | f | I | modifyPosition("800090007000", "5000", "9000", "7000", 100, 100, 0, 0); | Modify Position:Modify position: positionID duplicated   |
+|   f | t | V |  modifyPosition("invalid", "7000", "5000", "3000", 100, 100, 0, 0);| Modify Position: Modify position ID  |
+|    | f | I | | Modify Position: Modify position ID   |
+
+### **Class *Position* - method *searchPosition***
+
+**Criteria for method *searchPosition*:**
+ - position is empty - P
+
+
+**Predicates for method *searchPosition*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  P   |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   P |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|--------------|
+|   t | V | searchPosition("800090007000"); | Search Position in SKU:"Search Position: position not empty  |
+|    |  I | searchPosition("500090007000"); |Search Position in SKU:Search Position: position empty   |
+
+### **Class *Position* - method *deletePosition***
+
+**Criteria for method *deletePosition*:**
+ - position exists - P
+
+
+**Predicates for method *searchPosition*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  P   |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   P |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   t | V |deletePosition("800090007000"); | Delete Position by Id:Delete Position by Id  |
+|    |  I |  | Delete Position by Id:Delete Position by Id   |
+
 
 
 # White Box Unit Tests
