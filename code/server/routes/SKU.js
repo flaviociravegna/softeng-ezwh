@@ -51,11 +51,11 @@ router.get('/:id', [
 // Creates a new SKU
 router.post('/', [
     check('description').notEmpty().isString(),
-    check('weight').isInt({ gt: 0 }),
-    check('volume').isInt({ gt: 0 }),
-    check('price').isFloat({ gt: 0 }),
+    check('weight').not().isString().isInt({ gt: 0 }),
+    check('volume').not().isString().isInt({ gt: 0 }),
+    check('price').not().isString().isFloat({ gt: 0 }),
     check('notes').notEmpty().isString(),
-    check('availableQuantity').isInt({ min: 0 })
+    check('availableQuantity').not().isString().isInt({ min: 0 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -75,11 +75,11 @@ router.post('/', [
 router.put('/:id', [
     check('id').exists().isInt({ min: 1 }),
     check('newDescription').notEmpty(),
-    check('newWeight').isInt({ gt: 0 }),
-    check('newVolume').isInt({ gt: 0 }),
-    check('newPrice').isFloat({ gt: 0 }),
+    check('newWeight').not().isString().isInt({ gt: 0 }),
+    check('newVolume').not().isString().isInt({ gt: 0 }),
+    check('newPrice').not().isString().isFloat({ gt: 0 }),
     check('newNotes').notEmpty(),
-    check('newAvailableQuantity').isInt({ min: 0 })
+    check('newAvailableQuantity').not().isString().isInt({ min: 0 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -112,7 +112,7 @@ router.put('/:id', [
 // Add or modify position of a SKU
 router.put('/:id/position', [
     check('id').exists().isInt({ min: 1 }),
-    check('position').isString().isLength({ min: 12, max: 12 })
+    check('position').isString().isNumeric().isLength({ min: 12, max: 12 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);

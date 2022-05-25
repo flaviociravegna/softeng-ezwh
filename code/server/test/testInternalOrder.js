@@ -22,6 +22,7 @@ function setup() {
         createNewSKU(201, { "description": "a product", "weight": 30, "volume": 30, "notes": "notes 3", "price": 30.99, "availableQuantity": 1 });
         createNewSKU(201, { "description": "a product", "weight": 40, "volume": 40, "notes": "notes 4", "price": 40.99, "availableQuantity": 1 });
     });
+
     //POST /api/skuitem(success)
     describe('POST /api/skuitem (success)', function () {
         createNewSKUItem(201, { RFID: "12345678901234567890123456789011", SKUId: 1, DateOfStock: "2021/11/29" });
@@ -33,7 +34,6 @@ function setup() {
         createNewInternalOrder(201, { "issueDate": "2021/11/29 02:33", "products": [{ "SKUId": 2, "description": "a product", "price": 20.99, "qty": 1 }], "customerId": 1 });
         createNewInternalOrder(201, { "issueDate": "2021/11/29 03:33", "products": [{ "SKUId": 3, "description": "a product", "price": 30.99, "qty": 1 }], "customerId": 1 });
         createNewInternalOrder(201, { "issueDate": "2021/11/29 04:33", "products": [{ "SKUId": 4, "description": "a product", "price": 40.99, "qty": 1 }], "customerId": 1 });
-
     });
 }
 
@@ -42,17 +42,31 @@ describe('API Test: InternalOrders', function () {
 
     // POST /api/internalOrders (FAIL)
     describe('POST /api/internalOrders(erros)', function () {
+        createNewInternalOrder(422);
         //prop's name wrong
         createNewInternalOrder(422, { "date": "2021/11/29 01:33", "products": [{ "SKUId": 1, "description": "a product", "price": 10.99, "qty": 1 }], "customerId": 1 });
         //product  empty
         createNewInternalOrder(503, { "issueDate": "2021/11/29 02:33", "products": [], "customerId": 1 });
+        // SKUId string
+        createNewInternalOrder(422, { "issueDate": "2021/11/29 03:33", "products": [{ "SKUId": "1", "description": "a product", "price": 30.99, "qty": 1 }], "customerId": 1 });
+        // Price string
+        createNewInternalOrder(422, { "issueDate": "2021/11/29 03:33", "products": [{ "SKUId": 1, "description": "a product", "price": "30.99", "qty": 1 }], "customerId": 1 });
+        // customerId string
+        createNewInternalOrder(422, { "issueDate": "2021/11/29 03:33", "products": [{ "SKUId": 1, "description": "a product", "price": 30.99, "qty": 1 }], "customerId": "1" });
         //skuId not in db
         createNewInternalOrder(422, { "issueDate": "2021/11/29 03:33", "products": [{ "SKUId": 114, "description": "a product", "price": 30.99, "qty": 1 }], "customerId": 1 });
         //date format wrong
         createNewInternalOrder(422, { "issueDate": "05:39 11-29-2021", "products": [{ "SKUId": 2, "description": "a product", "price": 40.99, "qty": 1 }], "customerId": 1 });
+        //date format wrong
+        createNewInternalOrder(422, { "issueDate": "2021/11/29 25:33", "products": [{ "SKUId": 2, "description": "a product", "price": 40.99, "qty": 1 }], "customerId": 1 });
+        //date format wrong
+        createNewInternalOrder(422, { "issueDate": "2021/11/34 21:33", "products": [{ "SKUId": 2, "description": "a product", "price": 40.99, "qty": 1 }], "customerId": 1 });
         //price should >0
         createNewInternalOrder(422, { "issueDate": "2021/11/29 04:33", "products": [{ "SKUId": 3, "description": "a product", "price": 0, "qty": 1 }], "customerId": 1 });
-
+        //price as string
+        createNewInternalOrder(422, { "issueDate": "2021/11/29 04:33", "products": [{ "SKUId": 3, "description": "a product", "price": "not a float number", "qty": 1 }], "customerId": 1 });//price as string
+        //quantity < 0
+        createNewInternalOrder(422, { "issueDate": "2021/11/29 04:33", "products": [{ "SKUId": 3, "description": "a product", "price": "not a float number", "qty": -1 }], "customerId": 1 });
     });
 
     // GET /api/internalOrders
@@ -67,6 +81,7 @@ describe('API Test: InternalOrders', function () {
         getInternalOrder(200, 3, io3);
         getInternalOrder(200, 4, io4);
     });
+
     // GET /api/internalOrders/:id
     describe('GET /api/internalOrders/:id(erros)', function () {
         getInternalOrder(404, 114);
@@ -85,15 +100,14 @@ describe('API Test: InternalOrders', function () {
         updateInternalOrder(200, 4, { "newState": "ACCEPTED" });
 
     });
-            
 
-      // PUT /api/internalOrders/:id/IO(FAIL)
-      describe('PUT /api/internalOrders/:id/IO (erros)', function () {
-       //Illegal id
-        updateInternalOrder(422,"should be a number",{"newState":"ACCEPTED"});
-        updateInternalOrder(404,114,{"newState":"ACCEPTED"});
+    // PUT /api/internalOrders/:id/IO(FAIL)
+    describe('PUT /api/internalOrders/:id/IO (erros)', function () {
+        //Illegal id
+        updateInternalOrder(422, "should be a number", { "newState": "ACCEPTED" });
+        updateInternalOrder(404, 114, { "newState": "ACCEPTED" });
         //wrong prop's name
-        updateInternalOrder(422,4,{"State":"ACCEPTED"});
+        updateInternalOrder(422, 4, { "State": "ACCEPTED" });
     });
 
     clear();

@@ -39,7 +39,7 @@ router.get('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) =>
 router.post('/', [
     check('name').notEmpty().isString(),
     check('procedureDescription').notEmpty().isString(),
-    check('idSKU').isInt({ min: 1 })
+    check('idSKU').not().isString().isInt({ min: 1 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -65,7 +65,7 @@ router.put('/:id', [
     check('id').exists().isInt({ min: 1 }),
     check('newName').notEmpty().isString(),
     check('newProcedureDescription').notEmpty().isString(),
-    check('newIdSKU').isInt({ min: 1 })
+    check('newIdSKU').not().isString().isInt({ min: 1 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);

@@ -146,10 +146,10 @@ router.post('/', [
     check('issueDate').isString(),
     check('supplierId').isInt({ min: 1 }),
     check('products').isArray(),
-    check('products.*.SKUId').exists().isInt({ min: 1 }),
+    check('products.*.SKUId').exists().not().isString().isInt({ min: 1 }),
     check('products.*.description').notEmpty().isString(),
-    check('products.*.price').isFloat({ gt: 0 }),
-    check('products.*.qty').isInt({ min: 1 }),
+    check('products.*.price').not().isString().isFloat({ gt: 0 }),
+    check('products.*.qty').not().isString().isInt({ min: 1 }),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -224,8 +224,8 @@ router.put('/:id', [
 router.put('/:id/skuItems', [
     check('id').isInt({ min: 1 }),
     check('skuItems').isArray(),
-    check('skuItems.*.SKUId').exists().isInt({ min: 1 }),
-    check('skuItems.*.rfid').isNumeric().isLength({ min: 32, max: 32 }),
+    check('skuItems.*.SKUId').not().isString().exists().isInt({ min: 1 }),
+    check('skuItems.*.rfid').isString().isNumeric().isLength({ min: 32, max: 32 }),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);

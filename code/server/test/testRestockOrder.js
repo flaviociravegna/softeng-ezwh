@@ -145,6 +145,16 @@ describe('API Test: RESTOCK ORDER', function () {
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33",
+            "products": [{ "SKUId": "aaaaa", "description": "first sku", "price": 10.99, "qty": 1 }], // Wrong product format
+            "supplierId": 2
+        });
+        createNewRestockOrder(422, {
+            "issueDate": "2021/11/11 09:33",
+            "products": [{ "SKUId": "1", "description": "first sku", "price": 10.99, "qty": 1 }], // Wrong product format
+            "supplierId": 2
+        });
+        createNewRestockOrder(422, {
+            "issueDate": "2021/11/11 09:33",
             "products": [{ "SKUId": 1, "description": "", "price": 10.99, "qty": 1 }], // Wrong product format
             "supplierId": 2
         });
@@ -160,12 +170,30 @@ describe('API Test: RESTOCK ORDER', function () {
         });
         createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33",
+            "products": [{ "SKUId": 1, "description": "desc", "price": "10.99", "qty": 1 }], // Wrong product format
+            "supplierId": 2
+        });
+        createNewRestockOrder(422, {
+            "issueDate": "2021/11/11 09:33",
             "products": [{ "SKUId": 1, "description": "desc", "price": 10.99, "qty": "aaaaa" }], // Wrong product format
             "supplierId": 2
         });
         createNewRestockOrder(422, {
+            "issueDate": "2021/11/11 09:33",
+            "products": [{ "SKUId": 1, "description": "desc", "price": 10.99, "qty": "1" }], // Wrong product format
+            "supplierId": 2
+        });
+        createNewRestockOrder(422, {
             "issueDate": "2021/11/11 09:33", "products": [product1, product2],
-            "supplierId": -1 // Wrong supplierId format
+            "supplierId": "string" // Wrong supplierId format
+        });
+        createNewRestockOrder(422, {
+            "issueDate": "2021/11/11 09:33", "products": [product1, product2],
+            "supplierId": "1" // Wrong supplierId format
+        });
+        createNewRestockOrder(422, {
+            "issueDate": "2021/11/11 09:33", "products": [product1, product2],
+            "supplierId": "222" // Wrong supplierId format
         });
     });
 
@@ -206,6 +234,15 @@ describe('API Test: RESTOCK ORDER', function () {
         addRestockOrderSKUItemList(422);
         addRestockOrderSKUItemList(422, 1);
         addRestockOrderSKUItemList(422, -1, { "skuItems": [tempSI1, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "SKUId": "aaaaa", "rfid": SKUItem1.RFID }, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "SKUId": "1", "rfid": SKUItem1.RFID }, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "SKUId": -1, "rfid": SKUItem1.RFID }, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "SKUId": 1, "rfid": 12345678901234567890123456789011 }, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "SKUId": 1, "rfid": "12345678901234567890123456789011111" }, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "SKUId": 1, "rfid": "123456789012345678901234511" }, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "SKUId": 1 }, tempSI2] });
+        addRestockOrderSKUItemList(422, 2, { "skuItems": [{ "rfid": "12345678901234567890123456789011111" }, tempSI2] });
+
         addRestockOrderSKUItemList(404, 99, { "skuItems": [tempSI1, tempSI2] });
     });
 
@@ -241,6 +278,11 @@ describe('API Test: RESTOCK ORDER', function () {
         addTransportNote(422, 3, { "transportNote": { "wrongDeliveryDate": "2021/12/29" } });
         addTransportNote(422, 3, { "transportNote": { "deliveryDate": "" } });
 
+        // Delivery date before issue date (issueDate = 2021/11/29 09:33)
+        addTransportNote(422, 3, { "transportNote": { "deliveryDate": "2021/10/29" } });
+        addTransportNote(422, 3, { "transportNote": { "deliveryDate": "2020/12/29" } });
+        addTransportNote(422, 3, { "transportNote": { "deliveryDate": "2021/11/29 09:31" } });
+
         addTransportNote(404, 99, { "transportNote": { "deliveryDate": "2021/12/29" } });
     });
 
@@ -256,6 +298,7 @@ describe('API Test: RESTOCK ORDER', function () {
         deleteRestockOrder(422, 99);
         deleteRestockOrder(422, -1);
         deleteRestockOrder(422, "id must be an int");
+        deleteRestockOrder(422, "2");
     });
 
     clear();

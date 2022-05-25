@@ -18,7 +18,7 @@ let position5 = { "positionID": "800234523415", "aisleID": "8002", "row": "3452"
 describe('API Test: Positions', function () {
     setup();
 
-    describe('POST /api/positions (errors)', function () {
+    describe('POST /api/position (errors)', function () {
         // Wrong positionID length
         createPosition(422, { "positionID": "80023452341", "aisleID": "8002", "row": "3452", "col": "3411", "maxWeight": 1000, "maxVolume": 1000 });
 
@@ -30,6 +30,10 @@ describe('API Test: Positions', function () {
         // maxWeight and maxVolume less or equal 0
         createPosition(422, { "positionID": "800234523411", "aisleID": "8002", "row": "3452", "col": "3411", "maxWeight": 0, "maxVolume": 1000 });
         createPosition(422, { "positionID": "800234523411", "aisleID": "8002", "row": "3452", "col": "3411", "maxWeight": 1000, "maxVolume": 0 });
+
+        // maxWeight and maxVolume strings
+        createPosition(422, { "positionID": "800234523411", "aisleID": "8002", "row": "3452", "col": "3411", "maxWeight": "100", "maxVolume": 1000 });
+        createPosition(422, { "positionID": "800234523411", "aisleID": "8002", "row": "3452", "col": "3411", "maxWeight": 1000, "maxVolume": "100" });
 
         // Empty body
         createPosition(422);
@@ -51,8 +55,11 @@ describe('API Test: Positions', function () {
         // Wrong body parameters name
         updatePositionID(422, "800234523499", { "posID": "800234523411" });
 
+        // Wrong newPositionID type
+        updatePositionID(422, "800234523499", { "newPositionID": 800234523411 });
+
         // Empty body
-        updatePositionID(422, "800234523499");
+        updatePositionID(422);
 
         // Position not found
         updatePositionID(404, "800234523499", { "newPositionID": "800234523411" });

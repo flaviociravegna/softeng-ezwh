@@ -77,8 +77,8 @@ router.get('/:rfid', [
 // Creates a new SKU item with Available = 0
 // DateOfStock can be null, in the format "YYYY/MM/DD" or in format "YYYY/MM/DD HH:MM"
 router.post('/', [
-    check('RFID').isNumeric().isLength({ min: 32, max: 32 }),
-    check('SKUId').isInt({ gt: 0 }),
+    check('RFID').isString().isNumeric().isLength({ min: 32, max: 32 }),
+    check('SKUId').not().isString().isInt({ gt: 0 }),
     check('DateOfStock').optional({ nullable: true })
 ], async (req, res) => {
     try {
@@ -103,8 +103,8 @@ router.post('/', [
 // Modify RFID, available and date of stock fields of an existing SKU Item
 router.put('/:rfid', [
     check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
-    check('newRFID').isNumeric().isLength({ min: 32, max: 32 }),
-    check('newAvailable').isInt({ min: 0, max: 1 }),
+    check('newRFID').isString().isNumeric().isLength({ min: 32, max: 32 }),
+    check('newAvailable').not().isString().isInt({ min: 0, max: 1 }),
     check('newDateOfStock').optional({ nullable: true })
 ], async (req, res) => {
     try {

@@ -20,6 +20,9 @@ describe('API Test: Test Result', () => {
         getAllTestResultsByRFID(404, 0, [], "12345678901234567890123456789000");
         getAllTestResultsByRFID(422, 0, [], "1234567890123456789012345678900");
         getAllTestResultsByRFID(422, 0, [], "abc45678901234567890123456789011");
+        getAllTestResultsByRFID(422, 2, [testResult1, testResult2], 12345678901234567890123456789011);
+        getAllTestResultsByRFID(422, 2, [testResult1, testResult2], "123456789012345678901234567890111111111");
+        getAllTestResultsByRFID(422, 2, [testResult1, testResult2]);
     });
 
     describe('GET /api/skuitems/:rfid/testResults/:id', function () {
@@ -36,6 +39,8 @@ describe('API Test: Test Result', () => {
         // Wrog RFID
         getTestResultByID(422, testResult1, "1234567890123456789012345678901", 1);
         getTestResultByID(422, testResult1, "123456789012345678901234567890ab", 1);
+        getTestResultByID(422, testResult1, 12345678901234567890123456789011, 1);
+        getTestResultByID(422, testResult1, undefined, 1);
         // Wrong Id
         getTestResultByID(422, testResult1, "12345678901234567890123456789012", "abc");
         getTestResultByID(422, testResult1, "12345678901234567890123456789011", -1);
@@ -43,65 +48,71 @@ describe('API Test: Test Result', () => {
 
     describe('POST /api/skuitems/testResult (error test)', function () {
         // SKU Item not found
-        createTestResult(404, { "rfid":"12345678901234567890123456789000", "idTestDescriptor":1, "Date":"2021/11/28", "Result": true });
+        createTestResult(404, { "rfid": "12345678901234567890123456789000", "idTestDescriptor": 1, "Date": "2021/11/28", "Result": true });
         // Test Descriptor not found
-        createTestResult(404, { "rfid":"12345678901234567890123456789012", "idTestDescriptor":12, "Date":"2021/11/28", "Result": true });
+        createTestResult(404, { "rfid": "12345678901234567890123456789012", "idTestDescriptor": 12, "Date": "2021/11/28", "Result": true });
         // Invalid RFID
-        createTestResult(422, { "rfid":"1234567890123456789012345678901", "idTestDescriptor":2, "Date":"2021/11/28", "Result": false });
-        createTestResult(422, { "rfid":"1234567890123456789012345678901a", "idTestDescriptor":2, "Date":"2021/11/28", "Result": false });
+        createTestResult(422, { "rfid": "1234567890123456789012345678901", "idTestDescriptor": 2, "Date": "2021/11/28", "Result": false });
+        createTestResult(422, { "rfid": "1234567890123456789012345678901", "idTestDescriptor": 2, "Date": "2021/11/28", "Result": false });
+        createTestResult(422, { "rfid": 12345678901234567890123456789011, "idTestDescriptor": 2, "Date": "2021/11/28", "Result": false });
         // Invalid idTestDescriptor
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":-1, "Date":"2021/11/28", "Result": true });
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor": "abc", "Date":"2021/11/28", "Result": true });
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor": "", "Date":"2021/11/28", "Result": true });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": -1, "Date": "2021/11/28", "Result": true });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": "abc", "Date": "2021/11/28", "Result": true });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": "", "Date": "2021/11/28", "Result": true });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": "1", "Date": "2021/11/28", "Result": true });
         // Invalid Date
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":1, "Date":"", "Result": true });
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":1, "Date":"2021.11.28", "Result": true });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": 1, "Date": "", "Result": true });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": 1, "Date": "2021.11.28", "Result": true });
         // Invalid Result
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":1, "Date":"2021/11/28", "Result": "abc" });
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":1, "Date":"2021/11/28", "Result": 200 });
-        createTestResult(422, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":1, "Date":"2021/11/28", "Result": -3 });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": 1, "Date": "2021/11/28", "Result": "abc" });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": 1, "Date": "2021/11/28", "Result": 200 });
+        createTestResult(422, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": 1, "Date": "2021/11/28", "Result": -3 });
     });
 
     describe('PUT /api/skuitems/:rfid/testResult/:id (success)', function () {
-        modifyTestResult(200, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
+        modifyTestResult(200, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
     });
 
     describe('PUT /api/skuitems/:rfid/testResult/:id (errors test)', function () {
         // Sku Item not found
-        modifyTestResult(404, "12345678901234567890123456789000", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
+        modifyTestResult(404, "12345678901234567890123456789000", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
         // Test Result not found
-        modifyTestResult(404, "12345678901234567890123456789011", 12, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
-        modifyTestResult(404, "12345678901234567890123456789012", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
+        modifyTestResult(404, "12345678901234567890123456789011", 12, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
+        modifyTestResult(404, "12345678901234567890123456789012", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
         // Test Descriptor not found
-        modifyTestResult(404, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":12, "newDate":"2021/11/28", "newResult": true });
+        modifyTestResult(404, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 12, "newDate": "2021/11/28", "newResult": true });
         // Invalid RFID
-        modifyTestResult(422, "1234567890123456789012345678900", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
-        modifyTestResult(422, "1A345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
+        modifyTestResult(422, "1234567890123456789012345678900", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
+        modifyTestResult(422, "1A345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
         // Invalid id
-        modifyTestResult(422, "12345678901234567890123456789011", -1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
-        modifyTestResult(422, "12345678901234567890123456789011", "abc", { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", -1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", "abc", { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": true });
         // Invalid Test Descriptor
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":-1, "newDate":"2021/11/28", "newResult": true });
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":"abc", "newDate":"2021/11/28", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": -1, "newDate": "2021/11/28", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": "abc", "newDate": "2021/11/28", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": "1", "newDate": "2021/11/28", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": "2", "newDate": "2021/11/28", "newResult": true });
         // Invalid Date
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021/11", "newResult": true });
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021.11.28", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11", "newResult": true });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021.11.28", "newResult": true });
         // Invalid Result
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": null });
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": 200 });
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": -20 });
-        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor":1, "newDate":"2021/11/28", "newResult": "wrong" });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": null });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": 200 });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": -20 });
+        modifyTestResult(422, "12345678901234567890123456789011", 1, { "newIdTestDescriptor": 1, "newDate": "2021/11/28", "newResult": "wrong" });
 
     });
 
     describe('DELETE /api/skuitems/:rfid/testResult/:id (error test)', function () {
-         // Invalid RFID
-        deleteTestResult(422, "1234567890123456789012345678901", 1);  
+        // Invalid RFID
+        deleteTestResult(422);
+        deleteTestResult(422, "1234567890123456789012345678901", 1);
         deleteTestResult(422, "123456789012345678901234567890ab", 1);
+        deleteTestResult(422, 12345678901234567890123456789011, 1);
         // Invalid Id
         deleteTestResult(422, "12345678901234567890123456789011", -1);
         deleteTestResult(422, "12345678901234567890123456789011", "abc");
-
+        deleteTestResult(422, "12345678901234567890123456789011");
     });
 
     restore();
@@ -111,7 +122,7 @@ function setup() {
     // Create sku
     describe('POST /api/sku', function () {
         createSKU(201, { "description": "SKU", "weight": 50, "volume": 50, "notes": "test notes", "price": 10.99, "availableQuantity": 2 });
-    });  
+    });
 
     describe('POST /api/skuitem (success)', function () {
         createNewSKUItem(201, { RFID: "12345678901234567890123456789011", SKUId: 1, DateOfStock: "2021/11/29" });
@@ -130,10 +141,10 @@ function setup() {
 
     //POST Test Result
     describe('POST /api/skuitems/testResult (success)', function () {
-        createTestResult(201, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":1, "Date":"2021/11/28", "Result": true });
-        createTestResult(201, { "rfid":"12345678901234567890123456789012", "idTestDescriptor":1, "Date":"2021/11/28", "Result": true });
-        createTestResult(201, { "rfid":"12345678901234567890123456789011", "idTestDescriptor":2, "Date":"2021/11/28", "Result": false });
-        createTestResult(201, { "rfid":"12345678901234567890123456789013", "idTestDescriptor":2, "Date":"2021/11/28", "Result": false });
+        createTestResult(201, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": 1, "Date": "2021/11/28", "Result": true });
+        createTestResult(201, { "rfid": "12345678901234567890123456789012", "idTestDescriptor": 1, "Date": "2021/11/28", "Result": true });
+        createTestResult(201, { "rfid": "12345678901234567890123456789011", "idTestDescriptor": 2, "Date": "2021/11/28", "Result": false });
+        createTestResult(201, { "rfid": "12345678901234567890123456789013", "idTestDescriptor": 2, "Date": "2021/11/28", "Result": false });
     });
 }
 
@@ -141,7 +152,7 @@ function restore() {
 
     // DELETE Test Results
     describe('DELETE /api/skuitems/:rfid/testResult/:id (success)', function () {
-        deleteTestResult(204, "12345678901234567890123456789011", 1);  
+        deleteTestResult(204, "12345678901234567890123456789011", 1);
         deleteTestResult(204, "12345678901234567890123456789012", 2);
         deleteTestResult(204, "12345678901234567890123456789011", 3);
         deleteTestResult(204, "12345678901234567890123456789013", 4);
@@ -157,7 +168,7 @@ function restore() {
 
     // DELETE /api/skuitems/:rfid
     describe('DELETE /api/skuitems/:rfid (success)', function () {
-        deleteSKUItem(204, "12345678901234567890123456789011");   
+        deleteSKUItem(204, "12345678901234567890123456789011");
         deleteSKUItem(204, "12345678901234567890123456789012");
         deleteSKUItem(204, "12345678901234567890123456789013");
         deleteSKUItem(204, "12345678901234567890123456789014");
@@ -189,7 +200,7 @@ function getAllTestResultsByRFID(expectedHTTPStatus, expectedLength, expectedTes
                         testResult.should.haveOwnProperty("Date");
                         testResult.should.haveOwnProperty("Result");
 
-                        expectedTestResult.some((exp) => { 
+                        expectedTestResult.some((exp) => {
                             return compareTestResult(exp, testResult);
                         }).should.be.equal(true);
                     }
@@ -213,7 +224,7 @@ function getTestResultByID(expectedHTTPStatus, expectedTestResult, RFID, ID) {
                     res.body.should.haveOwnProperty("idTestDescriptor");
                     res.body.should.haveOwnProperty("Date");
                     res.body.should.haveOwnProperty("Result");
-                    compareTestResult(expectedTestResult, res.body).should.be.equal(true);                    
+                    compareTestResult(expectedTestResult, res.body).should.be.equal(true);
                 }
 
                 done();
@@ -389,15 +400,15 @@ function modifyTestResult(expectedHTTPStatus, RFID, id, newTestResult) {
                 res.should.have.status(expectedHTTPStatus);
                 done();
             });
-        
+
     });
 }
 
 function compareTestResult(expectedTestResult, testResult) {
-    if(expectedTestResult.id != testResult.id) return false;
-    if(expectedTestResult.idTestDescriptor != testResult.idTestDescriptor) return false;
-    if(expectedTestResult.Date != testResult.Date) return false;
-    if(expectedTestResult.Result != testResult.Result) return false;
-    
+    if (expectedTestResult.id != testResult.id) return false;
+    if (expectedTestResult.idTestDescriptor != testResult.idTestDescriptor) return false;
+    if (expectedTestResult.Date != testResult.Date) return false;
+    if (expectedTestResult.Result != testResult.Result) return false;
+
     return true;
 }

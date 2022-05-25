@@ -11,8 +11,6 @@ const customParseFormat = require('dayjs/plugin/customParseFormat');
 router.use(express.json());
 dayjs.extend(customParseFormat);
 
-function CheckIfDateIsValid(date) { return dayjs(date, ['YYYY/MM/DD', 'YYYY/MM/DD HH:mm'], true).isValid(); }
-
 function CheckItemsSameID(id, supplierID, itemList) {
     let res = true;
     itemList.forEach(i => {
@@ -65,9 +63,9 @@ router.get('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) =>
 router.post('/', [
     check('id').exists().isInt({ min: 1 }),
     check('description').notEmpty().isString(),
-    check('price').isFloat({ gt: 0 }),
-    check('SKUId').isInt({ gt: 0 }),
-    check('supplierId').exists().isInt({ min: 1 })
+    check('price').not().isString().isFloat({ gt: 0 }),
+    check('SKUId').not().isString().isInt({ gt: 0 }),
+    check('supplierId').exists().not().isString().isInt({ min: 1 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -105,7 +103,7 @@ router.post('/', [
 router.put('/:id', [
     check('id').exists().isInt({ min: 1 }),
     check('newDescription').notEmpty().isString(),
-    check('newPrice').isFloat({ gt: 0 })
+    check('newPrice').not().isString().isFloat({ gt: 0 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
