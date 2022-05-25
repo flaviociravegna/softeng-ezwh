@@ -452,10 +452,8 @@ Version:
 
 |  ID    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|    t   |   V    |   createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1);getRestockOrders()    | Create and get new RestockOrders: Create new RestockOreders,
-Create and get new RestockOrders: Create 2 restock orders    |
-|    f   |   I   |   createRestockOrder(date:d1,supplierId:1 id:1);
-createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new RestockOrders:Insert a restock Order With the same Id  |
+|    t   |   V    |   createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1);getRestockOrders()    | Create and get new RestockOrders: Create new RestockOreders, Create and get new RestockOrders: Create 2 restock orders    |
+|    f   |   I   |   createRestockOrder(date:d1,supplierId:1 id:1);createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new RestockOrders:Insert a restock Order With the same Id  |
 
 
 
@@ -602,7 +600,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *deleteRestockOrder***
 
 **Criteria for method *deleteRestockOrder*:**
- -Order Exists E
+ - Order Exists E
 
 **Predicates for method *deleteRestockOrder*:**
 
@@ -632,7 +630,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *addRestockOrderSKUItems***
 
 **Criteria for method *addRestockOrderSKUItems*:**
- -Id is unique ID
+ - Id is unique ID
 
 **Predicates for method *addRestockOrderSKUItems*:**
 
@@ -662,7 +660,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *addrestockOrderTransportNote***
 
 **Criteria for method *addrestockOrderTransportNote*:**
- -transport note is not empty E
+ - transport note is not empty E
 
 **Predicates for method *addrestockOrderTransportNote*:**
 
@@ -693,7 +691,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *modifyRestockOrderState***
 
 **Criteria for method *modifyRestockOrderState*:**
- -restock order exists E
+ - restock order exists E
 
 **Predicates for method *modifyRestockOrderState*:**
 
@@ -723,7 +721,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *getRestockOrdersIssued***
 
 **Criteria for method *getRestockOrdersIssued*:**
- -restock orders with issued state exist E
+ - restock orders with issued state exist E
 
 **Predicates for method *getRestockOrdersIssued*:**
 
@@ -754,7 +752,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *getLastPIDInOrder***
 
 **Criteria for method *getLastPIDInOrder*:**
- -there exists at least 1 product in that order E
+ - there exists at least 1 product in that order E
 
 **Predicates for method *getLastPIDInOrder*:**
 
@@ -784,7 +782,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *deleteProductsFromRestockOrder***
 
 **Criteria for method *deleteProductsFromRestockOrder*:**
- -there exists at least 1 product in that order E
+ - there exists at least 1 product in that order E
 
 **Predicates for method *deleteProductsFromRestockOrder*:**
 
@@ -814,7 +812,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *deleteRestockOrderTransportNote***
 
 **Criteria for method *deleteRestockOrderTransportNote*:**
- -there exists a transport note in that order - E
+ - there exists a transport note in that order - E
 
 **Predicates for method *deleteRestockOrderTransportNote*:**
 
@@ -844,7 +842,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *deleteSkuItemsFromRestockOrder***
 
 **Criteria for method *deleteSkuItemsFromRestockOrder*:**
- -there exists a skuItem in that order - E
+ - there exists a skuItem in that order - E
 
 **Predicates for method *deleteSkuItemsFromRestockOrder*:**
 
@@ -874,7 +872,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *RestockOrder* - method *getRestockOrderFailedSKUItems***
 
 **Criteria for method *getRestockOrderFailedSKUItems*:**
- -there exists at least 1 failed skuItem in that order - E
+ - there exists at least 1 failed skuItem in that order - E
 
 **Predicates for method *getRestockOrderFailedSKUItems*:**
 
@@ -904,7 +902,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *createNewReturnOrder***
 
 **Criteria for method *createNewReturnOrder*:**
- -is a unique and valid ID - ID
+ - is a unique and valid ID - ID
 
 **Predicates for method *createNewReturnOrder*:**
 
@@ -935,7 +933,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *getReturnOrders***
 
 **Criteria for method *getReturnOrders*:**
- -there are return orders in the DB - E
+ - there are return orders in the DB - E
 
 **Predicates for method *createNewReturnOrder*:**
 
@@ -966,7 +964,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *getLastReturnOrderId***
 
 **Criteria for method *getLastReturnOrderId*:**
- -there are return orders in the DB - E
+ - there are return orders in the DB - E
 
 **Predicates for method *getLastReturnOrderId*:**
 
@@ -996,7 +994,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *getReturnOrderById***
 
 **Criteria for method *getReturnOrderById*:**
- -there are return orders in the DB - E
+ - there are return orders in the DB - E
 
 **Predicates for method *getReturnOrderById*:**
 
@@ -1026,7 +1024,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *getReturnOrderProducts***
 
 **Criteria for method *getReturnOrderProducts*:**
- -there are return orders in the DB with products - E
+ - there are return orders in the DB with products - E
 
 **Predicates for method *getReturnOrderProducts*:**
 
@@ -1056,7 +1054,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *insertProductInRO***
 
 **Criteria for method *insertProductInRO*:**
- -ID is unique - ID
+ - ID is unique - ID
 
 **Predicates for method *insertProductInRO*:**
 
@@ -1086,7 +1084,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *deleteReturnOrderProducts***
 
 **Criteria for method *deleteReturnOrderProducts*:**
- -return Order exists E
+ - return Order exists E
 
 **Predicates for method *deleteReturnOrderProducts*:**
 
@@ -1116,7 +1114,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 ### **Class *ReturnOrder* - method *deleteReturnOrder***
 
 **Criteria for method *deleteReturnOrder*:**
- -return Order exists E
+ - return Order exists E
 
 **Predicates for method *deleteReturnOrder*:**
 
@@ -1172,7 +1170,7 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 
 
 |   ID  | P | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
+|-------|-------|-------    |-------                        |-------|
 |   t  | t |V | createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}) ;getPositionById(id)   | Create Positions: Create new Position, then get by Id     |
 ||f|I| createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}); createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV});     |   Create Positions:  Position creation error: PositionId duplicated  |
 |   f  | t |I |  createNewPosition(position{id=null,aisle,row,col, maxW,maxV,oW,oV})   |   Create Positions: Position creation error: null positionID   |
@@ -1206,9 +1204,9 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|   t  | V |   | Create Positions: Create new Position, then get by Id     |
-|f|I|  getPositionById("300090007000");   |   Get Position by Id:  Get position: position not found |
+|-------|------- |-------                            |--------------                |
+|   t  | V      |                                    | Create Positions: Create new Position, then get by Id     |
+|f      |I      |  getPositionById("300090007000");   |   Get Position by Id:  Get position: position not found |
 
 ### **Class *Position* - method *modifyPosition***
 
@@ -1238,12 +1236,12 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 **Combination of predicates**:
 
 
-|   P | ID| Valid / Invalid | Description of the test case | Jest test case |
-|-------|--|-----|-------|-------|-------|
-|   t | t | V | modifyPosition("800090007000", "7000", "5000", "3000", 100, 100, 0, 0); getPositionById("700050003000"); | Modify Position: Modify position   |
-|    | f | I | modifyPosition("800090007000", "5000", "9000", "7000", 100, 100, 0, 0); | Modify Position:Modify position: positionID duplicated   |
-|   f | t | V |  modifyPosition("invalid", "7000", "5000", "3000", 100, 100, 0, 0);| Modify Position: Modify position ID  |
-|    | f | I | | Modify Position: Modify position ID   |
+|   P   | ID| Valid / Invalid | Description of the test case | Jest test case |
+|-------|-- |-----            |-------                       |--------------|
+|   t   | t | V               | modifyPosition("800090007000", "7000", "5000", "3000", 100, 100, 0, 0); getPositionById("700050003000"); | Modify Position: Modify position   |
+|        | f | I | modifyPosition("800090007000", "5000", "9000", "7000", 100, 100, 0, 0); | Modify Position:Modify position: positionID duplicated   |
+|   f   | t | V |  modifyPosition("invalid", "7000", "5000", "3000", 100, 100, 0, 0);| Modify Position: Modify position ID  |
+|       | f | I |                                                                       | Modify Position: Modify position ID   |
 
 ### **Class *Position* - method *searchPosition***
 
@@ -1304,10 +1302,10 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 **Combination of predicates**:
 
 
-|   P |  Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|
-|   t | V |deletePosition("800090007000"); | Delete Position by Id:Delete Position by Id  |
-|    |  I |  | Delete Position by Id:Delete Position by Id   |
+|   P    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |deletePosition("800090007000"); | Delete Position by Id:Delete Position by Id  |
+|       |  I                |  | Delete Position by Id:Delete Position by Id   |
 
 
 
