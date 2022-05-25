@@ -453,7 +453,7 @@ Version:
 |  ID    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
 |    t   |   V    |   createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1);getRestockOrders()    | Create and get new RestockOrders: Create new RestockOreders,
- Create and get new RestockOrders: Create 2 restock orders    |
+Create and get new RestockOrders: Create 2 restock orders    |
 |    f   |   I   |   createRestockOrder(date:d1,supplierId:1 id:1);
 createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new RestockOrders:Insert a restock Order With the same Id  |
 
@@ -486,11 +486,8 @@ createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new Restoc
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| t |V|createRestockOrder('19/11/1999', 1, 1);
-createRestockOrder('19/11/1999', 2, 2);
-getLastIdRsO()| get Last Restock Order ID:get last restock Order ID|
-| f |V| deleteAllRestockOrders(); 
-getLastIdRsO()| get Last Restock Order ID:get last restock Order ID when list empty|
+| t |V|createRestockOrder('19/11/1999', 1, 1);createRestockOrder('19/11/1999', 2, 2);getLastIdRsO()| get Last Restock Order ID:get last restock Order ID|
+| f |V| deleteAllRestockOrders(); getLastIdRsO()| get Last Restock Order ID:get last restock Order ID when list empty|
 
 
 ### **Class *RestockOrder* - method *insertProductInOrder***
@@ -589,19 +586,16 @@ getLastIdRsO()| get Last Restock Order ID:get last restock Order ID when list em
 | P    |   S   |   T   |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|-------|
 | t  |  EC    |    t   |   v  |   insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:1, restockId:1)   |     get SKU by ID:get SKU by ID          |
-|    |        |    f   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:1, restockId)    |   get SKU by ID:get SKU by ID when theres a wrong OrderID
-get SKU by ID:get SKU by ID when theres a wrong  type OrderID            |
-|    |  EI    |    t   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:2, restockId:1)    |   get SKU by ID:            |
-|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres a wrong OrderID
-get SKU by ID:get SKU by ID when theres a wrong  type OrderID:get SKU by ID when theres a wrong SKUID          |
+|    |        |    f   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:1, restockId)    |  get SKU by ID:get SKU by ID when theres a wrong OrderID |
+|    |  EI    |    t   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:2, restockId:1)    |   get SKU by ID:   SKU by ID when theres a wrong OrderID |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres a wrong OrderID         |
 |    |  NE    |    t   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:a, restockId:1)    |   get SKU by ID: get SKU by ID when theres a wrong  type SKUID           |
-|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres a wrong OrderID
-get SKU by ID:get SKU by ID when theres a wrong  type OrderID            |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres a wrong OrderID |
 | t  |  EC    |    t   |   i  |  getSKUIdFromRestockOrder(skuID:1, restockId:1)    |   get SKU by ID:get SKU by ID when theres no product           |
-|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres no product            |
-|    |  EI    |    t   |   i  |      |   get SKU by ID:get SKU by ID when theres no product            |
 |    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres no product           |
-|    |  NE    |    t   |   i  |      |   get SKU by ID:get SKU by ID when theres no product            |
+|    |  EI    |    t   |   i  |      |   get SKU by ID:get SKU by ID when theres no product           |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres no product           |
+|    |  NE    |    t   |   i  |      |   get SKU by ID:get SKU by ID when theres no product           |
 |    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres no product           |
 
 
@@ -633,7 +627,7 @@ get SKU by ID:get SKU by ID when theres a wrong  type OrderID            |
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
 | t |v| createRestockOrder(id:1); deleteRestockOrder(id:1); getRestockOrders();|delete a Restock order by ID:delete a restockOrder|
-| f |i| deleteRestockOrder(id:) |elete a Restock order by ID:try to delete a restockOrder that doesnt exist|
+| f |i| deleteRestockOrder(id:) | delete a Restock order by ID:try to delete a restockOrder that doesnt exist|
 
 ### **Class *RestockOrder* - method *addRestockOrderSKUItems***
 
@@ -904,9 +898,7 @@ get SKU by ID:get SKU by ID when theres a wrong  type OrderID            |
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V | addSkuItemsFromRestockOrder(1,2);
-createNewTestResult({ 'id': 1, 'date': '19/11/2000', 'result': 0, 'idTestDescriptor': '19', 'rfid': '1' });
-getRestockOrderFailedSKUItems(1); |get Restock Order Failed SKUItems:get failed SKU items from an order that has at least 1|
+|   t  |V | addSkuItemsFromRestockOrder(1,2);createNewTestResult({ 'id': 1, 'date': '19/11/2000', 'result': 0, 'idTestDescriptor': '19', 'rfid': '1' });getRestockOrderFailedSKUItems(1);| get Restock Order Failed SKUItems:get failed SKU items from an order that has at least 1|
 |   f  |V |getRestockOrderFailedSKUItems(id); |get Restock Order Failed SKUItems:get failed SKU items from an order that has none|
 
 ### **Class *ReturnOrder* - method *createNewReturnOrder***
@@ -1058,10 +1050,7 @@ getRestockOrderFailedSKUItems(1); |get Restock Order Failed SKUItems:get failed 
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
-insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
-getReturnOrderProducts(1);
-    |ReturnOrder Products:get return order products|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); getReturnOrderProducts(1); |ReturnOrder Products:get return order products|
 |   f  |I | getReturnOrderProducts(2)|ReturnOrder Products:get return order products when there are none|
 
 ### **Class *ReturnOrder* - method *insertProductInRO***
@@ -1091,12 +1080,8 @@ getReturnOrderProducts(1);
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
-insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
-    |ReturnOrder Products:insert a product|
-|   f  |I |createNewReturnOrder('11/01/2022', 1, 1);
-insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
-insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);|ReturnOrder Products:fail to insert a repeated product|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); |ReturnOrder Products:insert a product|
+|   f  |I |createNewReturnOrder('11/01/2022', 1, 1); insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);|ReturnOrder Products:fail to insert a repeated product|
 
 ### **Class *ReturnOrder* - method *deleteReturnOrderProducts***
 
@@ -1125,9 +1110,7 @@ insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99,
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
-insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);deleteReturnOrderProducts(1);
-    |ReturnOrder Products:delete a return order products|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);deleteReturnOrderProducts(1);|ReturnOrder Products:delete a return order products|
 |   f  |I |deleteReturnOrderProducts(4);|delete a return order Product:delete a return Order that doesnt exist|
 
 ### **Class *ReturnOrder* - method *deleteReturnOrder***
@@ -1157,9 +1140,7 @@ insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99,
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
-deleteReturnOrder(1);
-    |delete a return order:delete a return order|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);deleteReturnOrder(1); |delete a return order:delete a return order|
 |   f  |I |deleteReturn(4);|delete a return order :delete a return Order that doesnt exist|
 
 ### **Class *Position* - method *createNewPosition***
@@ -1192,10 +1173,8 @@ deleteReturnOrder(1);
 
 |   ID  | P | Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|
-|   t  | t |V | createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}) ;
-getPositionById(id)   | Create Positions: Create new Position, then get by Id     |
-||f|I| createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}); 
-createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV});     |   Create Positions:  Position creation error: PositionId duplicated  |
+|   t  | t |V | createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}) ;getPositionById(id)   | Create Positions: Create new Position, then get by Id     |
+||f|I| createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}); createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV});     |   Create Positions:  Position creation error: PositionId duplicated  |
 |   f  | t |I |  createNewPosition(position{id=null,aisle,row,col, maxW,maxV,oW,oV})   |   Create Positions: Position creation error: null positionID   |
 ||f|I|      | Create Positions: Position creation error: null positionID     |
 
@@ -1261,8 +1240,7 @@ createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV});     |   Create P
 
 |   P | ID| Valid / Invalid | Description of the test case | Jest test case |
 |-------|--|-----|-------|-------|-------|
-|   t | t | V | modifyPosition("800090007000", "7000", "5000", "3000", 100, 100, 0, 0);
- getPositionById("700050003000"); | Modify Position: Modify position   |
+|   t | t | V | modifyPosition("800090007000", "7000", "5000", "3000", 100, 100, 0, 0); getPositionById("700050003000"); | Modify Position: Modify position   |
 |    | f | I | modifyPosition("800090007000", "5000", "9000", "7000", 100, 100, 0, 0); | Modify Position:Modify position: positionID duplicated   |
 |   f | t | V |  modifyPosition("invalid", "7000", "5000", "3000", 100, 100, 0, 0);| Modify Position: Modify position ID  |
 |    | f | I | | Modify Position: Modify position ID   |
