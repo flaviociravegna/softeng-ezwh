@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('./DB');
+const db = require('./DB').db;
 
 class InternalOrder {
     constructor(id, issueDate, state, customerID, products) {

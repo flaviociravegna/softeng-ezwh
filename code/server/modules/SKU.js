@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('./DB');
+const db = require('./DB').db;
 
 class SKU {
     constructor(id, description, weight, volume, notes, positionID, availableQuantity, price) {
@@ -46,11 +46,12 @@ exports.getSKUIdByPosition = (positionID) => {
 }
 
 exports.getAllSKU = () => {
+    console.log(db);
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM SKUs', [], (err, rows) => {
-            if (err)
+            if (err) {
                 reject(err);
-            else {
+            } else {
                 const skuList = rows.map(sku => new SKU(sku.id, sku.description, sku.weight, sku.volume, sku.notes, sku.positionID, sku.availableQuantity, sku.price));
                 resolve(skuList);
             }

@@ -21,7 +21,87 @@ Version:
 
 # Dependency graph 
 
-     <report the here the dependency graph of the classes in EzWH, using plantuml or other tool>
+```plantuml
+@startuml
+
+class server{ }
+
+package Routers {
+  class "SKU (router)"{ }
+  class "SKUItem (router)"{ }
+  class "TestDescriptor (router)"{ }
+  class "TestResult (router)"{ }
+  class "User (router)"{ }
+  class "InternalOrder (router)"{ }
+  class "RestockOrder (router)"{ }
+  class "ReturnOrder (router)"{ }
+  class "Item (router)"{ }
+  class "Position (router)"{ }
+}
+
+package DataAccessObjects {
+  class "SKU (DAO)"{ }
+  class "SKUItem (DAO)"{ }
+  class "TestDescriptor (DAO)"{ }
+  class "TestResult (DAO)"{ }
+  class "User (DAO)"{ }
+  class "InternalOrder (DAO)"{ }
+  class "RestockOrder (DAO)"{ }
+  class "ReturnOrder (DAO)"{ }
+  class "Item (DAO)"{ }
+  class "Position (DAO)"{ }
+  class DB {}
+}
+
+server --> "SKU (router)"
+server --> "SKUItem (router)"
+server --> "TestDescriptor (router)"
+server --> "TestResult (router)"
+server --> "Item (router)"
+server --> "InternalOrder (router)"
+server --> "User (router)"
+server --> "RestockOrder (router)"
+server --> "ReturnOrder (router)"
+server --> "Position (router)"
+
+"SKU (router)" --> "SKU (DAO)"
+"SKU (router)" --> "SKUItem (DAO)"
+"SKU (router)" --> "Position (DAO)"
+"SKU (router)" --> "TestDescriptor (DAO)"
+"SKUItem (router)" --> "SKU (DAO)"
+"SKUItem (router)" --> "Position (DAO)"
+"SKUItem (router)" --> "SKUItem (DAO)"
+"TestDescriptor (router)" --> "SKU (DAO)"
+"TestDescriptor (router)" --> "TestDescriptor (DAO)"
+"TestResult (router)" --> "TestDescriptor (DAO)"
+"TestResult (router)" --> "SKUItem (DAO)"
+"TestResult (router)" --> "TestResult (DAO)"
+"Item (router)" --> "SKU (DAO)"
+"Item (router)" --> "Item (DAO)"
+"InternalOrder (router)" --> "SKU (DAO)"
+"InternalOrder (router)" --> "InternalOrder (DAO)"
+"User (router)" --> "User (DAO)"
+"RestockOrder (router)" --> "RestockOrder (DAO)"
+"RestockOrder (router)" --> "SKU (DAO)"
+"RestockOrder (router)" --> "User (DAO)"
+"ReturnOrder (router)" --> "ReturnOrder (DAO)"
+"ReturnOrder (router)" --> "RestockOrder (DAO)"
+"Position (router)" --> "Position (DAO)"
+
+"SKU (DAO)" --> DB
+"SKUItem (DAO)" --> DB
+"TestDescriptor (DAO)" --> DB
+"TestResult (DAO)" --> DB
+"Item (DAO)" --> DB
+"InternalOrder (DAO)" --> DB
+"User (DAO)" --> DB
+"RestockOrder (DAO)" --> DB
+"ReturnOrder (DAO)" --> DB
+"Position (DAO)" --> DB
+
+@enduml
+
+```
      
 # Integration approach
 

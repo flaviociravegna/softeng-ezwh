@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('./DB');
+const db = require('./DB').db;
 
 class ReturnOrder {
     constructor(id, returnDate, restockOrder) {
@@ -133,7 +133,7 @@ exports.deleteReturnOrderProducts = (id) => {
 
 
 
-exports.deleteAllReturnOrders = () =>{
+exports.deleteAllReturnOrders = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM ReturnOrders", [], function (err) {
             if (err)
@@ -144,7 +144,7 @@ exports.deleteAllReturnOrders = () =>{
     });
 }
 
-exports.deleteAllReturnOrdersProducts = () =>{
+exports.deleteAllReturnOrdersProducts = () => {
     return new Promise(async (resolve, reject) => {
         db.run("DELETE FROM ReturnOrdersProducts", [], function (err) {
             if (err)

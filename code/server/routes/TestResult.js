@@ -30,7 +30,6 @@ router.get('/:id', [
 ], async (req, res) => {
     try {
         // Check parameter
-        console.log("RFID: " + req.params.rfid);
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(422).end();
@@ -65,7 +64,6 @@ router.get('/', [
     try {
         // Check parameter
         const errors = validationResult(req);
-        console.log("Error");
         if (!errors.isEmpty())
             return res.status(422).end();
 
