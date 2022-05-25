@@ -1360,7 +1360,7 @@ Version:
 **Combination of predicates**:
 
 
-| E   |  Valid / Invalid | Description of the test case | Jest test case |
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------            |-------                        |-------        |
 |   t   | V                 |getItemsById(1)  |  Get SKU by ID |
 |   f    |  V                | getItemsById(9) |Get SKU by ID: Get Item: not found   |
@@ -1392,7 +1392,7 @@ Version:
 **Combination of predicates**:
 
 
-| E   |  Valid / Invalid | Description of the test case | Jest test case |
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------            |-------                        |-------        |
 |   t   | V                 | deleteItemsByID(1)  |  Delete an Item:delete Item |
 |    f   |  V                |  | Delete an Item:delete Item   |
@@ -1424,12 +1424,206 @@ Version:
 **Combination of predicates**:
 
 
-| E   |  Valid / Invalid | Description of the test case | Jest test case |
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------            |-------                        |-------        |
 |   t   | V                 | modifyItem(1, 20, 3, 1, "another Item")  |  modify an Item |
 |    f   |  I               |  | modify an Item   |
 
+# **Class *SKUItem* - method *createNewSKUItem***
 
+**Criteria for method *createNewSKUItem*:**
+ - Items RFID not in DB - ID
+
+
+**Predicates for method *createNewSKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID  |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | createNewSKUItem(12341234,1,'19/11/1999',1)  | creating a New SKU item: create a new SKU item  |
+|    f   |  I               |  createNewSKUItem(12341234,1,'19/11/1999',1);
+createNewSKUItem(12341234,1,'19/11/1999',1); |  creating a New SKU item:create a new SKU item with same RFID  |
+
+# **Class *SKUItem* - method *getAllSKUItems***
+
+**Criteria for method *getAllSKUItems*:**
+ - db is not empty - E
+
+
+**Predicates for method *getAllSKUItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| E  |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | createNewSKUItem(12222222,1,'20/11/1999',1); getAllSKUItems()  | get SKU items:get all SKU items  |
+|    f   |  I               |  getAllSKUItems() |  get SKU items:get all SKU items empty list  |
+
+
+# **Class *SKUItem* - method *getSKUItemsBySkuID***
+
+**Criteria for method *getSKUItemsBySkuID*:**
+ - skuId exists in DB - E
+
+
+**Predicates for method *getSKUItemsBySkuID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| E         |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | createNewSKUItem(12222222,1,'20/11/1999',1);getSKUItemsBySkuID(1)  | get SKU items:get SKU items by skuID  |
+|    f   |  I               |  get SKU items by skuID() |  get SKU items:get SKU items by ID of a non existin skuID; get SKU items by ID missing skuID;  |
+
+
+# **Class *SKUItem* - method *getSKUItemByRFID***
+
+**Criteria for method *getSKUItemByRFID*:**
+ - rfid exists in DB - E
+
+
+**Predicates for method *getSKUItemByRFID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| E         |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | createNewSKUItem(12222222,1,'20/11/1999',1);getSKUItemByRFID(12222222)  | get SKU items:get SKU items by RFID  |
+|    f   |  I               |  getSKUItemByRFID('invalid') |  get SKU items:get SKU items by RFID wrong RFID;  |
+
+# **Class *SKUItem* - method *deleteSKUItem***
+
+**Criteria for method *deleteSKUItem*:**
+ - rfid exists in DB - E
+
+
+**Predicates for method *deleteSKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| E         |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | createNewSKUItem(12222222,1,'20/11/1999',1);deleteSKUItem(12222222)  | delete SKU items:delete SKU items by RFID  |
+|    f   |  I               |  deleteSKUItem('invalid') |  delete SKU items:delete SKU items by RFID wrong RFID  |
+
+
+ **Class *SKUItem* - method *modifySKUItem***
+
+**Criteria for method *modifySKUItem*:**
+ - rfid exists in DB - E
+
+
+**Predicates for method *modifySKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| E         |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | createNewSKUItem(12222222,1,'20/11/1999',1);modifySKUItem(12222222)  | modify SKU items:modify SKU item  |
+|    f   |  I               |  modifySKUItem('invalid') |  modify SKU items:modify SKU item missing parameters; modify SKU items:modify SKU item missing all parameters; modify SKU item nonexisting RFID; modify SKU item to an already existing RFID |
 
 
 # White Box Unit Tests
