@@ -105,36 +105,11 @@ server --> "Position (router)"
      
 # Integration approach
 
-    <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
-    (ex: step1: class A, step 2: class A+B, step 3: class A+B+C, etc)> 
-    <Some steps may  correspond to unit testing (ex step1 in ex above), presented in other document UnitTestReport.md>
-    <One step will  correspond to API testing>
+   In the api testing , we are directly integrating the unit tests, in order to satisfy the APIs. Therefore, no intergration steps were done, but directly API testing.
     
 
 
-#  Integration Tests
 
-   <define below a table for each integration step. For each integration step report the group of classes under test, and the names of
-     Jest test cases applied to them, and the mock ups used, if any> Jest test cases should be here code/server/unit_test
-
-## Step 1
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
-
-
-## Step 2
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
-
-
-## Step n 
-
-   
-| Classes  | mock up used |Jest test cases |
-|--|--|--|
-||||
 
 
 
