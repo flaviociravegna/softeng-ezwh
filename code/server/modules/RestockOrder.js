@@ -17,7 +17,7 @@ class RestockOrder {
 /*************** Restock Order ********************/
 exports.getRestockOrderProducts = (restock_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT ROP.skuID, ROP.quantity, ROP.description, S.price FROM RestockOrdersProducts ROP, SKUs S WHERE ROP.restockOrderID = ? AND ROP.skuID = S.id'
+        const sql = 'SELECT ROP.skuID, ROP.quantity, S.description, S.price FROM RestockOrdersProducts ROP, SKUs S WHERE ROP.restockOrderID = ? AND ROP.skuID = S.id'
         db.all(sql, [restock_id], (err, rows) => {
             if (err)
                 reject(err);
@@ -118,10 +118,10 @@ exports.getLastPIDInOrder = (orderId) => {
     });
 }
 
-exports.insertProductInOrder = (id, restockOrderId, skuID, qty, description) => {
+exports.insertProductInOrder = (id, restockOrderId, skuID, qty) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO RestockOrdersProducts (productID, restockOrderID, skuID, quantity, description) VALUES (?,?,?,?,?)';
-        db.run(sql, [id, restockOrderId, skuID, qty, description], (err, row) => {
+        const sql = 'INSERT INTO RestockOrdersProducts (productID, restockOrderID, skuID, quantity) VALUES (?,?,?,?)';
+        db.run(sql, [id, restockOrderId, skuID, qty], (err, row) => {
             if (err)
                 reject(err);
             else

@@ -132,10 +132,10 @@ router.put('/:rfid', [
 
         if (req.body.newAvailable == 0 && oldAvailable != req.body.newAvailable) {
             await SKU_DAO.decreaseSKUavailableQuantity(skuItem.skuID);
-            await SKUItem_DAO.updatePositionWeightAndVolume(sku.position, position.occupiedWeight - sku.weight, position.occupiedVolume - sku.volume);
+            await Position_DAO.updatePositionWeightAndVolume(sku.position, position.occupiedWeight - sku.weight, position.occupiedVolume - sku.volume);
         } else if (req.body.newAvailable == 1 && oldAvailable != req.body.newAvailable) {
             await SKU_DAO.increaseSKUavailableQuantity(skuItem.skuID);
-            await SKUItem_DAO.updatePositionWeightAndVolume(sku.position, position.occupiedWeight + sku.weight, position.occupiedVolume + sku.volume);
+            await Position_DAO.updatePositionWeightAndVolume(sku.position, position.occupiedWeight + sku.weight, position.occupiedVolume + sku.volume);
         }
 
         res.status(200).end();
@@ -161,7 +161,7 @@ router.delete('/:rfid', [check('rfid').isNumeric().isLength({ min: 32, max: 32 }
         const position = await Position_DAO.getPositionById(sku.position);
 
         await SKU_DAO.decreaseSKUavailableQuantity(skuItem.skuID);
-        await SKUItem_DAO.updatePositionWeightAndVolume(sku.position, position.occupiedWeight - sku.weight, position.occupiedVolume - sku.volume);
+        await Position_DAO.updatePositionWeightAndVolume(sku.position, position.occupiedWeight - sku.weight, position.occupiedVolume - sku.volume);
         await SKUItem_DAO.deleteSKUItem(req.params.rfid);
 
         res.status(204).end();

@@ -6,6 +6,14 @@ most of the times the promises will resolve, so the coverage of "reject"
  branches can be not so high
 ************************************************************************/
 
+beforeAll(async () => {
+    await new Promise(process.nextTick);
+});
+afterAll(async () => {
+    await new Promise(process.nextTick);
+});
+
+
 describe("Create a new SKU", () => {
     beforeEach(async () => {
         await SKU_DAO.deleteAllSKUs();

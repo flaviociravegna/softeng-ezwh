@@ -4,6 +4,13 @@ const SKU = require('../modules/SKU')
 const SKU_ITEM = require('../modules/SKUItem')
 const TestResults = require('../modules/testResult_db')
 
+beforeAll(async () => {
+    await new Promise(process.nextTick);
+});
+afterAll(async () => {
+    await new Promise(process.nextTick);
+});
+
 describe('Create and get new RestockOrders', () => {
     beforeEach(async () => {
         await RO.deleteAllRestockOrders();
@@ -112,22 +119,22 @@ describe('RestockOrder Products', () => {
     test('Insert a new product', async () => {
         await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
 
-        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': null, 'price': 10, 'qty': 10 }]);
+        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': 'a description', 'price': 10, 'qty': 10 }]);
 
     });
 
     test('Insert 2 new products', async () => {
         await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
         await expect(RO.insertProductInOrder(2, 1, 2, 20)).resolves.toBe(null);
-        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': null, 'price': 10, 'qty': 10 },
-        { "SKUId": 2, 'description': null, 'price': 20, 'qty': 20 }]);
+        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': 'a description', 'price': 10, 'qty': 10 },
+        { "SKUId": 2, 'description': 'another description', 'price': 20, 'qty': 20 }]);
 
     });
 
     test('Fail to insert 2nd product', async () => {
         await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
         await expect(RO.insertProductInOrder(1, 1, 2, 20)).rejects.toThrow();
-        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': null, 'price': 10, 'qty': 10 }]);
+        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': 'a description', 'price': 10, 'qty': 10 }]);
 
     });
 

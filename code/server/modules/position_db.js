@@ -118,3 +118,13 @@ exports.deleteAllPositions = () => {
 }
 
 /*********************************************/
+exports.updatePositionWeightAndVolume = (positionID, newOccupiedWeight, newOccupiedVolume) => {
+    return new Promise(async (resolve, reject) => {
+        db.run("UPDATE positions SET occupiedWeight = ?, occupiedVolume = ? WHERE positionID = ?", [newOccupiedWeight, newOccupiedVolume, positionID], (err, rows) => {
+            if (err)
+                reject(err);
+            else
+                resolve(null);
+        });
+    });
+}
