@@ -22,44 +22,6 @@ Version:
     class and method name that contains the test case>
     <Jest tests  must be in code/server/unit_test  >
 
- ### **Class *class_name* - method *name***
-
-**Criteria for method *name*:**
-	
-
- - 
- - 
-
-**Predicates for method *name*:**
-
-| Criteria | Predicate |
-| -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
-
-
-**Boundaries**:
-
-| Criteria | Boundary values |
-| -------- | --------------- |
-|          |                 |
-|          |                 |
-
-
-
-**Combination of predicates**:
-
-
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | Jest test case |
-|-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
-
  ### **User* - method *getUserInfo***
 
 **Criteria for method *getUserInfo*:**
@@ -1298,7 +1260,6 @@ Version:
 |          |                 |
 
 
-
 **Combination of predicates**:
 
 
@@ -1306,6 +1267,168 @@ Version:
 |-------|-------            |-------                        |-------        |
 |   t   | V                 |deletePosition("800090007000"); | Delete Position by Id:Delete Position by Id  |
 |       |  I                |  | Delete Position by Id:Delete Position by Id   |
+
+### **Class *Item* - method *createNewItem***
+
+**Criteria for method *createNewItem*:**
+ - Id is unique -ID
+
+
+**Predicates for method *createNewItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  ID   |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |createNewItem(1, 10, 1, 1, "an Item"); | Create a new Item:new Item creation |
+|       |  I                | createNewItem(1, 10, 1, 1, "an Item"); createNewItem(1, 10, 1, 1, "an Item"); | Create a new Item:Item creation error: id duplicated   |
+
+# **Class *Item* - method *getAllItems***
+
+**Criteria for method *getAllItems*:**
+ - Items exist in DB - E
+
+
+**Predicates for method *getAllItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  E  |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |getAllItems();  |  get all Items |
+|       |  V                | |get all Items   |
+
+
+# **Class *Item* - method *getItemById***
+
+**Criteria for method *getItemById*:**
+ - Items ID in DB - ID
+
+
+**Predicates for method *getItemById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID  |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |getItemsById(1)  |  Get SKU by ID |
+|   f    |  V                | getItemsById(9) |Get SKU by ID: Get Item: not found   |
+
+# **Class *Item* - method *deleteItemsByID***
+
+**Criteria for method *deleteItemsByID*:**
+ - Items ID in DB - ID
+
+
+**Predicates for method *deleteItemsByID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID  |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | deleteItemsByID(1)  |  Delete an Item:delete Item |
+|    f   |  V                |  | Delete an Item:delete Item   |
+
+# **Class *Item* - method *modifyItem***
+
+**Criteria for method *modifyItem*:**
+ - Items ID in DB - ID
+
+
+**Predicates for method *modifyItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID  |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 | modifyItem(1, 20, 3, 1, "another Item")  |  modify an Item |
+|    f   |  I               |  | modify an Item   |
+
 
 
 
