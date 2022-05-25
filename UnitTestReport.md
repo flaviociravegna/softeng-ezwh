@@ -909,6 +909,258 @@ createNewTestResult({ 'id': 1, 'date': '19/11/2000', 'result': 0, 'idTestDescrip
 getRestockOrderFailedSKUItems(1); |get Restock Order Failed SKUItems:get failed SKU items from an order that has at least 1|
 |   f  |V |getRestockOrderFailedSKUItems(id); |get Restock Order Failed SKUItems:get failed SKU items from an order that has none|
 
+### **Class *ReturnOrder* - method *createNewReturnOrder***
+
+**Criteria for method *createNewReturnOrder*:**
+ -is a unique and valid ID - ID
+
+**Predicates for method *createNewReturnOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID     |     t     |
+|          |     f     |
+||invalid|
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);getReturnOrderById(1) |Create new Return Orders:Create a new return Order|
+|   f  |I | createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 1);|Create new Return Orders:Fail creating a 2nd return Order, same ID|
+|   invalid |I | createNewReturnOrder('19/11/2020', 1, 'a');|Create new Return Orders:Fail creating a return Order, invalid ID|
+
+### **Class *ReturnOrder* - method *getReturnOrders***
+
+**Criteria for method *getReturnOrders*:**
+ -there are return orders in the DB - E
+
+**Predicates for method *createNewReturnOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 2);getReturnOrders(); |Create new Return Orders:Create 2 new return Orders|
+|   f  |V | getReturnOrders()|Create new Return Orders:no return orders in the list|
+
+
+### **Class *ReturnOrder* - method *getLastReturnOrderId***
+
+**Criteria for method *getLastReturnOrderId*:**
+ -there are return orders in the DB - E
+
+**Predicates for method *getLastReturnOrderId*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 2);getLastReturnOrderId(); |get last Return OrderID:retrive last ReturnOrderID with non empty table|
+|   f  |V | getLastReturnOrderId()|get last Return OrderID:retrive last ReturnOrderID with empty table|
+
+### **Class *ReturnOrder* - method *getReturnOrderById***
+
+**Criteria for method *getReturnOrderById*:**
+ -there are return orders in the DB - E
+
+**Predicates for method *getReturnOrderById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 2);getReturnOrderById(1); |get all return Orders:get each Return Order by its ID|
+|   f  |I | getReturnOrderById(4)|get all return Orders:fail to retrive a non existing order|
+
+### **Class *ReturnOrder* - method *getReturnOrderProducts***
+
+**Criteria for method *getReturnOrderProducts*:**
+ -there are return orders in the DB with products - E
+
+**Predicates for method *getReturnOrderProducts*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
+insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
+getReturnOrderProducts(1);
+    |ReturnOrder Products:get return order products|
+|   f  |I | getReturnOrderProducts(2)|ReturnOrder Products:get return order products when there are none|
+
+### **Class *ReturnOrder* - method *insertProductInRO***
+
+**Criteria for method *insertProductInRO*:**
+ -ID is unique - ID
+
+**Predicates for method *insertProductInRO*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   ID    |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
+insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
+    |ReturnOrder Products:insert a product|
+|   f  |I |createNewReturnOrder('11/01/2022', 1, 1);
+insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
+insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);|ReturnOrder Products:fail to insert a repeated product|
+
+### **Class *ReturnOrder* - method *deleteReturnOrderProducts***
+
+**Criteria for method *deleteReturnOrderProducts*:**
+ -return Order exists E
+
+**Predicates for method *deleteReturnOrderProducts*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E    |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
+insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);deleteReturnOrderProducts(1);
+    |ReturnOrder Products:delete a return order products|
+|   f  |I |deleteReturnOrderProducts(4);|delete a return order Product:delete a return Order that doesnt exist|
+
+### **Class *ReturnOrder* - method *deleteReturnOrder***
+
+**Criteria for method *deleteReturnOrder*:**
+ -return Order exists E
+
+**Predicates for method *deleteReturnOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E    |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);
+deleteReturnOrder(1);
+    |delete a return order:delete a return order|
+|   f  |I |deleteReturn(4);|delete a return order :delete a return Order that doesnt exist|
 
 
 
