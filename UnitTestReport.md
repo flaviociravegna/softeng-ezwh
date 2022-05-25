@@ -1626,6 +1626,399 @@ createNewSKUItem(12341234,1,'19/11/1999',1); |  creating a New SKU item:create a
 |    f   |  I               |  modifySKUItem('invalid') |  modify SKU items:modify SKU item missing parameters; modify SKU items:modify SKU item missing all parameters; modify SKU item nonexisting RFID; modify SKU item to an already existing RFID |
 
 
+**InternalOrder* - method *createNewInternalOrder***
+
+**Criteria for method *createNewInternalOrder*:**
+ - ID is Unique - ID
+
+
+**Predicates for method *createNewInternalOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID         |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |  createNewInternalOrder(1, '19/11/1998', 'ISSUED', 1) |  Create Internal Order:Create a new Internal Order  |
+|    f   |  I               |   createNewInternalOrder(1, '19/11/1998', 'ISSUED', 1); createNewInternalOrder(1, '19/11/1998', 'ISSUED', 1);   |  Create Internal Order: Check creating a repeated Internal Order   |
+
+**InternalOrder* - method *getInternalOrderById***
+
+**Criteria for method *getInternalOrderById*:**
+ - ID existis in DB - ID
+
+
+**Predicates for method *getInternalOrderById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID         |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |  createNewInternalOrder(1, '19/11/1998', 'ISSUED', 1); getInternalOrderById(1); |  Create Internal Order:Check newly created Internal Order  |
+|    f   |  I               |  getInternalOrderById(5)    |  Create Internal Order: get a non existing Internal Order   |
+
+
+**InternalOrder* - method *getLastInternalOrderId***
+
+**Criteria for method *getLastInternalOrderId*:**
+ - ID existis in DB - ID
+
+
+**Predicates for method *getLastInternalOrderId*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID         |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |  createNewInternalOrder(1, '19/11/1998', 'ISSUED', 1); getLastInternalOrderId(); |  Get last internal Order ID: get get last ID |
+|    f   |  V               |  getLastInternalOrderId()    |  Get last internal Order ID: get get last ID from empty list  |
+
+
+**InternalOrder* - method *getInternalOrderByState***
+
+**Criteria for method *getInternalOrderByState*:**
+ -  Internal order with that state existis in DB - ID
+
+
+
+**Predicates for method *getInternalOrderByState*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |  createNewInternalOrder(1, '19/11/1998', 'MOCKSTATE', 1); getInternalOrderByState('MOCKSTATE'); |  get Internal Order By state:get by state 'MOCKSTATE |
+|    f   |  I               |  getInternalOrderByState('ISSUED')   |  get Internal Order By state:get by state empty list |
+
+
+**InternalOrder* - method *modifyInternalOrder***
+
+**Criteria for method *modifyInternalOrder*:**
+ -  Internal order existis in DB - ID
+
+
+
+**Predicates for method *modifyInternalOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |  createNewInternalOrder(1, '19/11/1998', 'MOCKSTATE', 1); modifyInternalOrder(1, 'NewDate', 'NEWSTATE', 'newCustomerID') |  Modify Internal Order:Modify Internal order State, Modify Internal order customer Id   |
+|    f   |  V               |  modifyInternalOrder(5, '19/11/1998', 'ISSUED', 5)  |  Modify Internal Order: Modify non existing Internal order |
+
+**InternalOrder* - method *deleteInternalOrderByID***
+
+**Criteria for method *deleteInternalOrderByID*:**
+ -  Internal order existis in DB - ID
+
+
+
+**Predicates for method *deleteInternalOrderByID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------            |-------                        |-------        |
+|   t   | V                 |  createNewInternalOrder(1, '19/11/1998', 'MOCKSTATE', 1); deleteInternalOrderByID(1) |  Delete Internal Order   |
+|    f   |  V               |  deleteInternalOrderByID(5)  | Delete not existing Internal Order |
+
+
+**InternalOrder* - method *getInternalOrdersSKUItemById***
+
+**Criteria for method *getInternalOrdersSKUItemById*:**
+ -  Internal order existis in DB - ID
+ - internal order has Sku items - S
+
+
+
+**Predicates for method *getInternalOrdersSKUItemById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+| S        |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  | S |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|--|-----            |-------                        |-------        |
+|   t   |  t |V                 | getAllInternalOrdersSKUItems()  |get Internal Order SKUItems:get Internal Order Skus by Internal Order ID |
+|       |  f |I                 | deleteAllInternalOrdersSKUItems();getAllInternalOrdersSKUItems()  | get Internal Order SKUItems:get Internal Order Skus when Empty list  |
+|    f  | t  | I               |   | get Internal Order SKUItems:get Internal Order Skus when Empty list |
+|       |  f |I                 |  ; | get Internal Order SKUItems:get Internal Order Skus when Empty list |
+
+
+**InternalOrder* - method *getInternalOrdersSKUItem***
+
+**Criteria for method *getInternalOrdersSKUItem*:**
+ -  Internal order existis in DB - ID
+ - internal order has Sku items - S
+
+
+
+**Predicates for method *getInternalOrdersSKUItem*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+| S        |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  | S |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|--|-----            |-------                        |-------        |
+|   t   |  t |V                 | getAllInternalOrdersSKUItems()  |get Internal Order SKUItems:get Internal Orders SKUs  |
+|       |  f |I                 | deleteAllInternalOrdersSKUItems();getAllInternalOrdersSKUItems()  | get Internal Order SKUItems:get Internal Order Skus when Empty list  |
+|    f  | t  | I               |   | get Internal Order SKUItems:get Internal Order Skus when Empty list |
+|       |  f |I                 |  ; | get Internal Order SKUItems:get Internal Order Skus when Empty list |
+
+
+
+**InternalOrder* - method *deleteInternalOrdersSKUItems***
+
+**Criteria for method *deleteInternalOrdersSKUItems*:**
+ -  Internal order existis in DB - ID
+ - internal order has Sku items - S
+
+
+
+**Predicates for method *deleteInternalOrdersSKUItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+| S        |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  | S |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|--|-----            |-------                        |-------        |
+|   t   |  t |V                 | deleteInternalOrderSKUItems(1) |delete Internal Order Skus |
+|       |  f |I                 | deleteInternalOrderSKUItems(3) | delete Internal Order Skus of an empty order |
+|    f  | t  | I               |  deleteInternalOrderSKUItems(4) | delete Internal Order Skus of an non existing order |
+|       |  f |I                 |   | delete Internal Order Skus of an non existing order |
+
+
+**InternalOrder* - method *getInternalOrderProductById***
+
+**Criteria for method *deleteInternalOrdersSKUItems*:**
+ -  Internal order existis in DB - ID
+ - internal order has Products - S
+
+
+
+**Predicates for method *deleteInternalOrdersSKUItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+| S        |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  | S |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|--|-----            |-------                        |-------        |
+|   t   |  t |V                 | getInternalOrdersProductById(2)  |get Internal Order Products:Products from an Internal Order |
+|       |  f | V                 | getInternalOrdersProductById(3) | get Internal Order Products:Products from an empty Internal Order |
+|    f  | t  | I               | getInternalOrdersProductById(10)  | get Internal Order Products:Products from a non existing Internal Order |
+|       |  f |I                 |   | get Internal Order Products:Products from a non existing Internal Order |
+
+
+**InternalOrder* - method *deleteInternalOrderProducts***
+
+**Criteria for method *deleteInternalOrderProducts*:**
+ -  Internal order has products in DB - ID
+
+
+
+**Predicates for method *deleteInternalOrderProducts*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t      |V     | addInternalOrdersProducts('1', '1', '1'); deleteInternalOrderProducts(1);  |get Internal Order Products:Delete InternalOrder Products |
+|    f     | I    | deleteInternalOrderProducts(3);  |  get Internal Order Products:Delete InternalOrder Products of empty order |
+
+
+
+
+
 # White Box Unit Tests
 
 ### Test cases definition
