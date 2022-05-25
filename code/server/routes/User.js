@@ -52,7 +52,6 @@ router.get('/api/users', async (req, res) => {
         res.json(users_array);
 
     } catch (err) {
-        console.log(err);
         res.status(500).end();
     }
 });
