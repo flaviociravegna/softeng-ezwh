@@ -37,12 +37,12 @@ router.get('/', async (req, res) => {
 /// TO DISCUSS: Error 409 not present in API.md
 // TODO: migliorare gestione errori
 router.post('/', [
-  check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
-  check('aisleID').isNumeric().isLength({ min: 4, max: 4 }),
-  check('row').isNumeric().isLength({ min: 4, max: 4 }),
-  check('col').isNumeric().isLength({ min: 4, max: 4 }),
-  check('maxWeight').isInt({ gt: 0 }),
-  check('maxVolume').isInt({ gt: 0 })
+  check('positionID').isString().isNumeric().isLength({ min: 12, max: 12 }),
+  check('aisleID').isString().isNumeric().isLength({ min: 4, max: 4 }),
+  check('row').isString().isNumeric().isLength({ min: 4, max: 4 }),
+  check('col').isString().isNumeric().isLength({ min: 4, max: 4 }),
+  check('maxWeight').not().isString().isInt({ gt: 0 }),
+  check('maxVolume').not().isString().isInt({ gt: 0 })
 ], async (request, response) => {
   try {
     const errors = validationResult(request);
@@ -73,14 +73,14 @@ router.post('/', [
 
 // MODIFY all fields of a position identified by positionID 
 router.put('/:positionID', [
-  check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
-  check('newAisleID').isNumeric().isLength({ min: 4, max: 4 }),
-  check('newRow').isNumeric().isLength({ min: 4, max: 4 }),
-  check('newCol').isNumeric().isLength({ min: 4, max: 4 }),
-  check('newMaxWeight').isInt({ gt: 0 }),
-  check('newMaxVolume').isInt({ gt: 0 }),
-  check('newOccupiedWeight').isInt({ gt: -1 }),
-  check('newOccupiedVolume').isInt({ gt: -1 })
+  check('positionID').isString().isNumeric().isLength({ min: 12, max: 12 }),
+  check('newAisleID').isString().isNumeric().isLength({ min: 4, max: 4 }),
+  check('newRow').isString().isNumeric().isLength({ min: 4, max: 4 }),
+  check('newCol').isString().isNumeric().isLength({ min: 4, max: 4 }),
+  check('newMaxWeight').not().isString().isInt({ gt: 0 }),
+  check('newMaxVolume').not().isString().isInt({ gt: 0 }),
+  check('newOccupiedWeight').not().isString().isInt({ gt: -1 }),
+  check('newOccupiedVolume').not().isString().isInt({ gt: -1 })
 ], async (req, res) => {
   try {
     // Check parameters
@@ -104,8 +104,8 @@ router.put('/:positionID', [
 
 // MODIFY the positionID of a position identified by positionID
 router.put('/:positionID/changeID', [
-  check('positionID').isNumeric().isLength({ min: 12, max: 12 }),
-  check('newPositionID').isNumeric().isLength({ min: 12, max: 12 })
+  check('positionID').isString().isNumeric().isLength({ min: 12, max: 12 }),
+  check('newPositionID').isString().isNumeric().isLength({ min: 12, max: 12 })
 ], async (req, res) => {
   try {
     // Check parameter
@@ -127,7 +127,7 @@ router.put('/:positionID/changeID', [
 
 // DELETE the position
 router.delete('/:positionID', [
-  check('positionID').isNumeric().isLength({ min: 12, max: 12 })
+  check('positionID').isString().isNumeric().isLength({ min: 12, max: 12 })
 ], async (request, response) => {
   try {
     const errors = validationResult(request);

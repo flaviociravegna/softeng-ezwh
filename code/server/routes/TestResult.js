@@ -25,11 +25,12 @@ function BooleanTranslate(bool) {
 
 // Return a Test Result given a RFID and Test Id.
 router.get('/:id', [
-    check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
+    check('rfid').notEmpty().isString().isNumeric().isLength({ min: 32, max: 32 }),
     check('id').isInt({ min: 1 })
 ], async (req, res) => {
     try {
         // Check parameter
+        console.log("RFID: " + req.params.rfid);
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(422).end();
@@ -64,6 +65,7 @@ router.get('/', [
     try {
         // Check parameter
         const errors = validationResult(req);
+        console.log("Error");
         if (!errors.isEmpty())
             return res.status(422).end();
 
@@ -89,8 +91,8 @@ router.get('/', [
 
 // CREATE NEW TEST Result
 router.post('/', [
-    check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
-    check('idTestDescriptor').isInt({ min: 1 }),
+    check('rfid').isString().isNumeric().isLength({ min: 32, max: 32 }),
+    check('idTestDescriptor').not().isString().isInt({ min: 1 }),
     check('Date').notEmpty().isString(),
     check('Result').isBoolean()
 ], async (req, res) => {
@@ -139,9 +141,9 @@ router.post('/', [
 
 // MODIFY a test Result identified by id for a certain sku item identified by RFID.
 router.put('/:id', [
-    check('rfid').isNumeric().isLength({ min: 32, max: 32 }),
+    check('rfid').notEmpty().isString().isNumeric().isLength({ min: 32, max: 32 }),
     check('id').isInt({ min: 1 }),
-    check('newIdTestDescriptor').isInt({ min: 1 }),
+    check('newIdTestDescriptor').not().isString().isInt({ min: 1 }),
     check('newDate').notEmpty().isString(),
     check('newResult').isBoolean()
 ], async (req, res) => {
@@ -177,7 +179,7 @@ router.put('/:id', [
 
 // DELETE a test result, given its id for a certain sku item identified by RFID
 router.delete('/:id', [
-    check('rfid').notEmpty().isNumeric().isLength({ min: 32, max: 32 }),
+    check('rfid').notEmpty().isString().isNumeric().isLength({ min: 32, max: 32 }),
     check('id').notEmpty().isInt({ min: 1 })
 ], async (request, response) => {
     try {

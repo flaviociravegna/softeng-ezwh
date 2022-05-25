@@ -105,13 +105,13 @@ router.get('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) =>
 
 // POST /api/internalOrders
 router.post('/', [
-    check('customerId').exists().isInt({ min: 1 }),
+    check('customerId').exists().not().isString().isInt({ min: 1 }),
     check('issueDate').isString(),
     check('products').isArray(),
-    check('products.*.SKUId').exists().isInt({ min: 1 }),
+    check('products.*.SKUId').exists().not().isString().isInt({ min: 1 }),
     check('products.*.description').isString(),
-    check('products.*.price').isFloat({ gt: 0 }),
-    check('products.*.qty').isInt({ min: 1 }),
+    check('products.*.price').not().isString().isFloat({ gt: 0 }),
+    check('products.*.qty').not().isString().isInt({ min: 1 }),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -136,7 +136,7 @@ router.post('/', [
         }
 
         const lastId = await internalOrder_DAO.getLastInternalOrderId();
-        const result = await internalOrder_DAO.createNewInternalOrder(lastId + 1, req.body.issueDate, "ISSUED", req.body.customerId);
+        await internalOrder_DAO.createNewInternalOrder(lastId + 1, req.body.issueDate, "ISSUED", req.body.customerId);
         for (const p of req.body.products)
             await internalOrder_DAO.addInternalOrdersProducts(lastId + 1, p.SKUId, p.qty);
 
@@ -161,10 +161,10 @@ router.put('/:id', [
         .withMessage('<products> must be an array'),
     check('products.*.SkuID')
         .if(check('newState').exists().isString().isIn(['COMPLETED']))
-        .if(check('products').exists()).exists().isInt({ min: 1 }),
+        .if(check('products').exists()).exists().not().isString().isInt({ min: 1 }),
     check('products.*.RFID')
         .if(check('newState').exists().isString().isIn(['COMPLETED']))
-        .if(check('products').exists()).exists().isNumeric().isLength({ min: 32, max: 32 })
+        .if(check('products').exists()).exists().isString().isNumeric().isLength({ min: 32, max: 32 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);

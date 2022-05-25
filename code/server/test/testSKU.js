@@ -35,6 +35,12 @@ describe('API Test: SKU', function () {
 
         // availableQuantity (or other fields) missing
         createNewSKU(422, { "description": "SKU 4", "weight": 40, "volume": 40, "notes": "notes 3", "price": 40.99 });
+
+        // Fields that should be int passed as strings
+        createNewSKU(422, { "description": "SKU 4", "weight": 40, "volume": 40, "notes": "notes 3", "price": "40.99", "availableQuantity": 1 });
+        createNewSKU(422, { "description": "SKU 4", "weight": 40, "volume": "40", "notes": "notes 3", "price": 40.99, "availableQuantity": 1 });
+        createNewSKU(422, { "description": "SKU 4", "weight": "40", "volume": 40, "notes": "notes 3", "price": 40.99, "availableQuantity": 1 });
+        createNewSKU(422, { "description": "SKU 4", "weight": "40", "volume": 40, "notes": "notes 3", "price": 40.99, "availableQuantity": "1" });
     });
 
     // GET /api/skus
@@ -59,6 +65,7 @@ describe('API Test: SKU', function () {
         // Wrong ID (null or < 1)
         getSKU(422, -1);
         getSKU(422, 0);
+        getSKU(422, "not an int");
         getSKU(422);
     });
 
@@ -66,6 +73,7 @@ describe('API Test: SKU', function () {
     describe('PUT /api/sku/:id/position (errors)', function () {
         /***** Errors *****/
         // Empty body
+        updatePositionSKU(422);
         updatePositionSKU(422, 1);
 
         // Position not existing
@@ -82,6 +90,9 @@ describe('API Test: SKU', function () {
 
         // Position format wrong (not a string)
         updatePositionSKU(422, 3, { position: 800234523414 });
+
+        // Position format wrong (not numeric)
+        updatePositionSKU(422, 3, { position: "not a numeric string" });
 
         // Position format wrong (prop name wrong)
         updatePositionSKU(422, 3, { pos: "800234523414" });

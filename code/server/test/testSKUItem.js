@@ -28,8 +28,13 @@ describe('API Test: SKU Items', function () {
 
         // Wrong RFID (30 numbers instead of 32), number and missing
         createNewSKUItem(422, { RFID: "123456789012345678901234567890", SKUId: 1, DateOfStock: "2021/11/29" });
+        createNewSKUItem(422, { RFID: "1234567890123456789012345678901111111", SKUId: 1, DateOfStock: "2021/11/29" });
         createNewSKUItem(422, { RFID: 12345678901234567890123456789011, SKUId: 1, DateOfStock: "2021/11/29" });
         createNewSKUItem(422, { SKUId: 1, DateOfStock: "2021/11/29" });
+
+        // SKUId string
+        createNewSKUItem(422, { RFID: "12345678901234567890123456789011", SKUId: "not an int", DateOfStock: "2021/11/29" });
+        createNewSKUItem(422, { RFID: "12345678901234567890123456789011", SKUId: "1", DateOfStock: "2021/11/29" });
 
         // rfid instead of RFID
         createNewSKUItem(422, { rfid: "12345678901234567890123456789011", SKUId: 1, DateOfStock: "2021/11/29" });
@@ -59,12 +64,16 @@ describe('API Test: SKU Items', function () {
     });
 
     describe('GET /api/skuitems/sku/:id (errors)', function () {
+
         // no SKU associated to id
         getSKUItemsBySkuID(404, 10, N_SKU_ITEMS, [skuItem1, skuItem2, skuItem3, skuItem4]);
 
         // wrong id
         getSKUItemsBySkuID(422, -1, N_SKU_ITEMS, [skuItem1, skuItem2, skuItem3, skuItem4]);
         getSKUItemsBySkuID(422, undefined, N_SKU_ITEMS, [skuItem1, skuItem2, skuItem3, skuItem4]);
+        getSKUItemsBySkuID(422, "aaaaa", N_SKU_ITEMS, [skuItem1, skuItem2, skuItem3, skuItem4]);
+
+        getSKUItemsBySkuID(422);
     });
 
     // GET /api/skus/:id
@@ -78,7 +87,7 @@ describe('API Test: SKU Items', function () {
     describe('GET /api/skus/:id (errors)', function () {
         getSKUItemByRFID(422, "12345678901234567890123456789014543213", skuItem4);
         getSKUItemByRFID(422, "1234567890123456789012345678901", skuItem1);
-        getSKUItemByRFID(422, 12345678901234567890123456789012, skuItem2);
+        getSKUItemByRFID(422, 12345678901234567890123456789011, skuItem2);
         getSKUItemByRFID(422);
         getSKUItemByRFID(404, "12345678901234567890123456789099", skuItem1);
     });
@@ -101,6 +110,11 @@ describe('API Test: SKU Items', function () {
         updateSKUItem(422, "1234567890123456789012345678901", { newRFID: "12345678901234567890123456789015", newAvailable: 1, newDateOfStock: "2021/11/29" });
         updateSKUItem(422, "123456789012345678901234567890113", { newRFID: "12345678901234567890123456789015", newAvailable: 1, newDateOfStock: "2021/11/29" });
         updateSKUItem(422, "12345678901234567890123456789011", { newRFID: "123456789012345678901234567890155", newAvailable: 1, newDateOfStock: "2021/11/29" });
+        updateSKUItem(422, "1234567890123456789012345678901", { newRFID: "12345678901234567890123456789015", newAvailable: 1, newDateOfStock: "2021/11/29" });
+        updateSKUItem(422, "12345678901234567890123456789011", { newRFID: 12345678901234567890123456789015, newAvailable: 1, newDateOfStock: "2021/11/29" });
+        updateSKUItem(422, "12345678901234567890123456789011", { newRFID: "12345678901234567890123456789015", newAvailable: "1", newDateOfStock: "2021/11/29" });
+        updateSKUItem(422, "12345678901234567890123456789011", { newRFID: "12345678901234567890123456789015", newAvailable: "not an int", newDateOfStock: "2021/11/29" });
+        updateSKUItem(422, "12345678901234567890123456789011", { newRFID: "123456789012345678901234567890155", newAvailable: 1, newDateOfStock: "2021/11/49" });
 
         // wrong date formats
         updateSKUItem(422, "12345678901234567890123456789011", { newRFID: "12345678901234567890123456789015", newAvailable: 1, newDateOfStock: "2021/11/39" });

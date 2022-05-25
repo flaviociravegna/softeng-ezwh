@@ -25,12 +25,14 @@ describe('API Test: Test Descriptors', function () {
         // Wrong idSKU
         createTestDescriptor(422, { "name": "test descriptor 1", "procedureDescription": "Test description 1", "idSKU": "idSKU must be int" });
         createTestDescriptor(422, { "name": "test descriptor 1", "procedureDescription": "Test description 1", "idSKU": -1 });
+        createTestDescriptor(422, { "name": "test descriptor 1", "procedureDescription": "Test description 1", "idSKU": "1" });
 
         // Empty body
         createTestDescriptor(422);
 
         // Parameters missing
         createTestDescriptor(422, { "name": "test descriptor 1", "idSKU": 1 });
+        createTestDescriptor(422, { "name": "pippo", "desc": "Test description 1", "idSKU": 1 });
 
         // No SKU associated to idSKU
         createTestDescriptor(404, { "name": "test descriptor 1", "procedureDescription": "Test description 1", "idSKU": 99 });
@@ -76,11 +78,14 @@ describe('API Test: Test Descriptors', function () {
         updateTestDescriptor(422, 1, { "newName": "", "newProcedureDescription": "New Test description 1", "newIdSKU": 1 });
         updateTestDescriptor(422, 1, { "newName": "new name 1", "newProcedureDescription": "", "newIdSKU": 1 });
         updateTestDescriptor(422, 1, { "newName": "new name 1", "newProcedureDescription": "New Test description 1", "newIdSKU": -1 });
+        updateTestDescriptor(422, 1, { "newName": "new name 1", "newProcedureDescription": "New Test description 1", "newIdSKU": "1" });
+        updateTestDescriptor(422, 1, { "newName": "new name 1", "newProcedureDescription": "New Test description 1", "newIdSKU": "string" });
         updateTestDescriptor(422, 1, { "newName": "new name 1", "newProcedureDescription": 1532, "newIdSKU": 1 });
     });
 
     describe('DELETE /api/testDescriptor/:id (errors)', function () {
         deleteTestDescriptor(422);
+        deleteTestDescriptor(422, "string");
         deleteTestDescriptor(422, -2);
         deleteTestDescriptor(422, 99);
     });

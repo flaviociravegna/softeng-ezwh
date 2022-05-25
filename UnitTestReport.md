@@ -24,17 +24,11 @@ Version:
 
  ### **Class *class_name* - method *name***
 
-
-
 **Criteria for method *name*:**
 	
 
  - 
  - 
-
-
-
-
 
 **Predicates for method *name*:**
 
@@ -44,9 +38,6 @@ Version:
 |          |           |
 |          |           |
 |          |           |
-
-
-
 
 
 **Boundaries**:
@@ -69,7 +60,339 @@ Version:
 |||||||
 |||||||
 
+ ### **User* - method *getUserInfo***
 
+**Criteria for method *getUserInfo*:**
+ - type of input: string, string  
+ - correct username U
+ - correct password P
+
+**Predicates for method *getUserInfo*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  U       |   U == true      |
+|          |   U == false       |
+|   P       |  P == true        |
+|          |    P ==false       |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| U | P | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|true   | true  |    V  |       |     | Get User Info (login):Login: correct username and password"   |
+|       | false |    V  |       |       |   Get User Info (login):Login: incorrect username   |
+|false  | true  |    V  |       |       |   Get User Info (login):Login: incorrect password)   |
+|       | false  |    I  |       |      |    Get User Info (login):Login: incorrect username      |
+
+ ### **Class *User* - method *createNewUser***
+
+**Criteria for method *createNewUser*:**
+ - type of input: object<user{id int, username string, name string,surname string,hashpassword string,type string}>
+ - ID ID 
+ - otherUserValues V
+
+**Predicates for method *createNewUser*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     ID     |    unique (u)    |
+|          |     not unique (nu)      |
+|    V      |      filled     |
+|          |     missing      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID    | V     |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   unique    |   filled    |        V          |getMaxUserId()=6; createNewUser({ID,V});|   Create new User:Create new User, then get by Id|
+|       |  missing          |        I              |                                  |   Create new User:Create new User: missing values|
+|   not unique    |   filled    |        I          |                                   |   Create new User: Create new User: duplicated id|
+|            |  missing    |        I         |                                   |   Create new User: Create new User: duplicated id |
+|   wrong format    |   filled    |        I        |                                   |   Create new User:Create new User: missing values|
+|       |  missing          |        I         |                                        |   Create new User:Create new User: missing values|
+
+### **Class *User* - method *getUserInfoById***
+
+**Criteria for method *getUserInfoById*:**
+ - type of input: int
+ -  ID is int ID1
+- ID exists in DB ID2
+**Predicates for method *getUserInfoById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     ID1     |      is int    |
+|          |     not int      |
+|     ID2     |      exist     |
+|          |     doesn't exist      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID1    | ID2    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   is int    |   exists    |        V          |getUserInfoById()|   Get User By:Get User By: Id|
+|       |  doesnt exist          |        V              |getUserInfoById()     |   Get User ByGet User: user not found|
+|   not int    |   exists   |        I          |                                   |  Get User ByGet User: user not found|
+|            |  doesnt exist    |        I         |                                   |   Get User ByGet User: user not found|
+
+
+### **Class *User* - method *getUserByUsernameAndType***
+
+**Criteria for method *getUserByUsernameAndType*:**
+ - type of input: string,string
+ -  username exists in DB U
+ - Type corresponds to username T
+
+**Predicates for method *getUserByUsernameAndType*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     U    |      exist     |
+|          |     doesn't exist      |
+|    T    |     true     |
+|          |     false      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| U    | T    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   exists    |   true   |        V          |getUserByUsernameAndType('user','type')| Get User By: Username and type   |
+|       |  false          |        V         |getUserByUsernameAndType('user','type')           | Get User By: Username and type not found |
+|   doesn't exist    |   true   |        I          |                                   |Get User By: Username and type not found |
+|            |  false    |        I         |                                   | Get User By: Username and type not found |
+
+### **Class *User* - method *getUserBysupplierId***
+
+**Criteria for method *getUserBysupplierId*:**
+ - type of input: int
+ - supplierID exists in DB S
+ - 
+
+**Predicates for method *getUserBysupplierId*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    S   |      exist     |
+|          |     doesn't exist      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| s      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| exists        |   V    |    getSupplierById(id)  |  Get User By: supplier id    |
+| doesn't exists|   V    |   getSupplierById(id)   |  Get User By: supplier id not found |
+
+### **Class *User* - method *searchMaxID***
+
+**Criteria for method *searchMaxID*:**
+ - 
+ - 
+
+**Predicates for method *searchMaxID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|       |           |
+|          |           |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| | V|createNewUser({id=7});searchMaxID();| Search Max Id: Get max Id of the table|
+
+
+
+### **Class *User* - method *deleteUser***
+
+**Criteria for method *deleteUser*:**
+ -  there exists an user in DB - U
+ - 
+
+**Predicates for method *deleteUser*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    U   |      t     |
+|          |     f      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|    U  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|t | V|createNewUser({id=6});deleteUser(Id:6)| Delete User: Delete user by username and type |
+|f | V| deleteUser(Id:6)| Delete User: Delete user by username and type|
+
+### **Class *User* - method *modifyUserRights***
+
+**Criteria for method *modifyUserRights*:**
+ - 
+ - 
+
+**Predicates for method *modifyUserRights*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |           |
+|          |           |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| | V|createNewUser({id=6,username:"PaulRed@email.it", type:"supplier"}); modifyUserRights("PaulRed@email.it","supplier","newRights");| Modify user: ModifyUser rights |
+
+
+### **Class *User* - method *getAllsuppliers***
+
+**Criteria for method *getAllsuppliers*:**
+ - 
+ - 
+
+**Predicates for method *getAllsuppliers*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |           |
+|          |           |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| | V|  createNewUser(id:7,type: supplier);getAllSuppliers();|Get all users:Get All suppliers|
+
+### **Class *User* - method *getAllUsersExceptManagers***
+
+**Criteria for method *getAllUsersExceptManagers*:**
+ - 
+ - 
+
+**Predicates for method *getAllUsersExceptManagers*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |           |
+|          |           |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| | V|  createNewUser(id:7,type: supplier);getAllUsersExceptManagers();|Get all users:Get Users except managers|
 
 
 # White Box Unit Tests
@@ -83,26 +406,228 @@ Version:
 
 | Unit name | Jest test case |
 |--|--|
-|||
-|||
-||||
+| User | User.test.js &emsp; --> &emsp; Create new User, then get by Id |
+| User | User.test.js &emsp; --> &emsp; Create new User: duplicated id  |
+| User | User.test.js &emsp; --> &emsp; Create new User: missing values |
+| User | User.test.js &emsp; --> &emsp; Login: correct username and password |
+| User | User.test.js &emsp; --> &emsp; Login: incorrect username |
+| User | User.test.js &emsp; --> &emsp; Login: incorrect password |
+| User | User.test.js &emsp; --> &emsp; Get User By: Id |
+| User | User.test.js &emsp; --> &emsp; Get User: user not found |
+| User | User.test.js &emsp; --> &emsp; Get User By: Username and type |
+| User | User.test.js &emsp; --> &emsp; Get User By: Username and type not found |
+| User | User.test.js &emsp; --> &emsp; Get User By: supplier id |
+| User | User.test.js &emsp; --> &emsp; Get User By: supplier id not found |
+| User | User.test.js &emsp; --> &emsp; Get Users except managers |
+| User | User.test.js &emsp; --> &emsp; Get All suppliers |
+| User | User.test.js &emsp; --> &emsp; Get max Id of the table|
+| User | User.test.js &emsp; --> &emsp; Delete user by username and type |
+| User | User.test.js &emsp; --> &emsp; Delete user created for test purpose |
+| User | User.test.js &emsp; --> &emsp; Modify user rights |
+| Test Result | Test Result &emsp; --> &emsp; Create new Test Result |
+| Test Result | Test Result &emsp; --> &emsp; Create new Test Result: ID DUPLICATED |
+| Test Result | Test Result &emsp; --> &emsp; Create new Test Result: missing parametes |
+| Test Result | Test Result &emsp; --> &emsp; Modify Test Result |
+| Test Result | Test Result &emsp; --> &emsp; Get Test Result by RFID |
+| Test Result | Test Result &emsp; --> &emsp; Get Test Result by RFID: RFID not found |
+| Test Result | Test Result &emsp; --> &emsp; Get Test Result by RFID and Id |
+| Test Result | Test Result &emsp; --> &emsp; Get Test Result by RFID and Id: RFID not found |
+| Test Result | Test Result &emsp; --> &emsp; Get max Id of the table |
+| Test Result | Test Result &emsp; --> &emsp; Delete test result by rfid and id |
+| Test Result | Test Result &emsp; --> &emsp; Delete all test |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Create new test descriptor |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Create new test descriptor result check |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Create new test descriptor with same ID |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Create new test descriptor with same on the same SKU |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Create new test descriptor with missing paramaters |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Create new test descriptor with a wrong ID |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Get last testDescriptor ID, empty list |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Get last testDescriptor ID with non empty list |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Get last testDescriptor ID with non empty list 2 elements |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; get all test descriptors non empty list |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; get all test descriptors empty list |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; get all test descriptors ID non empty list |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; get all test descriptors ID non existing SkuID |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; get all test descriptors ID wrong format SkuID |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; get all test descriptors ID missing SkuID |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; get all test descriptors ID empty list |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; delete a test descriptor |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; delete a non existing test descriptor |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Modify a test descriptor |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Modify a test descriptor missing parameter |
+| Test Descriptor | TestDescriptor.test.js &emsp; --> &emsp; Modify a test descriptor non existing id |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; create a new SKU item |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; create a new SKU item with same RFID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; create a new SKU item with missing parameters |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; get all SKU items |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; get all SKU items empty list |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; get SKU items by skuID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; get SKU items by ID of a non existin skuID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; get SKU items by ID missing skuID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; get SKU items by RFID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; get SKU items by RFID wrong RFID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; delete SKU items by RFID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; delete SKU items by RFID wrong RFID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; modify SKU item |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; modify SKU item missing parameters |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; modify SKU item missing all parameters |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; modify SKU item nonexisting RFID |
+| SKU Item | SKUItem.test.js &emsp; --> &emsp; modify SKU item to an already existing RFID |
+| SKU | SKU.test.js &emsp; --> &emsp; new SKU creation |
+| SKU | SKU.test.js &emsp; --> &emsp; two new SKU created |
+| SKU | SKU.test.js &emsp; --> &emsp; SKU creation error: id duplicated |
+| SKU | SKU.test.js &emsp; --> &emsp; SKU creation error: id not integer |
+| SKU | SKU.test.js &emsp; --> &emsp; get last SKU ID |
+| SKU | SKU.test.js &emsp; --> &emsp; get SKU ID when table is empty |
+| SKU | SKU.test.js &emsp; --> &emsp; Get all SKUs |
+| SKU | SKU.test.js &emsp; --> &emsp; Get SKU by ID |
+| SKU | SKU.test.js &emsp; --> &emsp; Get SKU: not found |
+| SKU | SKU.test.js &emsp; --> &emsp; get SKU ID by Position |
+| SKU | SKU.test.js &emsp; --> &emsp; modify an SKU |
+| SKU | SKU.test.js &emsp; --> &emsp; modify position of SKU |
+| SKU | SKU.test.js &emsp; --> &emsp; delete SKU |
+| SKU | SKU.test.js &emsp; --> &emsp; increase SKU.availableQuantity |
+| SKU | SKU.test.js &emsp; --> &emsp; decrease SKU.availableQuantity |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; no return orders in the list |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; Create a new return Order |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; Create 2 new return Order |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; Fail creating a 2nd return Order, same ID |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; Fail creating a return Order, invalid ID |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; retrive last ReturnOrderID with non empty table |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; retrive last ReturnOrderID with empty table |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; get each Return Order by its ID |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; get AllReturn Orders |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; fail to retrive a non existing order |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; get return order products |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; get return order products when there are none |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; fail to insert a repeated product |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; insert a product |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; delete a return order products |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; delete a return Order |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; delete a return Order that doesnt exist |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; delete a return Order products |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; delete a return Order products of an empty order |
+| Return Order | ReturnOrder.test.js &emsp; --> &emsp; delete a return Order products of a non existing order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; No Restock Order in the List |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Create new RestockOreders |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Create 2 restock orders |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Insert a restock Order With the same Id |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; fail to get a non existing Order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get last restock Order ID |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get last restock Order ID when list empty |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get last restock Order ID when list lost an element |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Insert a new product |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Insert 2 new products |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Fail to insert 2nd product |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get SKU by ID |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get SKU by ID when theres no product |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get SKU by ID when theres a wrong SKUID |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get SKU by ID when theres a wrong OrderID |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get SKU by ID when theres a wrong  type OrderID |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get SKU by ID when theres a wrong  type SKUID |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; delete a restockOrder |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; try to delete a restockOrder that doesnt exist |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Fail to get RFID when no Item in restock Order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Insert SKUItems to restockOrder |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Insert 2 SKUItems to restockOrder |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Insert 2 times the same SKUItem |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Add transport note |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Add transport note empty |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get transport note of a Restock Order that doesn't have one |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Modify Restock Order State to DELIVERED |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Modify Restock Order State to ISSUED |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Modify Restock Order State of a non existing order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get all ISSUED restock Orders |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get all ISSUED restock Orders when there are none |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get last Product Id in Restock Order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get last item ID from an order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get last item ID from empty order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get last item ID from nonexisting order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a product from an order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a product from an empty order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a product from a non existing order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a TransportNote from an order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a TransportNote from an empty order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a TransportNote from a non existing order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete SKUItems from an order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete SKUItems from an empty order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete SKUItems from a non existing order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a SKUItem from an order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a SKUItem from an empty order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; Delete a SKUItem from a non existing order |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get failed SKU items from an order that has at least 1 |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get failed SKU items from an order that has none |
+| Restock Order | RestockOrder.test.js &emsp; --> &emsp; get failed SKU items from an order thatdesn't exist |
+| Position | Position.test.js &emsp; --> &emsp; Create new Position, then get by Id |
+| Position | Position.test.js &emsp; --> &emsp; Create more than 1 new Positions, then get All |
+| Position | Position.test.js &emsp; --> &emsp; Position creation error: PositionId duplicated |
+| Position | Position.test.js &emsp; --> &emsp; Position creation error: null positionID |
+| Position | Position.test.js &emsp; --> &emsp; Get position |
+| Position | Position.test.js &emsp; --> &emsp; Get position: position not found |
+| Position | Position.test.js &emsp; --> &emsp; Modify position |
+| Position | Position.test.js &emsp; --> &emsp; Modify position: positionID duplicated |
+| Position | Position.test.js &emsp; --> &emsp; Modify position ID |
+| Position | Position.test.js &emsp; --> &emsp; Modify position: positionID duplicated |
+| Position | Position.test.js &emsp; --> &emsp; Search Position: position not empty |
+| Position | Position.test.js &emsp; --> &emsp; Search Position: position empty |
+| Position | Position.test.js &emsp; --> &emsp; Delete Position by Id |
+| Position | Position.test.js &emsp; --> &emsp; Update Position by Id |
+| Position | Position.test.js &emsp; --> &emsp; Update Position by Id: position not found |
+| Item | Item.test.js &emsp; --> &emsp; get all Items with an empty list |
+| Item | Item.test.js &emsp; --> &emsp; new Item creation |
+| Item | Item.test.js &emsp; --> &emsp; two new Item created |
+| Item | Item.test.js &emsp; --> &emsp; Item creation error: id duplicated |
+| Item | Item.test.js &emsp; --> &emsp; Get all Items |
+| Item | Item.test.js &emsp; --> &emsp; Get SKU by ID |
+| Item | Item.test.js &emsp; --> &emsp; Get Item: not found |
+| Item | Item.test.js &emsp; --> &emsp; modify an Item |
+| Item | Item.test.js &emsp; --> &emsp; delete Item |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get all InternalOrders with an empty list |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Create a new Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Check newly created Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Check 2 newly created Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Check  creating a repeated Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get a non existing Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get last ID from empty list |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get last ID |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get last ID of multiple element list |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get by state 'ISSUED' |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get by state 'MOCKSTATE' |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get by state 'NOTASTATE' |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get by state empty list |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Modify Internal order State |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Modify Internal order customer Id |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Modify non existing Internal order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Modify Internal order missing arguments |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Delete Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Delete not existing Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Add a product to an internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get all products in internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get all products in internal Orders empty list |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Products from an Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Products from a non existing Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Products from an empty Internal Order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Delete InternalOrder Products |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; Delete InternalOrder Products of empty order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get Internal Orders SKUs |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get Internal Order Skus when Empty list |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get Internal Order Skus by Internal Order ID |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; modify Internal Order SKUItems |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; modify Internal Order Skus ID |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; modify Internal Order Skus ID of a repeated RFID |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; delete Internal Order Skus |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; delete Internal Order Skus of an empty order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; delete Internal Order Skus of an non existing order |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get Internal Order Product By skuID |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get Product by SKUID |
+| Internal Order | InternalOrder.test.js &emsp; --> &emsp; get Product by SKUID of non existing SKU |
+
 
 ### Code coverage report
 
-    <Add here the screenshot report of the statement and branch coverage obtained using
-    the coverage tool. >
+![](Images/screenshot_coverage_unit_tests.PNG)
 
 
 ### Loop coverage analysis
 
-    <Identify significant loops in the units and reports the test cases
-    developed to cover zero, one or multiple iterations >
-
-|Unit name | Loop rows | Number of iterations | Jest test case |
-|---|---|---|---|
-|||||
-|||||
-||||||
-
-
-
+    No significan loops were used in the Units.
