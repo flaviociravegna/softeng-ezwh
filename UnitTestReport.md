@@ -2015,9 +2015,275 @@ createNewSKUItem(12341234,1,'19/11/1999',1); |  creating a New SKU item:create a
 |   t      |V     | addInternalOrdersProducts('1', '1', '1'); deleteInternalOrderProducts(1);  |get Internal Order Products:Delete InternalOrder Products |
 |    f     | I    | deleteInternalOrderProducts(3);  |  get Internal Order Products:Delete InternalOrder Products of empty order |
 
+**SKU* - method *createNewSKU***
+
+**Criteria for method *createNewSKU*:**
+ -  sku id is unique in DB and is an Int - ID
 
 
 
+**Predicates for method *createNewSKU*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+|          |     notInt     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t      |V     |  createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10)  | Create a new SKU: new SKU creation  |
+|    f     | I    | createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10); createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10)  | Create a new SKU:SKU creation error: id duplicated  |
+|    notInt | I    | createNewSKU("id must be int", "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10) | Create a new SKU:SKU creation error: id not integer  |
+
+
+**SKU* - method *getLastSKUId***
+
+**Criteria for method *getLastSKUId*:**
+ -  there exists at least 1 sku in the db - ID
+
+
+
+**Predicates for method *getLastSKUId*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t      |V     |  createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);getLastSKUId();  | Get last SKU ID:get last SKU ID  |
+|    f     | V    | getLastSKUId();  |Get last SKU ID:get SKU ID when table is empty  |
+
+
+
+**SKU* - method *getSKUById***
+
+**Criteria for method *getSKUById*:**
+ -  there exists at least 1 sku in the db with that id - ID
+
+
+
+**Predicates for method *getSKUById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t      |V     |  createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);getSKUById(1);  | Get SKU by ID  |
+|    f     | V    | getSKUById();  |Get SKU by ID:Get SKU: not found  |
+
+**SKU* - method *modifySKU***
+
+**Criteria for method *modifySKU*:**
+ -  there exists at least 1 sku in the db with that id - ID
+
+
+
+**Predicates for method *modifySKU*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| ID       |     t     |
+|          |     f     |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID   |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t      |V     |  createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);modifySKU(1, "new desc", 20, 20, "new notes", 20.99, 20);  | Modify SKU (not position)  |
+|    f     |I    |  |Get SKU by ID:Get SKU: not found  |
+
+
+**SKU* - method *addOrModifyPositionSKU***
+
+**Criteria for method *addOrModifyPositionSKU*:**
+ - 
+
+
+
+**Predicates for method *addOrModifyPositionSKU*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |          |
+|          |          |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|  |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|         |V     |  createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800234523411", 10);addOrModifyPositionSKU(1, "800234523412");  | modify position of SKU  |
+
+
+
+**SKU* - method *deleteSKU***
+
+**Criteria for method *deleteSKU*:**
+ - 
+
+
+
+**Predicates for method *deleteSKU*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |          |
+|          |          |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|  |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|         |V     |  deleteSKU(id) | delete SKU  |
+
+**SKU* - method *increaseSKUavailableQuantity***
+
+**Criteria for method *increaseSKUavailableQuantity*:**
+ - sku exists - S
+
+
+
+**Predicates for method *increaseSKUavailableQuantity*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    S      |     t     |
+|          |      f   |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| S  |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|    t     |V     |  increaseSKUavailableQuantity(id); | increase SKU.availableQuantity  |
+|    f     |I     |   |  |
+
+**SKU* - method *DecreaseSKUavailableQuantity***
+
+**Criteria for method *DecreaseSKUavailableQuantity*:**
+ - sku exists - S
+
+
+
+**Predicates for method *DecreaseSKUavailableQuantity*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    S      |     t     |
+|          |      f   |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| S  |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|    t     |V     |  DecreaseSKUavailableQuantity(id); | Decrease SKU.availableQuantity  |
+|    f     |I     |   |  |
 
 # White Box Unit Tests
 
