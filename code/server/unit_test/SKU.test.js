@@ -1,4 +1,5 @@
 const SKU_DAO = require("../modules/SKU");
+const database = require("../modules/DB");
 
 /************************************************************************
  Since in sqlite 3it's really rare that a query will end in an error,
@@ -7,6 +8,7 @@ most of the times the promises will resolve, so the coverage of "reject"
 ************************************************************************/
 
 beforeAll(async () => {
+    await database.createConnection();
     await new Promise(process.nextTick);
 });
 afterAll(async () => {

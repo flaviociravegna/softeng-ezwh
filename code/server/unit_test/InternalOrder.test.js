@@ -1,8 +1,10 @@
-const IO = require('../modules/InternalOrder')
-const SKU = require('../modules/SKU')
-const SKU_ITEM = require('../modules/SKUItem')
+const IO = require('../modules/InternalOrder');
+const SKU = require('../modules/SKU');
+const SKU_ITEM = require('../modules/SKUItem');
+const database = require("../modules/DB");
 
 beforeAll(async () => {
+    await database.createConnection();
     await new Promise(process.nextTick);
     await IO.deleteAllInternalOrders();
     await IO.deleteAllInternalOrdersSKUItems();

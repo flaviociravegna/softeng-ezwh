@@ -1,8 +1,10 @@
 //npm test -- --runInBand
 
-const Item = require('../modules/Item')
+const Item = require('../modules/Item');
+const database = require("../modules/DB");
 
 beforeAll(async () => {
+    await database.createConnection();
     await new Promise(process.nextTick);
 });
 afterAll(async () => {
