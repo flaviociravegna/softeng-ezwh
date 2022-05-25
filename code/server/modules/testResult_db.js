@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('./DB');
+const db = require('./DB').db;
 
 exports.getAllTestResultByRFID = (rfid) => {
     return new Promise((resolve, reject) => {

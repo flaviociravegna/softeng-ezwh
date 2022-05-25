@@ -2,6 +2,7 @@
 
 const express = require('express');
 
+const database = require('./modules/DB');
 const position = require('./routes/Position');
 const testResult = require('./routes/TestResult');
 const returnOrder = require('./routes/ReturnOrder');
@@ -29,6 +30,8 @@ app.use('/', user);
 
 /*******************************************/
 
+database.createConnection();
+
 // init express
 app.use(express.json());
 
@@ -45,6 +48,5 @@ app.get('/api/hello', (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
-
 
 module.exports = app;

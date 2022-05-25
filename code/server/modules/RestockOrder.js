@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('./DB');
+const db = require('./DB').db;
 
 class RestockOrder {
     constructor(id, issueDate, state, supplierID, transportNote) {

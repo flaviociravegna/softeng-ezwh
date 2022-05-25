@@ -18,11 +18,14 @@ router.use(express.json());
 router.get('/', async (req, res) => {
     try {
         let skus = await SKU_DAO.getAllSKU();
+        console.log("bbbbb");
         const test_descriptors = await TestDesc_DAO.getAllTestDescriptors();
+        console.log("ccccc");
 
         skus.forEach(sku => { sku.testDescriptors = test_descriptors.filter(td => td.idSKU == sku.id).map(td => td.id) });
         res.status(200).json(skus);
     } catch (err) {
+        console.log(err);
         res.status(500).send(err);
     }
 });

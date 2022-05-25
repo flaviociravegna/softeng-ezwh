@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('./DB');
+const db = require('./DB').db;
 
 class Item {
     constructor(id, price, SKUId, supplierId, description) {

@@ -1,7 +1,7 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
-const db = require('./DB');
+const db = require('./DB').db;
 
 exports.getUserInfo = (username, password) => {
     return new Promise((resolve, reject) => {
