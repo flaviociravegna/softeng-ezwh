@@ -47,7 +47,10 @@ This EzWh design model implements a layered architectural pattern. The base idea
 
 # Low level design
 
-Since the complete diagram is too large to be readable, the first diagram only shows the links between all the various classes. The details of each class are shown later.
+Since the complete diagram is too large to be readable, it has been split into 2 parts:
+the first diagram (Figure 1) only shows the links between all the different classes, the second one (Figure 2) shows the details of each class.
+
+Figure 1:
 
 ```plantuml
 @startuml
@@ -130,7 +133,8 @@ server --> "Position (router)"
 @enduml
 
 ```
-
+<br>
+Figure 2:
 
 ```plantuml
 @startuml
