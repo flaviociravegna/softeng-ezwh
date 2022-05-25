@@ -268,7 +268,7 @@ Version:
 
 |    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| | V|createNewUser({id=7});searchMaxID();| Search Max Id: Get max Id of the table|
+| | V|createNewUser({id=7}); searchMaxID();| Search Max Id: Get max Id of the table|
 
 
 
@@ -300,7 +300,7 @@ Version:
 
 |    U  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|t | V|createNewUser({id=6});deleteUser(Id:6)| Delete User: Delete user by username and type |
+|t | V|createNewUser({id=6}); deleteUser(Id:6)| Delete User: Delete user by username and type |
 |f | V| deleteUser(Id:6)| Delete User: Delete user by username and type|
 
 ### **Class *User* - method *modifyUserRights***
@@ -362,7 +362,7 @@ Version:
 
 |      |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| | V|  createNewUser(id:7,type: supplier);getAllSuppliers();|Get all users:Get All suppliers|
+| | V|  createNewUser(id:7,type: supplier); getAllSuppliers();|Get all users:Get All suppliers|
 
 ### **Class *User* - method *getAllUsersExceptManagers***
 
@@ -392,7 +392,7 @@ Version:
 
 |      |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| | V|  createNewUser(id:7,type: supplier);getAllUsersExceptManagers();|Get all users:Get Users except managers|
+| | V|  createNewUser(id:7,type: supplier); getAllUsersExceptManagers();|Get all users:Get Users except managers|
 
 
 ### **Class *RestockOrder* - method *getRestockOrderById***
@@ -422,7 +422,7 @@ Version:
 
 |  ID    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|    t   |   V    |  createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1);getRestockOrders()     | Create and get new RestockOrders: Create new RestockOreders    |
+|    t   |   V    |  createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1); getRestockOrders()     | Create and get new RestockOrders: Create new RestockOreders    |
 |    f   |   I    |   getRestockOrderById(4)   |   Create and get new RestockOrders:fail to get a non existing Order  |
 
 ### **Class *RestockOrder* - method *createRestockOrder***
@@ -452,8 +452,8 @@ Version:
 
 |  ID    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|    t   |   V    |   createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1);getRestockOrders()    | Create and get new RestockOrders: Create new RestockOreders, Create and get new RestockOrders: Create 2 restock orders    |
-|    f   |   I   |   createRestockOrder(date:d1,supplierId:1 id:1);createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new RestockOrders:Insert a restock Order With the same Id  |
+|    t   |   V    |   createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1); getRestockOrders()    | Create and get new RestockOrders: Create new RestockOreders, Create and get new RestockOrders: Create 2 restock orders    |
+|    f   |   I   |   createRestockOrder(date:d1,supplierId:1 id:1); createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new RestockOrders:Insert a restock Order With the same Id  |
 
 
 
@@ -484,7 +484,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| t |V|createRestockOrder('19/11/1999', 1, 1);createRestockOrder('19/11/1999', 2, 2);getLastIdRsO()| get Last Restock Order ID:get last restock Order ID|
+| t |V|createRestockOrder('19/11/1999', 1, 1); createRestockOrder('19/11/1999', 2, 2); getLastIdRsO()| get Last Restock Order ID:get last restock Order ID|
 | f |V| deleteAllRestockOrders(); getLastIdRsO()| get Last Restock Order ID:get last restock Order ID when list empty|
 
 
@@ -515,8 +515,8 @@ Version:
 
 |   ID   |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| t |v|insertProductInOrder(id:1,restockOrderId:1);getRestockOrderProducts(id:1) |'RestockOrder Products:Insert a new product|
-| f |i|insertProductInOrder(id:1,restockOrderId:1);insertProductInOrder(id:1,restockOrderId:2); |'RestockOrder Products:Fail to insert 2nd product|
+| t |v|insertProductInOrder(id:1,restockOrderId:1); getRestockOrderProducts(id:1) |'RestockOrder Products:Insert a new product|
+| f |i|insertProductInOrder(id:1,restockOrderId:1); insertProductInOrder(id:1,restockOrderId:2); |'RestockOrder Products:Fail to insert 2nd product|
 
 ### **Class *RestockOrder* - method *getRestockOrderProducts***
 
@@ -655,7 +655,7 @@ Version:
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
 |   t  |V |  addRestockOrderSKUItems(id,restockId) |SKU Items of RestockOrder:Insert SKUItems to restockOrder|
-|   f  |I |  addRestockOrderSKUItems(id:1,restockId:1);addRestockOrderSKUItems(id:1,restockId:1) |SKU Items of RestockOrder:Insert 2 times the same SKUItem|
+|   f  |I |  addRestockOrderSKUItems(id:1,restockId:1); addRestockOrderSKUItems(id:1,restockId:1) |SKU Items of RestockOrder:Insert 2 times the same SKUItem|
 
 ### **Class *RestockOrder* - method *addrestockOrderTransportNote***
 
@@ -715,7 +715,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |  createRestockOrder(id:1);modifyRestockOrderState(id:1,'NewState'); |'Modify RestockOrders State:Modify Restock Order State to DELIVERED|
+|   t  |V |  createRestockOrder(id:1); modifyRestockOrderState(id:1,'NewState'); |'Modify RestockOrders State:Modify Restock Order State to DELIVERED|
 |   f  |I |  modifyRestockOrderState(id:4,'NewState'); |'Modify RestockOrders State:Modify Restock Order State of a non existing order|
 
 ### **Class *RestockOrder* - method *getRestockOrdersIssued***
@@ -745,7 +745,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |  createRestockOrder(id:1);getRestockOrdersIssued(); |'get ISSUED restock Orders:get all ISSUED restock Orders|
+|   t  |V |  createRestockOrder(id:1); getRestockOrdersIssued(); |'get ISSUED restock Orders:get all ISSUED restock Orders|
 |   f  |I | getRestockOrdersIssued(); |'get ISSUED restock Orders:get all ISSUED restock Orders when there are none|
 
 
@@ -776,7 +776,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V | insertProductInOrder(1, 1, 1234, 10);getLastPIDInOrder(); |'get last Product Id in Restock Order:get last item ID from an order|
+|   t  |V | insertProductInOrder(1, 1, 1234, 10); getLastPIDInOrder(); |'get last Product Id in Restock Order:get last item ID from an order|
 |   f  |V | getLastPIDInOrder(); |'get last Product Id in Restock Order:get last item ID from empty order|
 
 ### **Class *RestockOrder* - method *deleteProductsFromRestockOrder***
@@ -806,7 +806,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V | insertProductInOrder(1, 1, 1234, 10);deleteProductsFromRestockOrder(); |Delete products from RestockOrder:Delete a product from an order|
+|   t  |V | insertProductInOrder(1, 1, 1234, 10); deleteProductsFromRestockOrder(); |Delete products from RestockOrder:Delete a product from an order|
 |   f  |V | deleteProductsFromRestockOrder(); |'Delete products from RestockOrder:Delete a product from an empty order|
 
 ### **Class *RestockOrder* - method *deleteRestockOrderTransportNote***
@@ -836,7 +836,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V | addRestockOrderTransportNote(1,transportNote);deleteRestockOrderTransportNote(1); |Delete products from RestockOrder|
+|   t  |V | addRestockOrderTransportNote(1,transportNote); deleteRestockOrderTransportNote(1); |Delete products from RestockOrder|
 |   f  |V | deleteRestockOrderTransportNote(id); |Delete products from RestockOrder|
 
 ### **Class *RestockOrder* - method *deleteSkuItemsFromRestockOrder***
@@ -866,7 +866,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V | deleteSkuItemsFromRestockOrder(1,2);deleteSkuItemsFromRestockOrder(1); |Remove SkuItem from Restock Order:Delete SKUItems from an order|
+|   t  |V | deleteSkuItemsFromRestockOrder(1,2); deleteSkuItemsFromRestockOrder(1); |Remove SkuItem from Restock Order:Delete SKUItems from an order|
 |   f  |V | deleteSkuItemsFromRestockOrder(id); |Remove SkuItem from Restock Order:Delete SKUItems from an empty order|
 
 ### **Class *RestockOrder* - method *getRestockOrderFailedSKUItems***
@@ -896,7 +896,7 @@ Version:
 
 |   E  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V | addSkuItemsFromRestockOrder(1,2);createNewTestResult({ 'id': 1, 'date': '19/11/2000', 'result': 0, 'idTestDescriptor': '19', 'rfid': '1' });getRestockOrderFailedSKUItems(1);| get Restock Order Failed SKUItems:get failed SKU items from an order that has at least 1|
+|   t  |V | addSkuItemsFromRestockOrder(1,2); createNewTestResult({ 'id': 1, 'date': '19/11/2000', 'result': 0, 'idTestDescriptor': '19', 'rfid': '1' }); getRestockOrderFailedSKUItems(1);| get Restock Order Failed SKUItems:get failed SKU items from an order that has at least 1|
 |   f  |V |getRestockOrderFailedSKUItems(id); |get Restock Order Failed SKUItems:get failed SKU items from an order that has none|
 
 ### **Class *ReturnOrder* - method *createNewReturnOrder***
@@ -926,8 +926,8 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);getReturnOrderById(1) |Create new Return Orders:Create a new return Order|
-|   f  |I | createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 1);|Create new Return Orders:Fail creating a 2nd return Order, same ID|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1); getReturnOrderById(1) |Create new Return Orders:Create a new return Order|
+|   f  |I | createNewReturnOrder('19/11/2020', 1, 1); createNewReturnOrder('19/11/2020', 1, 1);|Create new Return Orders:Fail creating a 2nd return Order, same ID|
 |   invalid |I | createNewReturnOrder('19/11/2020', 1, 'a');|Create new Return Orders:Fail creating a return Order, invalid ID|
 
 ### **Class *ReturnOrder* - method *getReturnOrders***
@@ -957,7 +957,7 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 2);getReturnOrders(); |Create new Return Orders:Create 2 new return Orders|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1); createNewReturnOrder('19/11/2020', 1, 2); getReturnOrders(); |Create new Return Orders:Create 2 new return Orders|
 |   f  |V | getReturnOrders()|Create new Return Orders:no return orders in the list|
 
 
@@ -988,7 +988,7 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 2);getLastReturnOrderId(); |get last Return OrderID:retrive last ReturnOrderID with non empty table|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1); createNewReturnOrder('19/11/2020', 1, 2); getLastReturnOrderId(); |get last Return OrderID:retrive last ReturnOrderID with non empty table|
 |   f  |V | getLastReturnOrderId()|get last Return OrderID:retrive last ReturnOrderID with empty table|
 
 ### **Class *ReturnOrder* - method *getReturnOrderById***
@@ -1018,7 +1018,7 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('19/11/2020', 1, 1);createNewReturnOrder('19/11/2020', 1, 2);getReturnOrderById(1); |get all return Orders:get each Return Order by its ID|
+|   t  |V |createNewReturnOrder('19/11/2020', 1, 1); createNewReturnOrder('19/11/2020', 1, 2); getReturnOrderById(1); |get all return Orders:get each Return Order by its ID|
 |   f  |I | getReturnOrderById(4)|get all return Orders:fail to retrive a non existing order|
 
 ### **Class *ReturnOrder* - method *getReturnOrderProducts***
@@ -1048,7 +1048,7 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); getReturnOrderProducts(1); |ReturnOrder Products:get return order products|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1); insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); getReturnOrderProducts(1); |ReturnOrder Products:get return order products|
 |   f  |I | getReturnOrderProducts(2)|ReturnOrder Products:get return order products when there are none|
 
 ### **Class *ReturnOrder* - method *insertProductInRO***
@@ -1078,8 +1078,8 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); |ReturnOrder Products:insert a product|
-|   f  |I |createNewReturnOrder('11/01/2022', 1, 1); insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);|ReturnOrder Products:fail to insert a repeated product|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1); insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); |ReturnOrder Products:insert a product|
+|   f  |I |createNewReturnOrder('11/01/2022', 1, 1); insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);|ReturnOrder Products:fail to insert a repeated product|
 
 ### **Class *ReturnOrder* - method *deleteReturnOrderProducts***
 
@@ -1108,7 +1108,7 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);deleteReturnOrderProducts(1);|ReturnOrder Products:delete a return order products|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1); insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1); deleteReturnOrderProducts(1);|ReturnOrder Products:delete a return order products|
 |   f  |I |deleteReturnOrderProducts(4);|delete a return order Product:delete a return Order that doesnt exist|
 
 ### **Class *ReturnOrder* - method *deleteReturnOrder***
@@ -1138,7 +1138,7 @@ Version:
 
 |   ID  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|   t  |V |createNewReturnOrder('11/01/2022', 1, 1);deleteReturnOrder(1); |delete a return order:delete a return order|
+|   t  |V |createNewReturnOrder('11/01/2022', 1, 1); deleteReturnOrder(1); |delete a return order:delete a return order|
 |   f  |I |deleteReturn(4);|delete a return order :delete a return Order that doesnt exist|
 
 ### **Class *Position* - method *createNewPosition***
@@ -1171,7 +1171,7 @@ Version:
 
 |   ID  | P | Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------    |-------                        |-------|
-|   t  | t |V | createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}) ;getPositionById(id)   | Create Positions: Create new Position, then get by Id     |
+|   t  | t |V | createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}); getPositionById(id)   | Create Positions: Create new Position, then get by Id     |
 ||f|I| createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV}); createNewPosition(position{id,aisle,row,col, maxW,maxV,oW,oV});     |   Create Positions:  Position creation error: PositionId duplicated  |
 |   f  | t |I |  createNewPosition(position{id=null,aisle,row,col, maxW,maxV,oW,oV})   |   Create Positions: Position creation error: null positionID   |
 ||f|I|      | Create Positions: Position creation error: null positionID     |
