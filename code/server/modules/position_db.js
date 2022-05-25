@@ -90,7 +90,7 @@ exports.deletePosition = (positionID) => {
     });
 }
 
-//delete an existing position, given its positionID
+// check if position is empty or not
 exports.searchPosition = (positionID) => {
     return new Promise((resolve, reject) => {
         const sql_query = "SELECT * FROM SKUs WHERE positionID=?";
@@ -103,4 +103,18 @@ exports.searchPosition = (positionID) => {
         });
     });
 }
+
+exports.deleteAllPositions = () => {
+    return new Promise((resolve, reject) => {
+        const sql_query = "DELETE FROM Positions";
+        db.run(sql_query, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(null);
+        });
+    });
+}
+
 /*********************************************/

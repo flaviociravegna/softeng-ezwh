@@ -3,16 +3,6 @@
 const bcrypt = require('bcrypt');
 const db = require('./DB');
 
-class User {
-    constructor(id, name, surname, username, type) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.username = username;
-        this.type = type;
-    }
-}
-
 exports.getUserInfo = (username, password) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM users WHERE username=?';
@@ -69,7 +59,6 @@ exports.getAllSuppliers = () => {
         const sql = 'SELECT users.userId, users.name, users.surname, users.username FROM users WHERE users.type == "supplier"';
         db.all(sql, [], (err, rows) => {
             if (err) {
-                console.log(err);
                 reject(err);
                 return;
             }
@@ -83,7 +72,6 @@ exports.createNewUser = (user) => {
         const sql_query = "INSERT INTO users(userId, username, name, surname, hash, type) VALUES(?,?,?,?,?,?)";
         db.run(sql_query, [user.id, user.username, user.name, user.surname, user.hash, user.type], (err, rows) => {
             if (err) {
-                console.log(err);
                 reject(err);
                 return;
             }
@@ -98,7 +86,6 @@ exports.searchMaxID = () => {
         const sql_query = "SELECT userId AS max_id FROM users ORDER BY userId DESC LIMIT 1";
         db.all(sql_query, [], (err, rows) => {
             if (err) {
-
                 reject(err);
                 return;
             }
@@ -161,3 +148,16 @@ exports.getSupplierById = (id) => {
         });
     });
 };
+
+exports.deleteAllTestUser = () => {
+    return new Promise((resolve, reject) => {
+        const sql_query = "DELETE FROM users WHERE users.userId>6";
+        db.run(sql_query, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(null);
+        });
+    });
+}

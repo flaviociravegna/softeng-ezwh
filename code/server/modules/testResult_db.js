@@ -2,16 +2,6 @@
 
 const db = require('./DB');
 
-class TestResult {
-    constructor(id, date, result, idTestDescriptor, RFID) {
-        this.id = id;
-        this.date = date;
-        this.result = result;
-        this.idTestDescriptor = idTestDescriptor;
-        this.RFID = RFID;
-    }
-}
-
 exports.getAllTestResultByRFID = (rfid) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM testResults WHERE RFID = ?';
@@ -71,7 +61,6 @@ exports.modifyTestResult = (id, newIdTestDescriptor, newResult, newDate) => {
         const sql_query = "UPDATE TestResults SET idTestDescriptor=?, result=?, date=? WHERE id=?";
         db.run(sql_query, [newIdTestDescriptor, newResult, newDate, id], (err, rows) => {
             if (err) {
-                console.log(err);
                 reject(err);
                 return;
             }
@@ -84,6 +73,19 @@ exports.deleteTestResult = (rfid, id) => {
     return new Promise((resolve, reject) => {
         const sql_query = "DELETE FROM testResults WHERE RFID=? AND id=?";
         db.run(sql_query, [rfid, id], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(null);
+        });
+    });
+}
+
+exports.deleteAllTestResults = () => {
+    return new Promise((resolve, reject) => {
+        const sql_query = "DELETE FROM testResults";
+        db.run(sql_query, [], (err, rows) => {
             if (err) {
                 reject(err);
                 return;
