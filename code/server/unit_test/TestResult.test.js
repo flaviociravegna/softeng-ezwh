@@ -2,7 +2,7 @@ const TEST_DAO = require("../modules/testResult_db");
 
 describe("Create new Test Result", () => {
     beforeEach(async () => {
-        await TEST_DAO.deleteAllTestResults();
+       await TEST_DAO.deleteAllTestResults();
     });
 
     afterEach(async () => {
@@ -19,7 +19,7 @@ describe("Create new Test Result", () => {
         await expect(TEST_DAO.getTestResultById("12345678901112345678123458612343", 1)).resolves.toEqual({ id: 1, date: "2022/20/11", result: 1, idTestDescriptor: 2, RFID: "12345678901112345678123458612343"});
     });
 
-    test("Create new Test Result: ID DUPLICATED", async () => {
+   test("Create new Test Result: ID DUPLICATED", async () => {
         let testResult = { id: "1", date: "2022/20/11", result: true, idTestDescriptor: 2, rfid: "12345678901112345678123458612343"};
         await expect(TEST_DAO.createNewTestResult(testResult)).resolves.toEqual(null);
         await expect(TEST_DAO.createNewTestResult(testResult)).rejects.toThrow();

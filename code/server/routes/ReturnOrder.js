@@ -74,7 +74,7 @@ router.post('/', [
 
         //check if SKUItem exists in Restock Order
         for (let SKUItem of req.body.products) {
-            const sku = await returnOrder_DAO.getRFIDFromRestockOrder(SKUItem.RFID, req.body.restockOrderId);
+            const sku = await restockOrder_DAO.getRFIDFromRestockOrder(SKUItem.RFID, req.body.restockOrderId);
             if (sku.error)
                 return res.status(422).send("RFID " + SKUItem.RFID + " not found in restock Order" + req.body.restockOrderId);
         }
