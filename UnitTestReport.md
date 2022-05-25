@@ -395,6 +395,523 @@ Version:
 | | V|  createNewUser(id:7,type: supplier);getAllUsersExceptManagers();|Get all users:Get Users except managers|
 
 
+### **Class *RestockOrder* - method *getRestockOrderById***
+
+**Criteria for method *getRestockOrderById*:**
+ -  Id exist in DB - ID
+
+**Predicates for method *getRestockOrderById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    ID      |     t      |
+|          |      f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|  ID    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|    t   |   V    |  createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1);getRestockOrders()     | Create and get new RestockOrders: Create new RestockOreders    |
+|    f   |   I    |   getRestockOrderById(4)   |   Create and get new RestockOrders:fail to get a non existing Order  |
+
+### **Class *RestockOrder* - method *createRestockOrder***
+
+**Criteria for method *createRestockOrder*:**
+ -  Id is unique - ID
+
+**Predicates for method *createRestockOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    id      |     t      |
+|          |      f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|  ID    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|    t   |   V    |   createRestockOrder(date:d,supplierId:1id:1); getRestockOrderById(1);getRestockOrders()    | Create and get new RestockOrders: Create new RestockOreders,
+ Create and get new RestockOrders: Create 2 restock orders    |
+|    f   |   I   |   createRestockOrder(date:d1,supplierId:1 id:1);
+createRestockOrder(date:d2,supplierId:1 id:1)    |     Create and get new RestockOrders:Insert a restock Order With the same Id  |
+
+
+
+### **Class *RestockOrder* - method *getLastIdRso***
+
+**Criteria for method *getLastIdRso*:**
+ - list is not empty - E
+
+**Predicates for method *getLastIdRso*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     E     |    t        |
+|          |     f      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| t |V|createRestockOrder('19/11/1999', 1, 1);
+createRestockOrder('19/11/1999', 2, 2);
+getLastIdRsO()| get Last Restock Order ID:get last restock Order ID|
+| f |V| deleteAllRestockOrders(); 
+getLastIdRsO()| get Last Restock Order ID:get last restock Order ID when list empty|
+
+
+### **Class *RestockOrder* - method *insertProductInOrder***
+
+**Criteria for method *insertProductInOrder*:**
+ - Id is unique - ID
+
+**Predicates for method *insertProductInOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     ID     |    t        |
+|          |     f      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| t |v|insertProductInOrder(id:1,restockOrderId:1);getRestockOrderProducts(id:1) |'RestockOrder Products:Insert a new product|
+| f |i|insertProductInOrder(id:1,restockOrderId:1);insertProductInOrder(id:1,restockOrderId:2); |'RestockOrder Products:Fail to insert 2nd product|
+
+### **Class *RestockOrder* - method *getRestockOrderProducts***
+
+**Criteria for method *getRestockOrderProducts*:**
+ -
+
+**Predicates for method *getRestockOrderProducts*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |            |
+|          |           |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|     |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|  |v| |'RestockOrder Products:Insert a new product|
+
+
+
+### **Class *RestockOrder* - method *getSKUByIdFromRestockOrder***
+
+**Criteria for method *getSKUByIdFromRestockOrder*:**
+ - Produc exists - P
+ - SKUID exists and is correct - S
+ - wrong Order type - T
+ - 
+
+**Predicates for method *getSKUByIdFromRestockOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    P  |    t       |
+|       |    f     |
+|    S  | Exist & correct    (EC)    |
+|       | Exists But incorrect  (EI)    |
+|       | Doesn't exist (NE)|
+|   T   | t|
+|       | f|
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| P    |   S   |   T   |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|-------|
+| t  |  EC    |    t   |   v  |   insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:1, restockId:1)   |     get SKU by ID:get SKU by ID          |
+|    |        |    f   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:1, restockId)    |   get SKU by ID:get SKU by ID when theres a wrong OrderID
+get SKU by ID:get SKU by ID when theres a wrong  type OrderID            |
+|    |  EI    |    t   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:2, restockId:1)    |   get SKU by ID:            |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres a wrong OrderID
+get SKU by ID:get SKU by ID when theres a wrong  type OrderID:get SKU by ID when theres a wrong SKUID          |
+|    |  NE    |    t   |   i  |  insertProductInOrder(id:1, restockId:1, skuId:1, qty:10); getSKUIdFromRestockOrder(skuID:a, restockId:1)    |   get SKU by ID: get SKU by ID when theres a wrong  type SKUID           |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres a wrong OrderID
+get SKU by ID:get SKU by ID when theres a wrong  type OrderID            |
+| t  |  EC    |    t   |   i  |  getSKUIdFromRestockOrder(skuID:1, restockId:1)    |   get SKU by ID:get SKU by ID when theres no product           |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres no product            |
+|    |  EI    |    t   |   i  |      |   get SKU by ID:get SKU by ID when theres no product            |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres no product           |
+|    |  NE    |    t   |   i  |      |   get SKU by ID:get SKU by ID when theres no product            |
+|    |        |    f   |   i  |      |   get SKU by ID:get SKU by ID when theres no product           |
+
+
+### **Class *RestockOrder* - method *deleteRestockOrder***
+
+**Criteria for method *deleteRestockOrder*:**
+ -Order Exists E
+
+**Predicates for method *deleteRestockOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  E        |   t        |
+|          |     f      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| t |v| createRestockOrder(id:1); deleteRestockOrder(id:1); getRestockOrders();|delete a Restock order by ID:delete a restockOrder|
+| f |i| deleteRestockOrder(id:) |elete a Restock order by ID:try to delete a restockOrder that doesnt exist|
+
+### **Class *RestockOrder* - method *addRestockOrderSKUItems***
+
+**Criteria for method *addRestockOrderSKUItems*:**
+ -Id is unique ID
+
+**Predicates for method *addRestockOrderSKUItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    ID      |     t      |
+|          |        f   |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |  addRestockOrderSKUItems(id,restockId) |SKU Items of RestockOrder:Insert SKUItems to restockOrder|
+|   f  |I |  addRestockOrderSKUItems(id:1,restockId:1);addRestockOrderSKUItems(id:1,restockId:1) |SKU Items of RestockOrder:Insert 2 times the same SKUItem|
+
+### **Class *RestockOrder* - method *addrestockOrderTransportNote***
+
+**Criteria for method *addrestockOrderTransportNote*:**
+ -transport note is not empty E
+
+**Predicates for method *addrestockOrderTransportNote*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t      |
+|          |     f   |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |  addRestockOrderTransportNote(id,transportNote) |Add and get Transport Note:Add transport note|
+|   f  |I |  addRestockOrderTransportNote(id,null)) |Add and get Transport Note:empty|
+
+
+### **Class *RestockOrder* - method *modifyRestockOrderState***
+
+**Criteria for method *modifyRestockOrderState*:**
+ -restock order exists E
+
+**Predicates for method *modifyRestockOrderState*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t      |
+|          |     f   |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |  createRestockOrder(id:1);modifyRestockOrderState(id:1,'NewState'); |'Modify RestockOrders State:Modify Restock Order State to DELIVERED|
+|   f  |I |  modifyRestockOrderState(id:4,'NewState'); |'Modify RestockOrders State:Modify Restock Order State of a non existing order|
+
+### **Class *RestockOrder* - method *getRestockOrdersIssued***
+
+**Criteria for method *getRestockOrdersIssued*:**
+ -restock orders with issued state exist E
+
+**Predicates for method *getRestockOrdersIssued*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t      |
+|          |     f   |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V |  createRestockOrder(id:1);getRestockOrdersIssued(); |'get ISSUED restock Orders:get all ISSUED restock Orders|
+|   f  |I | getRestockOrdersIssued(); |'get ISSUED restock Orders:get all ISSUED restock Orders when there are none|
+
+
+### **Class *RestockOrder* - method *getLastPIDInOrder***
+
+**Criteria for method *getLastPIDInOrder*:**
+ -there exists at least 1 product in that order E
+
+**Predicates for method *getLastPIDInOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V | insertProductInOrder(1, 1, 1234, 10);getLastPIDInOrder(); |'get last Product Id in Restock Order:get last item ID from an order|
+|   f  |V | getLastPIDInOrder(); |'get last Product Id in Restock Order:get last item ID from empty order|
+
+### **Class *RestockOrder* - method *deleteProductsFromRestockOrder***
+
+**Criteria for method *deleteProductsFromRestockOrder*:**
+ -there exists at least 1 product in that order E
+
+**Predicates for method *deleteProductsFromRestockOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V | insertProductInOrder(1, 1, 1234, 10);deleteProductsFromRestockOrder(); |Delete products from RestockOrder:Delete a product from an order|
+|   f  |V | deleteProductsFromRestockOrder(); |'Delete products from RestockOrder:Delete a product from an empty order|
+
+### **Class *RestockOrder* - method *deleteRestockOrderTransportNote***
+
+**Criteria for method *deleteRestockOrderTransportNote*:**
+ -there exists a transport note in that order - E
+
+**Predicates for method *deleteRestockOrderTransportNote*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V | addRestockOrderTransportNote(1,transportNote);deleteRestockOrderTransportNote(1); |Delete products from RestockOrder|
+|   f  |V | deleteRestockOrderTransportNote(id); |Delete products from RestockOrder|
+
+### **Class *RestockOrder* - method *deleteSkuItemsFromRestockOrder***
+
+**Criteria for method *deleteSkuItemsFromRestockOrder*:**
+ -there exists a skuItem in that order - E
+
+**Predicates for method *deleteSkuItemsFromRestockOrder*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V | deleteSkuItemsFromRestockOrder(1,2);deleteSkuItemsFromRestockOrder(1); |Remove SkuItem from Restock Order:Delete SKUItems from an order|
+|   f  |V | deleteSkuItemsFromRestockOrder(id); |Remove SkuItem from Restock Order:Delete SKUItems from an empty order|
+
+### **Class *RestockOrder* - method *getRestockOrderFailedSKUItems***
+
+**Criteria for method *getRestockOrderFailedSKUItems*:**
+ -there exists at least 1 failed skuItem in that order - E
+
+**Predicates for method *getRestockOrderFailedSKUItems*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E      |     t     |
+|          |     f     |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|   E  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|   t  |V | addSkuItemsFromRestockOrder(1,2);
+createNewTestResult({ 'id': 1, 'date': '19/11/2000', 'result': 0, 'idTestDescriptor': '19', 'rfid': '1' });
+getRestockOrderFailedSKUItems(1); |get Restock Order Failed SKUItems:get failed SKU items from an order that has at least 1|
+|   f  |V |getRestockOrderFailedSKUItems(id); |get Restock Order Failed SKUItems:get failed SKU items from an order that has none|
+
+
+
+
 # White Box Unit Tests
 
 ### Test cases definition
