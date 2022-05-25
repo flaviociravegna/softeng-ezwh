@@ -20,10 +20,6 @@ class InternalOrdersSKUItem {
         this.RFID = RFID;
         this.internalOrderID = internalOrderID;
     }
-    check(skuID) {
-        if (skuID == this.skuID) return false;
-        else return true;
-    }
 }
 
 // Internal Orders
