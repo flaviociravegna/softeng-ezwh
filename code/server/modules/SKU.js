@@ -46,7 +46,6 @@ exports.getSKUIdByPosition = (positionID) => {
 }
 
 exports.getAllSKU = () => {
-    console.log(db);
     return new Promise((resolve, reject) => {
         db.all('SELECT * FROM SKUs', [], (err, rows) => {
             if (err) {
