@@ -2285,6 +2285,213 @@ createNewSKUItem(12341234,1,'19/11/1999',1); |  creating a New SKU item:create a
 |    t     |V     |  DecreaseSKUavailableQuantity(id); | Decrease SKU.availableQuantity  |
 |    f     |I     |   |  |
 
+**TestResult* - method *createNewTestResult***
+
+**Criteria for method *createNewTestResult*:**
+ - ID is unique an there are no missing params - ID
+
+
+
+**Predicates for method *createNewTestResult*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    ID     |     t     |
+|          |      f   |
+|          |      missing.param   |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|    t     |V     | createNewTestResult({ id: "1", date: "2022/20/11", result: true, idTestDescriptor: 2, rfid: "12345678901112345678123458612343"}); | Create new Test Result  |
+|    f     |I     | createNewTestResult({ id: "1", date: "2022/20/11", result: true, idTestDescriptor: 2, rfid: "12345678901112345678123458612343"}); createNewTestResult({ id: "1", date: "2022/20/11", result: true, idTestDescriptor: 2, rfid: "12345678901112345678123458612343"})  | Create new Test Result: ID DUPLICATED |
+|    missing.param     |I     | createNewTestResult({ date: "2022/20/11", result: true, idTestDescriptor: 2, rfid: "12345678901112345678123458612343"}); | Create new Test Result: missing parametes |
+
+
+**TestResult* - method *modifyTestResult***
+
+**Criteria for method *modifyTestResult*:**
+ - 
+
+
+
+**Predicates for method *modifyTestResult*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|        |          |
+|        |         |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|  |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|        |V     | modifyTestResult(1, 3, false, "2022/20/11"); | Modify Test Result  |
+
+
+**TestResult* - method *getAllTestResultByRFID***
+
+**Criteria for method *getAllTestResultByRFID*:**
+ - rfid exists in DB - E
+
+
+
+**Predicates for method *getAllTestResultByRFID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|        |       f  |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|    t    |V     | getAllTestResultByRFID('rfid'); | Get Test Result by RFID  |
+|    f    |V     | getAllTestResultByRFID('rfid'); | Get Test Result by RFID: RFID not found |
+
+
+**TestResult* - method *getTestResultById***
+
+**Criteria for method *getTestResultById*:**
+ - rfid exists in DB - E
+
+
+
+**Predicates for method *getTestResultById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|        |       f  |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t     |V     | getAllTestResultByRFID('rfid'); | Get Test Result by RFID and Id  |
+|    f    |V     | getAllTestResultByRFID('rfid'); | Get Test Result by RFID and Id: RFID not found |
+
+
+**TestResult* - method *searchMaxID***
+
+**Criteria for method *searchMaxID*:**
+ - there exists an in DB - E
+
+
+
+**Predicates for method *searchMaxID*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|        |       f  |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t     |V     | searchMaxID(); | "Get max Id of the table"  |
+|    f    |V     |  |"Get max Id of the table" |
+
+
+**TestResult* - method *deleteTestResult***
+
+**Criteria for method *deleteTestResult*:**
+ - there exists an in DB - E
+
+
+
+**Predicates for method *deleteTestResult*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|        |       f  |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t     |V    | deleteTestResult("12345678901112345678123458612343", 1)| Delete test result by rfid and id  |
+|    f    |V    |  |Delete test result by rfid and id |
+
+
+
+
+
 # White Box Unit Tests
 
 ### Test cases definition
