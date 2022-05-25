@@ -55,10 +55,52 @@ describe('API Test: User', () => {
         createNewUser(201, { "username": "testUser@testing.it", "name": "Test", "surname": "Test", "password": "testpassword", "type": "deliveryEmployee" });
     });
 
-    describe('POST /api/customerSessions (customer Login)', function () {
-        customerLogin(200, "testUser@testing.it",  "testpassword",  {"username": "testUser@testing.it", "name": "Test" });
+    describe('POST /api/managerSessions (manager Login)', function () {
+        doLogin(200, "manager1@ezwh.com",  "testpassword",  {"username": "manager1@ezwh.com", "name": "foo" });
         //wrong password
-        customerLogin(401, "testUser@testing.it",  "wrongpassword");
+        doLogin(401, "manager1@ezwh.com",  "wrongpassword");
+        //wrong username
+        doLogin(401, "wrong@username.com",  "testpassword");
+    });
+
+    describe('POST /api/customerSessions (customer Login)', function () {
+        doLogin(200, "user1@ezwh.com",  "testpassword",  {"username": "user1@ezwh.comt", "name": "foo" });
+        //wrong password
+        doLogin(401, "user1@ezwh.com",  "wrongpassword");
+        //wrong username
+        doLogin(401, "wrong@username.com",  "testpassword");
+    });
+
+    describe('POST /api/supplierSessions (supplier Login)', function () {
+        doLogin(200, "supplier1@ezwh.com",  "testpassword",  {"username": "supplier1@ezwh.com", "name": "foo" });
+        //wrong password
+        doLogin(401, "supplier1@ezwh.com",  "wrongpassword");
+        //wrong username
+        doLogin(401, "wrong@username.com",  "testpassword");
+    });
+
+    describe('POST /api/clerkSessions (clerk Login)', function () {
+        doLogin(200, "clerk1@ezwh.com",  "testpassword",  {"username": "clerk1@ezwh.com", "name": "foo" });
+        //wrong password
+        doLogin(401, "clerk1@ezwh.com",  "wrongpassword");
+        //wrong username
+        doLogin(401, "wrong@username.com",  "testpassword");
+    });
+
+    describe('POST /api/qualityEmployeeSessions (quality Employee Login)', function () {
+        doLogin(200, "qualityEmployee1@ezwh.com",  "testpassword",  {"username": "qualityEmployee1@ezwh.com", "name": "foo" });
+        //wrong password
+        doLogin(401, "qualityEmployee1@ezwh.com",  "wrongpassword");
+        //wrong username
+        doLogin(401, "wrong@username.com",  "testpassword");
+    });
+
+    describe('POST /api/deliveryEmployeeSessions (delivery Employee Login)', function () {
+        doLogin(200, "deliveryEmployee1@ezwh.com",  "testpassword",  {"username": "deliveryEmployee1@ezwh.com", "name": "foo" });
+        //wrong password
+        doLogin(401, "deliveryEmployee1@ezwh.com",  "wrongpassword");
+        //wrong username
+        doLogin(401, "wrong@username.com",  "testpassword");
     });
 
     /*describe('POST /api/logout', function () {
@@ -156,8 +198,8 @@ function deleteUser(expectedHTTPStatus, username, type) {
     });
 }
 
-function customerLogin(expectedHTTPStatus, username, password, expectedUser) {
-    it('Login customer', function (done) {
+function doLogin(expectedHTTPStatus, username, password, expectedUser) {
+    it('Login user', function (done) {
         if(username !== undefined ) {
             let user = { username: username, password: password }
             agent.post('/api/customerSessions')
