@@ -24,17 +24,11 @@ Version:
 
  ### **Class *class_name* - method *name***
 
-
-
 **Criteria for method *name*:**
 	
 
  - 
  - 
-
-
-
-
 
 **Predicates for method *name*:**
 
@@ -44,9 +38,6 @@ Version:
 |          |           |
 |          |           |
 |          |           |
-
-
-
 
 
 **Boundaries**:
@@ -69,6 +60,284 @@ Version:
 |||||||
 |||||||
 
+ ### **User* - method *getUserInfo***
+
+**Criteria for method *getUserInfo*:**
+ - type of input: string, string  
+ - correct username U
+ - correct password P
+
+**Predicates for method *getUserInfo*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|  U       |   U == true      |
+|          |   U == false       |
+|   P       |  P == true        |
+|          |    P ==false       |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| U | P | Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|true   | true  |    V  |       |     | Get User Info (login):Login: correct username and password"   |
+|       | false |    V  |       |       |   Get User Info (login):Login: incorrect username   |
+|false  | true  |    V  |       |       |   Get User Info (login):Login: incorrect password)   |
+|       | false  |    I  |       |      |    Get User Info (login):Login: incorrect username      |
+
+ ### **Class *User* - method *createNewUser***
+
+**Criteria for method *createNewUser*:**
+ - type of input: object<user{id int, username string, name string,surname string,hashpassword string,type string}>
+ - ID ID 
+ - otherUserValues V
+
+**Predicates for method *createNewUser*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     ID     |    unique (u)    |
+|          |     not unique (nu)      |
+|    V      |      filled     |
+|          |     missing      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID    | V     |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   unique    |   filled    |        V          |getMaxUserId()=6; createNewUser({ID,V});|   Create new User:Create new User, then get by Id|
+|       |  missing          |        I              |                                  |   Create new User:Create new User: missing values|
+|   not unique    |   filled    |        I          |                                   |   Create new User: Create new User: duplicated id|
+|            |  missing    |        I         |                                   |   Create new User: Create new User: duplicated id |
+|   wrong format    |   filled    |        I        |                                   |   Create new User:Create new User: missing values|
+|       |  missing          |        I         |                                        |   Create new User:Create new User: missing values|
+
+### **Class *User* - method *getUserInfoById***
+
+**Criteria for method *getUserInfoById*:**
+ - type of input: int
+ -  ID is int ID1
+- ID exists in DB ID2
+**Predicates for method *getUserInfoById*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     ID1     |      is int    |
+|          |     not int      |
+|     ID2     |      exist     |
+|          |     doesn't exist      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| ID1    | ID2    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   is int    |   exists    |        V          |getUserInfo(6)|   T1(6)|
+|       |  doesnt exist          |        V              |     |   T1(7)|
+|   not int    |   exists   |        I          |                                   |   T1('a')|
+|            |  doesnt exist    |        I         |                                   |   T1('a')|
+
+
+### **Class *User* - method *getUserByUsernameAndType***
+
+**Criteria for method *getUserByUsernameAndType*:**
+ - type of input: string,string
+ -  username exists in DB U
+ - Type corresponds to username T
+
+**Predicates for method *getUserByUsernameAndType*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|     U    |      exist     |
+|          |     doesn't exist      |
+|    T    |     true     |
+|          |     false      |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| U    | T    |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|-------|
+|   exists    |   true   |        V          |getUserByUsernameAndType('user','type')|    |
+|       |  false          |        V         |           |   T1("PaulRed@email.it","customer"),
+T1("PaulRed@email.it",null),
+T1("PaulRed@email.it","NonExistingType")|
+|   doesn't exist    |   true   |        I          |                                   | T1("FakeUser","supplier")
+T1(null,"irrelevant") |
+|            |  false    |        I         |                                   |  T1("FakeUser","NonExistingType"),
+T1("FakeUser",null)|
+
+### **Class *User* - method *getUserBysupplierId***
+
+**Criteria for method *getUserBysupplierId*:**
+ - type of input: int
+ - supplierID exists in DB S
+ - 
+
+**Predicates for method *name*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    S   |      exist     |
+|          |     doesn't exist      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| s      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| exists        |   V    |    createNewUser({id,username,name,surname, hash,type})  | T1(6)      |
+| doesn't exists|   V    |       |  T1(-1)
+T1(null),
+T1('a')      |
+
+### **Class *User* - method *searchMaxID***
+
+**Criteria for method *searchMaxID*:**
+ -  there exists an ID in DB - ID
+ - 
+
+**Predicates for method *name*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    ID   |      t     |
+|          |     f      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|    ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|t | V|createNewUser({id=7});searchMaxID();| |
+|f | V|searchMaxID(); ||
+
+
+### **Class *User* - method *deleteUser***
+
+**Criteria for method *deleteUser*:**
+ -  there exists an user in DB - U
+ - 
+
+**Predicates for method *name*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    U   |      t     |
+|          |     f      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|    U  |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+|t | V|createNewUser({id=6});deleteUser(ID)| Delete User: Delete user by username and type |
+|f | V| | Delete User: Delete user by username and type|
+
+### **Class *User* - method *modifyUserRights***
+
+**Criteria for method *modifyUserRights*:**
+ - 
+ - 
+
+**Predicates for method *name*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    U   |      t     |
+|          |     f      |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| | V|createNewUser({id=6,username:"PaulRed@email.it", type:"supplier"}); modifyUserRights("PaulRed@email.it","supplier","newRights")| Modify user: ModifyUser rights |
 
 
 
