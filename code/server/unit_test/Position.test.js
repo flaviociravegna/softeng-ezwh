@@ -134,3 +134,23 @@ describe("Delete Position by Id", () => {
     });
 
 });
+
+describe("Update Position", () => {
+    beforeEach(async () => {
+        await Position_DAO.deleteAllPositions();
+        await Position_DAO.createNewPosition({positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+    });
+
+    afterEach(async () => {
+        await Position_DAO.deleteAllPositions();
+    });
+
+    test("Update Position by Id", async () => {
+        await expect(Position_DAO.updatePositionWeightAndVolume("800090007000", 10, 10)).resolves.toEqual(null);
+    });
+
+    test("Update Position by Id: position not found", async () => {
+        await expect(Position_DAO.updatePositionWeightAndVolume("8", 10, 10)).resolves.toEqual(null);
+    });
+
+});

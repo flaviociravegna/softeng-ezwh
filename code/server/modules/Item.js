@@ -74,3 +74,14 @@ exports.deleteItemsByID = (id) => {
         });
     });
 }
+
+exports.deleteAllItems = () => {
+    return new Promise(async (resolve, reject) => {
+        db.run("DELETE FROM Items", [], function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve(null);
+        });
+    });
+}

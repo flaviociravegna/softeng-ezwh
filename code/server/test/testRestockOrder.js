@@ -28,32 +28,32 @@ let restockOrder1_issued = {
     "id": 1,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 2
+    "supplierId": 7
 };
 
 let restockOrder2_issued = {
     "id": 2,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 2
+    "supplierId": 7
 };
 
 let restockOrder3_delivery = {
     "id": 3,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 2
+    "supplierId": 7
 };
 
 let restockOrder4_delivered = {
     "id": 4,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 2
+    "supplierId": 7
 };
 
 const supplier1 = {
-    "username": "supplier1@ezwh.com",
+    "username": "supplier2@ezwh.com",
     "name": "Michael",
     "surname": "Jordan",
     "password": "testpassword",
@@ -61,7 +61,7 @@ const supplier1 = {
 };
 
 const supplier2 = {
-    "username": "supplier2@ezwh.com",
+    "username": "supplier3@ezwh.com",
     "name": "Pippo",
     "surname": "Pluto",
     "password": "testpassword",
