@@ -165,10 +165,10 @@ Version:
 
 | ID1    | ID2    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|
-|   is int    |   exists    |        V          |getUserInfo(6)|   T1(6)|
-|       |  doesnt exist          |        V              |     |   T1(7)|
-|   not int    |   exists   |        I          |                                   |   T1('a')|
-|            |  doesnt exist    |        I         |                                   |   T1('a')|
+|   is int    |   exists    |        V          |getUserInfoById()|   Get User By:Get User By: Id|
+|       |  doesnt exist          |        V              |getUserInfoById()     |   Get User ByGet User: user not found|
+|   not int    |   exists   |        I          |                                   |  Get User ByGet User: user not found|
+|            |  doesnt exist    |        I         |                                   |   Get User ByGet User: user not found|
 
 
 ### **Class *User* - method *getUserByUsernameAndType***
@@ -203,14 +203,10 @@ Version:
 
 | U    | T    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|-------|
-|   exists    |   true   |        V          |getUserByUsernameAndType('user','type')|    |
-|       |  false          |        V         |           |   T1("PaulRed@email.it","customer"),
-T1("PaulRed@email.it",null),
-T1("PaulRed@email.it","NonExistingType")|
-|   doesn't exist    |   true   |        I          |                                   | T1("FakeUser","supplier")
-T1(null,"irrelevant") |
-|            |  false    |        I         |                                   |  T1("FakeUser","NonExistingType"),
-T1("FakeUser",null)|
+|   exists    |   true   |        V          |getUserByUsernameAndType('user','type')| Get User By: Username and type   |
+|       |  false          |        V         |getUserByUsernameAndType('user','type')           | Get User By: Username and type not found |
+|   doesn't exist    |   true   |        I          |                                   |Get User By: Username and type not found |
+|            |  false    |        I         |                                   | Get User By: Username and type not found |
 
 ### **Class *User* - method *getUserBysupplierId***
 
@@ -219,7 +215,7 @@ T1("FakeUser",null)|
  - supplierID exists in DB S
  - 
 
-**Predicates for method *name*:**
+**Predicates for method *getUserBysupplierId*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -241,23 +237,21 @@ T1("FakeUser",null)|
 
 | s      |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| exists        |   V    |    createNewUser({id,username,name,surname, hash,type})  | T1(6)      |
-| doesn't exists|   V    |       |  T1(-1)
-T1(null),
-T1('a')      |
+| exists        |   V    |    getSupplierById(id)  |  Get User By: supplier id    |
+| doesn't exists|   V    |   getSupplierById(id)   |  Get User By: supplier id not found |
 
 ### **Class *User* - method *searchMaxID***
 
 **Criteria for method *searchMaxID*:**
- -  there exists an ID in DB - ID
+ - 
  - 
 
-**Predicates for method *name*:**
+**Predicates for method *searchMaxID*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
-|    ID   |      t     |
-|          |     f      |
+|       |           |
+|          |           |
 
 
 **Boundaries**:
@@ -272,10 +266,10 @@ T1('a')      |
 **Combination of predicates**:
 
 
-|    ID  |  Valid / Invalid | Description of the test case | Jest test case |
+|    |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|t | V|createNewUser({id=7});searchMaxID();| |
-|f | V|searchMaxID(); ||
+| | V|createNewUser({id=7});searchMaxID();| Search Max Id: Get max Id of the table|
+
 
 
 ### **Class *User* - method *deleteUser***
@@ -284,7 +278,7 @@ T1('a')      |
  -  there exists an user in DB - U
  - 
 
-**Predicates for method *name*:**
+**Predicates for method *deleteUser*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
@@ -306,8 +300,8 @@ T1('a')      |
 
 |    U  |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-|t | V|createNewUser({id=6});deleteUser(ID)| Delete User: Delete user by username and type |
-|f | V| | Delete User: Delete user by username and type|
+|t | V|createNewUser({id=6});deleteUser(Id:6)| Delete User: Delete user by username and type |
+|f | V| deleteUser(Id:6)| Delete User: Delete user by username and type|
 
 ### **Class *User* - method *modifyUserRights***
 
@@ -315,12 +309,12 @@ T1('a')      |
  - 
  - 
 
-**Predicates for method *name*:**
+**Predicates for method *modifyUserRights*:**
 
 | Criteria | Predicate |
 | -------- | --------- |
-|    U   |      t     |
-|          |     f      |
+|          |           |
+|          |           |
 
 
 **Boundaries**:
@@ -337,8 +331,68 @@ T1('a')      |
 
 |      |  Valid / Invalid | Description of the test case | Jest test case |
 |-------|-------|-------|-------|
-| | V|createNewUser({id=6,username:"PaulRed@email.it", type:"supplier"}); modifyUserRights("PaulRed@email.it","supplier","newRights")| Modify user: ModifyUser rights |
+| | V|createNewUser({id=6,username:"PaulRed@email.it", type:"supplier"}); modifyUserRights("PaulRed@email.it","supplier","newRights");| Modify user: ModifyUser rights |
 
+
+### **Class *User* - method *getAllsuppliers***
+
+**Criteria for method *getAllsuppliers*:**
+ - 
+ - 
+
+**Predicates for method *getAllsuppliers*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |           |
+|          |           |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| | V|  createNewUser(id:7,type: supplier);getAllSuppliers();|Get all users:Get All suppliers|
+
+### **Class *User* - method *getAllUsersExceptManagers***
+
+**Criteria for method *getAllUsersExceptManagers*:**
+ - 
+ - 
+
+**Predicates for method *getAllUsersExceptManagers*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|          |           |
+|          |           |
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+|      |  Valid / Invalid | Description of the test case | Jest test case |
+|-------|-------|-------|-------|
+| | V|  createNewUser(id:7,type: supplier);getAllUsersExceptManagers();|Get all users:Get Users except managers|
 
 
 # White Box Unit Tests
