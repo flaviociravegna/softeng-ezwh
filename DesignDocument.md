@@ -43,46 +43,100 @@ G -[dashed,thickness=2]-> A
 @enduml
 
 ```
-This EzWh design model implements a layered architectural pattern. The base idea is the 3-tier architecture (presentation, application logic layer, data (DBMS) layer): the two lower tiers (application logic and data) are merged together, so the final architectural patter is a 2-tier. There are therefore two packages. The GUI is already defined and interfaces with the other package using HTTP calls, defined in the API. The backend side of the EzWh application is managed in the "Application Logic and Data".
+This EzWh design model implements a layered architectural pattern. The base idea is the 3-tier architecture (presentation, application logic layer, data (DBMS) layer). The "server" class routes the API requests to the respective classes, which implements the Application Logic. Then, these classes uses the Data Access Objects to operate on the database. There are therefore two packages. The GUI is already defined and interfaces with the other package using HTTP calls, defined in the API. The backend side of the EzWh application is managed in the "Application Logic and Data".
 
 # Low level design
+
+Since the complete diagram is too large to be readable, the first diagram only shows the links between all the various classes. The details of each class are shown later.
+
+```plantuml
+@startuml
+
+
+class server{ }
+
+package Routers {
+  class "SKU (router)"{ }
+  class "SKUItem (router)"{ }
+  class "TestDescriptor (router)"{ }
+  class "TestResult (router)"{ }
+  class "User (router)"{ }
+  class "InternalOrder (router)"{ }
+  class "RestockOrder (router)"{ }
+  class "ReturnOrder (router)"{ }
+  class "Item (router)"{ }
+  class "Position (router)"{ }
+}
+
+package DataAccessObjects {
+  class "SKU (DAO)"{ }
+  class "SKUItem (DAO)"{ }
+  class "TestDescriptor (DAO)"{ }
+  class "TestResult (DAO)"{ }
+  class "User (DAO)"{ }
+  class "InternalOrder (DAO)"{ }
+  class "RestockOrder (DAO)"{ }
+  class "ReturnOrder (DAO)"{ }
+  class "Item (DAO)"{ }
+  class "Position (DAO)"{ }
+  class DB {}
+}
+
+server --> "SKU (router)"
+server --> "SKUItem (router)"
+server --> "TestDescriptor (router)"
+server --> "TestResult (router)"
+server --> "Item (router)"
+server --> "InternalOrder (router)"
+server --> "User (router)"
+server --> "RestockOrder (router)"
+server --> "ReturnOrder (router)"
+server --> "Position (router)"
+
+"SKU (router)" --> "SKU (DAO)"
+"SKU (router)" --> "SKUItem (DAO)"
+"SKU (router)" --> "Position (DAO)"
+"SKU (router)" --> "TestDescriptor (DAO)"
+"SKUItem (router)" --> "SKU (DAO)"
+"SKUItem (router)" --> "Position (DAO)"
+"SKUItem (router)" --> "SKUItem (DAO)"
+"TestDescriptor (router)" --> "SKU (DAO)"
+"TestDescriptor (router)" --> "TestDescriptor (DAO)"
+"TestResult (router)" --> "TestDescriptor (DAO)"
+"TestResult (router)" --> "SKUItem (DAO)"
+"TestResult (router)" --> "TestResult (DAO)"
+"Item (router)" --> "SKU (DAO)"
+"Item (router)" --> "Item (DAO)"
+"InternalOrder (router)" --> "SKU (DAO)"
+"InternalOrder (router)" --> "InternalOrder (DAO)"
+"User (router)" --> "User (DAO)"
+"RestockOrder (router)" --> "RestockOrder (DAO)"
+"RestockOrder (router)" --> "SKU (DAO)"
+"RestockOrder (router)" --> "User (DAO)"
+"ReturnOrder (router)" --> "ReturnOrder (DAO)"
+"ReturnOrder (router)" --> "RestockOrder (DAO)"
+"Position (router)" --> "Position (DAO)"
+
+"SKU (DAO)" --> DB
+"SKUItem (DAO)" --> DB
+"TestDescriptor (DAO)" --> DB
+"TestResult (DAO)" --> DB
+"Item (DAO)" --> DB
+"InternalOrder (DAO)" --> DB
+"User (DAO)" --> DB
+"RestockOrder (DAO)" --> DB
+"ReturnOrder (DAO)" --> DB
+"Position (DAO)" --> DB
+@enduml
+
+```
 
 
 ```plantuml
 @startuml
-class EzWh{
-    
-}
 
-note right of EzWh
-This class implements the relations with the other classes using lists.
-EzWh acts as a container of other class instances.
-end note
 
-note right of EzWh
-We assume that all the constructors are implemented
-end note
-
-Class Position {
-  -PositionID: String
-  -Aisle: String
-  -Row: String
-  -Column: String
-  -MaxWeight: Integer
-  -MaxVolume: Integer
-  -OccupiedWeight: Integer
-  -OccupiedVolume: Integer
-  --
-  +getAllPositions(): Array<Object>
-  +getPositionById(id: Integer):Object
-  +createNewPosition(aisleID:String, row:String, icol:String, maxWeight:Integer, maxVolume:Integer): void
-  +modifyPosition(positionID:String, newAisleID:String, newRow:String, newCol:String, newMaxWeight:Integer, newMaxVolume:Integer, newOccupiedWeight:Integer, newOccupiedVolume:Integer): void
-  +modifyPositionId(oldPositionID:String, newPositionID:String): void
-  +deleteSKUItemByPositionID(positionID): void
-  searchPosition(positionID:Integer):Object
-}
-
-Class SKU {
+class "SKU (DAO)"{
   -ID: Integer
   -Description: String
   -Weight: Integer
@@ -106,7 +160,23 @@ Class SKU {
   +increaseSKUavailableQuantity(id: Integer): void
 }
 
-Class TestDescriptor {
+class "SKUItem (DAO)"{ 
+  -RFID: String
+  -Available: Integer
+  -DateOfStock: String
+  -SKUId: Integer
+  --
+  +getAllSKUItems(): Array<Object>
+  +getSKUItemsByID(SKUId:Integer): Array<Object>
+  +getSKUItemByRFID(RFID: String): Object
+  +createNewSKUItem(RFID:String, SKUId:Integer, DateOfStock:String): void
+  +modifySKUItem(SKUId:Integer, newRFID:String, newAvailable:Integer, newDateOfStock:String): void
+  +deleteSKUItem(RFID:String): void
+  +updatePositionWeightAndVolume(positionID: Integer,newOccupiedWeight: Double, newOccupiedVolume: Double): void
+}
+
+
+class "TestDescriptor (DAO)"{ 
   -ID: Integer
   -Name: String
   -Description: String
@@ -119,10 +189,8 @@ Class TestDescriptor {
   +createNewTestDescriptor(name:String, procedureDescription:String, idSKU:Integer): void
   +modifyTestDescriptor(newName:String, newProcedureDescription:String, newIdSKU:Integer): void
   +deleteTestDescriptor(id:Integer): void
-
 }
-
-Class TestResult {
+class "TestResult (DAO)"{
   -ID: Integer
   -Date: String
   -Result: boolean
@@ -138,23 +206,36 @@ Class TestResult {
   --
 }
 
-Class Item {
+
+class "User (DAO)"{ 
   -ID: Integer
-  -Description: String
-  -Price: float
-  -SKUId: Integer
-  -supplierId: Integer
+  -Surname: String
+  -Name: String
+  -Email: String
+  -Type: String
+  -HashPassword: String
   --
-  +getAllItems(): Array<Object>
-  +getItemById(id:Integer): Object
-  +createNewItem(description:String, price:Float, SKUId:Integer, supplierId:Integer): void
-  +modifyItem(id:Integer, newDescription:String, newPrice:Float): void
-  +deleteItem(id:Integer): void
-  
+  +getUserInfo(): Object
+  +getUserInfoById(id:Int): Object
+  +getAllUsersExceptManagers(): Array<Object>
+  +getAllSuppliers(): Array<Object>
+  +getAllUsers(): Array<Object>
+  +createNewUser(username:String, name:String, surname:String, password:String, type:String): void
+  ~searchMaxID():Int
+  +getUserByUsernameAndType(username:String,type:string): Object
+  +managerSessions(username:String, password:String): void
+  +customerSessions(username:String, password:String): void
+  +supplierSessions(username:String, password:String): void
+  +clerkSessions(username:String, password:String): void
+  +qualityEmployeeSessions(username:String, password:String): void
+  +deliveryEmployeeSessions(username:String, password:String): void
+  +logout(): void
+  +modifyUserRight(username:String, newType:String): void
+  +deleteUser(username:String, type:String): void
 }
 
-Class InternalOrder {
-  -id: Integer
+class "InternalOrder (DAO)"{
+-id: Integer
   -issueDate: String
   -State: state
   -customerId: Integer
@@ -183,66 +264,9 @@ Class InternalOrder {
   +deleteInternalOrderSKUItems(internalOrderID:Integer):void
 }
 
-note right of InternalOrder::products
-  "products" contains objects
- describing <b>SKU items</b>
- and their <b>quantity</b>:
- {SKUItem, quantity}.
-end note
 
-Class SKUItem {
-  -RFID: String
-  -Available: Integer
-  -DateOfStock: String
-  -SKUId: Integer
-  --
-  +getAllSKUItems(): Array<Object>
-  +getSKUItemsByID(SKUId:Integer): Array<Object>
-  +getSKUItemByRFID(RFID: String): Object
-  +createNewSKUItem(RFID:String, SKUId:Integer, DateOfStock:String): void
-  +modifySKUItem(SKUId:Integer, newRFID:String, newAvailable:Integer, newDateOfStock:String): void
-  +deleteSKUItem(RFID:String): void
-  +updatePositionWeightAndVolume(positionID: Integer,newOccupiedWeight: Double, newOccupiedVolume: Double): void
-  
-}
-
-Class User {
-  -ID: Integer
-  -Surname: String
-  -Name: String
-  -Email: String
-  -Type: String
-  -HashPassword: String
-  --
-  +getUserInfo(): Object
-  +getUserInfoById(id:Int): Object
-  +getAllUsersExceptManagers(): Array<Object>
-  +getAllSuppliers(): Array<Object>
-  +getAllUsers(): Array<Object>
-  +createNewUser(username:String, name:String, surname:String, password:String, type:String): void
-  ~searchMaxID():Int
-  +getUserByUsernameAndType(username:String,type:string): Object
-  +managerSessions(username:String, password:String): void
-  +customerSessions(username:String, password:String): void
-  +supplierSessions(username:String, password:String): void
-  +clerkSessions(username:String, password:String): void
-  +qualityEmployeeSessions(username:String, password:String): void
-  +deliveryEmployeeSessions(username:String, password:String): void
-  +logout(): void
-  +modifyUserRight(username:String, newType:String): void
-  +deleteUser(username:String, type:String): void
-  --
-}
-
-note left of RestockOrder::products
-  "products" contains objects
- describing <b>SKUItems</b>
- and their <b>quantity</b>:
- {SKUItem, quantity}.
-end note
-
-Class RestockOrder {
-  -id: Integer
+class "RestockOrder (DAO)"{
+-id: Integer
   -IssueDate: String
   -State: state
   -products: Array<Object>
@@ -270,27 +294,8 @@ Class RestockOrder {
   +deleteProductsFromRestockOrder(id:Integer):void
   +getSupplierById(id:Integer):Object
   +getSKUByIdFromRestockOrder(skuId:Integer,restockOrderID:Integer):Object
-
 }
-
-enum restock_state{
-  ISSUED
-  DELIVERY
-  DELIVERED
-  TESTED
-  COMPLETEDRETURN
-  COMPLETED
-}
-
-enum internal_state{
-  ISSUED
-  ACCEPTED
-  REFUSED
-  CANCELLED
-  COMPLETED
-}
-
-Class ReturnOrder {
+class "ReturnOrder (DAO)"{ 
   -ID: Integer
   -ReturnDate: String
   -restockOrder: RestockOrder
@@ -304,58 +309,64 @@ Class ReturnOrder {
   +deleteReturnOrder(id:Integer): void
   +de;eteReturnOrderProducts(id:Integer): void
   +getRFIDFromRestockOrder(RFID:Integer, restockOrderId): Object
-
+}
+class "Item (DAO)"{ 
+  -ID: Integer
+  -Description: String
+  -Price: float
+  -SKUId: Integer
+  -supplierId: Integer
+  --
+  +getAllItems(): Array<Object>
+  +getItemById(id:Integer): Object
+  +createNewItem(description:String, price:Float, SKUId:Integer, supplierId:Integer): void
+  +modifyItem(id:Integer, newDescription:String, newPrice:Float): void
+  +deleteItem(id:Integer): void
+}
+class "Position (DAO)"{ 
+    -PositionID: String
+    -Aisle: String
+    -Row: String
+    -Column: String
+    -MaxWeight: Integer
+    -MaxVolume: Integer
+    -OccupiedWeight: Integer
+    -OccupiedVolume: Integer
+  --
+    +getAllPositions(): Array<Object>
+    +getPositionById(id: Integer):Object
+    +createNewPosition(aisleID:String, row:String, icol:String, maxWeight:Integer, maxVolume:Integer): void
+    +modifyPosition(positionID:String, newAisleID:String, newRow:String, newCol:String, newMaxWeight:Integer, newMaxVolume:Integer, newOccupiedWeight:Integer, newOccupiedVolume:Integer): void
+    +modifyPositionId(oldPositionID:String, newPositionID:String): void
+    +deleteSKUItemByPositionID(positionID): void
+    searchPosition(positionID:Integer):Object}
 }
 
-Class DBHelper {
-  -dbName: String
+class DB {
+  -db: Database
   --
-  -connect(): void
-  -createTables(): void
+  -createConnection(): void
   --
-  ~loadSKUs(): list<SKU>
-  ~loadSKUItems(): list<SKUItem>
-  ~loadPositions(): list<Position>
-  ~loadTestDescriptors(): list<TestDescriptor>
-  ~loadTestResults(): list<TestResult>
-  ~loadUsers(): list<User>
-  ~loadRestockOrders(): list<RestockOrders>
-  ~loadReturnOrders(): list<ReturnOrders>
-  ~loadInternalOrders(): list<InternalOrders>
-  ~loadItems(): list<Items>
-  --
-  ~store(sql: String): void
-  ~update(sql: String): void
-  ~delete(sql: String): void
+  ~createTablePositions();
+  ~createTableRestockOrders();
+  ~createTableRestockOrdersProducts();
+  ~createTableRestockOrdersSKUItems();
+  ~createTableRestockOrderTransportNote();
+   ~createTableReturnOrders();
+   ~createTableReturnOrdersProducts();
+  ~createTableSKUItems();
+  ~createTableSKUs();
+   ~createTableTestDescriptors();
+  ~createTableTestResults();
+   ~createTableUsers();
+   ~createTableItems();
+   ~createTableInternalOrders();
+   ~createTableInternalOrdersSKUItems();
+   ~createTableInternalOrdersProducts();
+  ~deleteAllUsers();
+   ~populateTableUser();
 }
 
-EzWh --> Position
-EzWh --> SKU
-EzWh --> SKUItem
-EzWh --> TestDescriptor
-EzWh --> TestResult
-EzWh --> Item
-EzWh --> InternalOrder
-EzWh --> User
-EzWh --> RestockOrder
-EzWh --> ReturnOrder
-EzWh --> DBHelper
-
-SKU <--> "*" TestDescriptor
-SKUItem "*" --> SKU
-
-TestResult --> TestDescriptor
-TestResult --> SKUItem
-Position <-- SKU
-Item "*" --> SKU
-Item --> User
-InternalOrder --> "*" SKUItem
-InternalOrder --> User
-InternalOrder ..> internal_state
-RestockOrder --> "*" SKUItem
-RestockOrder --> User
-RestockOrder ..> restock_state
-ReturnOrder "0..1"--> RestockOrder
 @enduml
 
 ```
