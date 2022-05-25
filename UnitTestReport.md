@@ -2489,6 +2489,228 @@ createNewSKUItem(12341234,1,'19/11/1999',1); |  creating a New SKU item:create a
 |    f    |V    |  |Delete test result by rfid and id |
 
 
+**TestDescritor* - method *createNewTestDescriptor**
+
+**Criteria for method *createNewTestDescriptor* :**
+ - the id is a correct format and Unique - ID
+
+
+
+**Predicates for method *createNewTestDescriptor*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   id     |      t    |
+|        |       f  |
+|        |      wrongFormat  |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t     |V    | createNewTestDescriptor(id:1, name:'name', description:'a description', SKUId: 1) | Create new test descriptor |
+|    f    |I   | createNewTestDescriptor(id:1, name:'name', description:'a description', SKUId: 1);createNewTestDescriptor(id:1, name:'name', description:'a description', SKUId: 1); | Create new test descriptor with same ID|
+|    wrongFormat    |I   | createNewTestDescriptor(id:'A', name:'name', description:'a description', SKUId: 1) | Create new test descriptor with a wrong ID|
+
+
+**TestDescritor* - method *getLastTestDescriptorsId**
+
+**Criteria for method *getLastTestDescriptorsId* :**
+ - there exist at least 1 test decriptor - E
+
+
+
+**Predicates for method *getLastTestDescriptorsId*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|         |       f   |
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t     |V    | createNewTestDescriptor(1, 'name', 'a description', 1); getLastTestDescriptorsId() | Get last testDescriptor ID with non empty list |
+|    f    |V   | getLastTestDescriptorsId() | Get last testDescriptor ID, empty list|
+
+**TestDescritor* - method *getAllTestDescriptors**
+
+**Criteria for method *getAllTestDescriptors* :**
+ - there exist at least 1 test decriptor - E
+
+
+
+**Predicates for method *getAllTestDescriptors*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|         |       f   |
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t     |V    | createNewTestDescriptor(1, 'name', 'a description', 1); getAllTestDescriptors() | Get all test descriptors non empty list |
+|    f    |V   | getAllTestDescriptors() | get all test descriptors empty list |
+
+**TestDescritor* - method *deleteTestDescriptor**
+
+**Criteria for method *deleteTestDescriptor* :**
+ - there exist test decriptor with there required id - E
+
+
+
+**Predicates for method *deleteTestDescriptor*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|         |       f   |
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E |  Valid / Invalid | Description of the test case | Jest test case |
+|---------|-----            |-------                        |-------        |
+|   t     |V    | createNewTestDescriptor(1, 'name', 'a description', 1); deleteTestDescriptor(1) | "delete a test descriptor"|
+|    f    |I   |deleteTestDescriptor(id) | "delete a non existing test descriptor" |
+
+
+**TestDescritor* - method *getTestDescriptorsIdBySKUId**
+
+**Criteria for method *getTestDescriptorsIdBySKUId* :**
+ - there exist test decriptor with there required id - E
+ - the SKUId exists and is an int - S
+
+
+
+**Predicates for method *getTestDescriptorsIdBySKUId*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|         |       f   |
+|   S     |      t    |
+|         |       f   |
+|         |       NaN   |
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E | S | Valid / Invalid | Description of the test case | Jest test case |
+|------|---|-----            |-------                        |-------        |
+|   t   | t |V    | createNewTestDescriptor(1, 'name', 'a description', 1);  createNewTestDescriptor(2, 'name2', 'another description', 1); getTestDescriptorsIdBySKUId(1); |  get all test descriptors ID non empty list|
+|      | f |V    | createNewTestDescriptor(1, 'name', 'a description', 1);  createNewTestDescriptor(2, 'name2', 'another description', 1); getTestDescriptorsIdBySKUId(6); | get all test descriptors ID non existing SkuID |
+|      | NaN |I    | createNewTestDescriptor(1, 'name', 'a description', 1);  createNewTestDescriptor(2, 'name2', 'another description', 1); getTestDescriptorsIdBySKUId('a'); | get all test descriptors ID wrong format SkuID  |
+|   f   | t |I    | getTestDescriptorsIdBySKUId(1); |  get all test descriptors ID empty list|
+|      | f |I    |  |get all test descriptors ID empty list  |
+|      | NaN |I    | | get all test descriptors ID empty list |
+
+
+**TestDescritor* - method *modifyTestDescriptor**
+
+**Criteria for method *modifyTestDescriptor* :**
+ - there exist test decriptor with there required id - E
+ - the parameters to be modified ar not missing - S
+
+
+
+**Predicates for method *modifyTestDescriptor*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|   E     |      t    |
+|         |       f   |
+|   S     |      t    |
+|         |       f   |
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|          |                 |
+|          |                 |
+
+
+
+**Combination of predicates**:
+
+
+| E | S | Valid / Invalid | Description of the test case | Jest test case |
+|------|---|-----            |-------                        |-------        |
+|   t   | t |V   | createNewTestDescriptor(1, 'name', 'a description', 1); modifyTestDescriptor(1, "newName", "newDescription", 4); | Modify a test descriptor |
+|      | f |I    | createNewTestDescriptor(1, 'name', 'a description', 1); modifyTestDescriptor(1, "newName", "newDescription", null ) | Modify a test descriptor missing parameter  |
+|   f   | t |I   | modifyTestDescriptor(id:100, "newName", "newDescription", 4) | Modify a test descriptor non existing id |
+|      | f |I    |  | Modify a test descriptor non existing id |
+
+
+
 
 
 
