@@ -1,6 +1,10 @@
 const Position_DAO = require("../modules/position_db");
 const SKU_DAO = require("../modules/SKU");
+const database = require("../modules/DB");
 
+beforeAll(async () => {
+    await database.createConnection();
+});
 
 describe("Create Positions", () => {
     beforeEach(async () => {
@@ -27,7 +31,7 @@ describe("Create Positions", () => {
         await expect(Position_DAO.createNewPosition(position2)).resolves.toEqual(null);
 
         // Check if they are really the ones created
-        await expect(Position_DAO.getAllPositions()).resolves.toEqual([ position1, position2 ]);
+        await expect(Position_DAO.getAllPositions()).resolves.toEqual([position1, position2]);
     });
 
     test("Position creation error: PositionId duplicated", async () => {
@@ -46,8 +50,8 @@ describe("Create Positions", () => {
 describe("Get Position by Id", () => {
     beforeEach(async () => {
         await Position_DAO.deleteAllPositions();
-        await Position_DAO.createNewPosition({positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
-        await Position_DAO.createNewPosition({positionID: "500090007000", aisle: "5000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await Position_DAO.createNewPosition({ positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
+        await Position_DAO.createNewPosition({ positionID: "500090007000", aisle: "5000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
     });
 
     afterEach(async () => {
@@ -55,19 +59,19 @@ describe("Get Position by Id", () => {
     });
 
     test("Get position", async () => {
-        await expect(Position_DAO.getPositionById("800090007000")).resolves.toEqual({positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await expect(Position_DAO.getPositionById("800090007000")).resolves.toEqual({ positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
     });
 
     test("Get position: position not found", async () => {
         await expect(Position_DAO.getPositionById("300090007000")).resolves.toEqual({ error: 'Position not found.' });
-    });    
+    });
 });
 
 describe("Modify Position", () => {
     beforeEach(async () => {
         await Position_DAO.deleteAllPositions();
-        await Position_DAO.createNewPosition({positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
-        await Position_DAO.createNewPosition({positionID: "500090007000", aisle: "5000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await Position_DAO.createNewPosition({ positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
+        await Position_DAO.createNewPosition({ positionID: "500090007000", aisle: "5000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
     });
 
     afterEach(async () => {
@@ -76,9 +80,9 @@ describe("Modify Position", () => {
 
     test("Modify position", async () => {
         await expect(Position_DAO.modifyPosition("800090007000", "7000", "5000", "3000", 100, 100, 0, 0)).resolves.toEqual(null);
-        
+
         // Check if it is really updated
-        await expect(Position_DAO.getPositionById("700050003000")).resolves.toEqual({positionID: "700050003000", aisle: "7000", row: "5000", col: "3000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await expect(Position_DAO.getPositionById("700050003000")).resolves.toEqual({ positionID: "700050003000", aisle: "7000", row: "5000", col: "3000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
     });
 
     test("Modify position: positionID duplicated", async () => {
@@ -88,7 +92,7 @@ describe("Modify Position", () => {
     test("Modify position ID", async () => {
         await expect(Position_DAO.modifyPositionID("800090007000", "700050003000")).resolves.toEqual(null);
         // Check if it is really updated
-        await expect(Position_DAO.getPositionById("700050003000")).resolves.toEqual({positionID: "700050003000", aisle: "7000", row: "5000", col: "3000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await expect(Position_DAO.getPositionById("700050003000")).resolves.toEqual({ positionID: "700050003000", aisle: "7000", row: "5000", col: "3000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
     });
 
     test("Modify position: positionID duplicated", async () => {
@@ -100,8 +104,8 @@ describe("Search Position in SKU", () => {
     beforeEach(async () => {
         await Position_DAO.deleteAllPositions();
         await SKU_DAO.deleteAllSKUs();
-        await Position_DAO.createNewPosition({positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
-        await Position_DAO.createNewPosition({positionID: "500090007000", aisle: "5000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await Position_DAO.createNewPosition({ positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
+        await Position_DAO.createNewPosition({ positionID: "500090007000", aisle: "5000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
         await SKU_DAO.createNewSKU(1, "SKU 1", 10, 10, "notes 1", 10.99, "800090007000", 10);
     });
 
@@ -111,7 +115,7 @@ describe("Search Position in SKU", () => {
     });
 
     test("Search Position: position not empty", async () => {
-        await expect(Position_DAO.searchPosition("800090007000")).resolves.toEqual([{"id": 1, "description": "SKU 1", "weight": 10, "volume": 10, "notes": "notes 1", "positionID": "800090007000", "availableQuantity": 10, "price": 10.99}]);
+        await expect(Position_DAO.searchPosition("800090007000")).resolves.toEqual([{ "id": 1, "description": "SKU 1", "weight": 10, "volume": 10, "notes": "notes 1", "positionID": "800090007000", "availableQuantity": 10, "price": 10.99 }]);
     });
 
     test("Search Position: position empty", async () => {
@@ -122,7 +126,7 @@ describe("Search Position in SKU", () => {
 describe("Delete Position by Id", () => {
     beforeEach(async () => {
         await Position_DAO.deleteAllPositions();
-        await Position_DAO.createNewPosition({positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await Position_DAO.createNewPosition({ positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
     });
 
     afterEach(async () => {
@@ -138,7 +142,7 @@ describe("Delete Position by Id", () => {
 describe("Update Position", () => {
     beforeEach(async () => {
         await Position_DAO.deleteAllPositions();
-        await Position_DAO.createNewPosition({positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0});
+        await Position_DAO.createNewPosition({ positionID: "800090007000", aisle: "8000", row: "9000", col: "7000", maxWeight: 100, maxVolume: 100, occupiedWeight: 0, occupiedVolume: 0 });
     });
 
     afterEach(async () => {

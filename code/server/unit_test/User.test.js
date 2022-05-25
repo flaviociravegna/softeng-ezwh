@@ -1,4 +1,9 @@
 const USER_DAO = require("../modules/User");
+const database = require("../modules/DB");
+
+beforeAll(async () => {
+    await database.createConnection();
+});
 
 describe("Create new User", () => {
     beforeEach(async () => {
@@ -11,22 +16,22 @@ describe("Create new User", () => {
 
     test("Create new User, then get by Id", async () => {
         await expect(USER_DAO.searchMaxID()).resolves.toEqual(6);
-        let user = { id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "hashpassword", type: "customer"};
+        let user = { id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "hashpassword", type: "customer" };
         await expect(USER_DAO.createNewUser(user))
             .resolves.toEqual(null);
 
         // Check if they are really the ones created
-        await expect(USER_DAO.getUserByUsernameAndType("PaulRed@email.it", "customer")).resolves.toEqual([{username: "PaulRed@email.it", type: "customer"}]);
+        await expect(USER_DAO.getUserByUsernameAndType("PaulRed@email.it", "customer")).resolves.toEqual([{ username: "PaulRed@email.it", type: "customer" }]);
     });
 
     test("Create new User: duplicated id", async () => {
-        let user = { id: "6", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "hashpassword", type: "customer"};
+        let user = { id: "6", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "hashpassword", type: "customer" };
         await expect(USER_DAO.createNewUser(user))
             .rejects.toThrow();
     });
 
     test("Create new User: missing values", async () => {
-        let user = { name: "Paul", surname: "Red", hash: "hashpassword", type: "customer"};
+        let user = { name: "Paul", surname: "Red", hash: "hashpassword", type: "customer" };
         await expect(USER_DAO.createNewUser(user))
             .rejects.toThrow();
     });
@@ -36,7 +41,7 @@ describe("Create new User", () => {
 describe("Get User Info (login)", () => {
     beforeEach(async () => {
         await USER_DAO.deleteAllTestUser();
-        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "customer"})
+        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "customer" })
     });
 
     afterEach(async () => {
@@ -60,7 +65,7 @@ describe("Get User Info (login)", () => {
 describe("Get User By:", () => {
     beforeEach(async () => {
         await USER_DAO.deleteAllTestUser();
-        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier"})
+        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier" })
     });
 
     afterEach(async () => {
@@ -74,7 +79,7 @@ describe("Get User By:", () => {
     test("Get User: user not found", async () => {
         await expect(USER_DAO.getUserInfoById(11)).resolves.toEqual({ error: 'User not found.' });
     });
-    
+
     test("Get User By: Username and type", async () => {
         await expect(USER_DAO.getUserByUsernameAndType("PaulRed@email.it", "supplier")).resolves.toEqual([{ username: "PaulRed@email.it", type: "supplier" }]);
     });
@@ -96,7 +101,7 @@ describe("Get User By:", () => {
 describe("Get all users", () => {
     beforeEach(async () => {
         await USER_DAO.deleteAllTestUser();
-        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier"})
+        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier" })
     });
 
     afterEach(async () => {
@@ -105,19 +110,19 @@ describe("Get all users", () => {
 
     test("Get Users except managers", async () => {
         await expect(USER_DAO.getAllUsersExceptManagers()).resolves.toEqual(
-            [   { userId: 1, username: "user1@ezwh.com", name: "foo", surname: "foo", type: "customer" },
-                { userId: 2, username: "qualityEmployee1@ezwh.com", name: "foo", surname: "foo", type: "qualityEmployee" },
-                { userId: 3, username: "clerk1@ezwh.com", name: "foo", surname: "foo", type: "clerk" },
-                { userId: 4, username: "deliveryEmployee1@ezwh.com", name: "foo", surname: "foo", type: "deliveryEmployee" },
-                { userId: 5, username: "supplier1@ezwh.com", name: "foo", surname: "foo", type: "supplier" },
-                { userId: 7, username: "PaulRed@email.it", name: "Paul", surname: "Red", type: "supplier" }
+            [{ userId: 1, username: "user1@ezwh.com", name: "foo", surname: "foo", type: "customer" },
+            { userId: 2, username: "qualityEmployee1@ezwh.com", name: "foo", surname: "foo", type: "qualityEmployee" },
+            { userId: 3, username: "clerk1@ezwh.com", name: "foo", surname: "foo", type: "clerk" },
+            { userId: 4, username: "deliveryEmployee1@ezwh.com", name: "foo", surname: "foo", type: "deliveryEmployee" },
+            { userId: 5, username: "supplier1@ezwh.com", name: "foo", surname: "foo", type: "supplier" },
+            { userId: 7, username: "PaulRed@email.it", name: "Paul", surname: "Red", type: "supplier" }
             ]);
     });
 
     test("Get All suppliers", async () => {
         await expect(USER_DAO.getAllSuppliers()).resolves.toEqual(
-            [   { userId: 5, username: "supplier1@ezwh.com", name: "foo", surname: "foo" },
-                { userId: 7, username: "PaulRed@email.it", name: "Paul", surname: "Red" }
+            [{ userId: 5, username: "supplier1@ezwh.com", name: "foo", surname: "foo" },
+            { userId: 7, username: "PaulRed@email.it", name: "Paul", surname: "Red" }
             ]);
     });
 });
@@ -125,7 +130,7 @@ describe("Get all users", () => {
 describe("Search Max Id", () => {
     beforeEach(async () => {
         await USER_DAO.deleteAllTestUser();
-        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier"})
+        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier" })
     });
 
     afterEach(async () => {
@@ -140,7 +145,7 @@ describe("Search Max Id", () => {
 describe("Delete User", () => {
     beforeEach(async () => {
         await USER_DAO.deleteAllTestUser();
-        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier"})
+        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier" })
     });
 
     afterEach(async () => {
@@ -159,7 +164,7 @@ describe("Delete User", () => {
 describe("Modify user", () => {
     beforeEach(async () => {
         await USER_DAO.deleteAllTestUser();
-        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier"})
+        await USER_DAO.createNewUser({ id: "7", username: "PaulRed@email.it", name: "Paul", surname: "Red", hash: "$2a$10$NMZhJWWI3WXgWP4hVlKo5upRaTDLC7d3n77.wJyh1ZgmllaQ7qeka", type: "supplier" })
     });
 
     afterEach(async () => {

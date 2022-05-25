@@ -1,11 +1,13 @@
 
-const RO = require('../modules/RestockOrder')
-const SKU = require('../modules/SKU')
-const SKU_ITEM = require('../modules/SKUItem')
-const TestResults = require('../modules/testResult_db')
+const RO = require('../modules/RestockOrder');
+const SKU = require('../modules/SKU');
+const SKU_ITEM = require('../modules/SKUItem');
+const TestResults = require('../modules/testResult_db');
+const database = require("../modules/DB");
 
 beforeAll(async () => {
     await new Promise(process.nextTick);
+    await database.createConnection();
 });
 afterAll(async () => {
     await new Promise(process.nextTick);

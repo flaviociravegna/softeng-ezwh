@@ -1,6 +1,8 @@
 const RO = require('../modules/ReturnOrder');
+const database = require("../modules/DB");
 
 beforeAll(async () => {
+    await database.createConnection();
     await new Promise(process.nextTick);
 });
 afterAll(async () => {
