@@ -302,7 +302,7 @@ Version:
 
 ### Code coverage report
 
-    ![](./Images/screenshot_coverage_unit_tests.PNG)
+![](Images/screenshot_coverage_unit_tests.PNG)
 
 
 ### Loop coverage analysis
