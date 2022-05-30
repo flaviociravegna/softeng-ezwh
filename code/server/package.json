@@ -1,6 +1,13 @@
 {
   "dependencies": {
-    "express": "^4.17.3"
+    "bcrypt": "^5.0.1",
+    "dayjs": "^1.11.2",
+    "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.14.0",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
+    "sqlite3": "^5.0.8"
   },
   "devDependencies": {
     "babel": "^6.23.0",
@@ -11,6 +18,6 @@
   },
   "scripts": {
     "apiTest": "./node_modules/.bin/mocha test --exit",
-    "test": "node_modules/.bin/jest"
+    "test": "jest"
   }
 }
