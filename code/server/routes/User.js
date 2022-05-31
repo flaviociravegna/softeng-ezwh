@@ -229,9 +229,9 @@ router.delete('/api/users/:username/:type', [
         if (!errors.isEmpty())
             return response.status(422).json({ errors: errors.array() });
 
-        let user = await user_db.getUserByUsernameAndType(request.params.username, request.params.type);
+       /* let user = await user_db.getUserByUsernameAndType(request.params.username, request.params.type);
         if (user.length == 0)
-            return response.status(422).end(); //user not found
+            return response.status(422).end(); //user not found*/
 
         await user_db.deleteUser(request.params.username, request.params.type);
         response.status(204).end();

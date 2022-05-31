@@ -30,7 +30,7 @@ function testInternalOrderCRUD(){
     myproducts[1] = restockorders.newProduct(1, "descr2", 6.99, 20);
 
     let myinternalorders = [];
-    myinternalorders[0] = internalorders.newInternalOrder("2021/11/29 9:30", myproducts, 0);
+    myinternalorders[0] = internalorders.newInternalOrder("2021/11/29 09:30", myproducts, 0);
     myinternalorders[1] = internalorders.newInternalOrder("2021/11/30 21:30", myproducts, 0);
 
     describe('Test Internal Order CRUD features', () =>{

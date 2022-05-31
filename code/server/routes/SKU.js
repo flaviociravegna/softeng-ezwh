@@ -150,21 +150,21 @@ router.put('/:id/position', [
 });
 
 // Delete an SKU
-router.delete('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) => {
+router.delete('/:id', [check('id').exists().isInt()], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(422).json({ errors: errors.array() });
 
         // Check if the SKU exists
-        let sku = await SKU_DAO.getSKUById(req.params.id);
+        /*let sku = await SKU_DAO.getSKUById(req.params.id);
         if (sku.error)
-            return res.status(422).json(sku);
+            return res.status(422).json(sku);*/
 
         // If there are still SKU items -> error
-        const skuItems = await SKUItem_DAO.getSKUItemsBySkuID(req.params.id);
+       /* const skuItems = await SKUItem_DAO.getSKUItemsBySkuID(req.params.id);
         if (skuItems.length != 0)
-            return res.status(422).json({ error: "There are SKU Items connected to the SKU id" });
+            return res.status(422).json({ error: "There are SKU Items connected to the SKU id" });*/
 
         await SKU_DAO.deleteSKU(req.params.id);
         res.status(204).end();
