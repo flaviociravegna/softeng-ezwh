@@ -4,6 +4,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const app = require('../server');
+const db_cleaning = require('./utils-dbCleaning');
 var agent = chai.request.agent(app);
 
 const N_TEST_DESCRIPTORS = 4;
@@ -97,6 +98,11 @@ describe('API Test: Test Descriptors', function () {
 
 // Setup the data in order to do tests
 function setup() {
+
+    //db cleanig
+    db_cleaning.deleteAllTestDescriptor(agent);
+    db_cleaning.deleteAllSKU(agent);
+
     describe('POST /api/sku', function () {
         createNewSKU(201, { "description": "SKU 1", "weight": 10, "volume": 10, "notes": "notes 1", "price": 10.99, "availableQuantity": 1 });
     });

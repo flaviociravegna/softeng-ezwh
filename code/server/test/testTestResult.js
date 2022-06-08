@@ -4,6 +4,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const app = require('../server');
+const db_cleaning = require('./utils-dbCleaning');
 var agent = chai.request.agent(app);
 
 let testResult1 = { id: 1, idTestDescriptor: 1, Date: "2021/11/28", Result: true };
@@ -119,6 +120,13 @@ describe('API Test: Test Result', () => {
 });
 
 function setup() {
+
+    //db cleanig
+    db_cleaning.deleteAllTestResults(agent);
+    db_cleaning.deleteAllSkuItems(agent);
+    db_cleaning.deleteAllTestDescriptor(agent);
+    db_cleaning.deleteAllSKU(agent);
+
     // Create sku
     describe('POST /api/sku', function () {
         createSKU(201, { "description": "SKU", "weight": 50, "volume": 50, "notes": "test notes", "price": 10.99, "availableQuantity": 2 });
