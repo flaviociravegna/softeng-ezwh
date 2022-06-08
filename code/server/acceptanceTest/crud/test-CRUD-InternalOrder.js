@@ -34,13 +34,14 @@ function testInternalOrderCRUD(){
     myinternalorders[1] = internalorders.newInternalOrder("2021/11/30 21:30", myproducts, 0);
 
     describe('Test Internal Order CRUD features', () =>{
+        internalorders.deleteAllInternalOrders(agent);
         skuitems.deleteAllSkuItems(agent);      
         skus.deleteAllSkus(agent);
+        users.testDeleteAllNotManagerUsers(agent);
         skus.testPostNewSku(agent, mysku[0],201);
         skus.testPostNewSku(agent, mysku[1],201);
         skus.testGetAllSkus(agent, mysku,2,200);
-        internalorders.deleteAllInternalOrders(agent);
-        users.testDeleteAllNotManagerUsers(agent);
+
         users.testPostNewUser(agent, myuser[1], 201);
         internalorders.testPostNewInternalOrder(agent, myinternalorders[0], 201);
         internalorders.testPostNewInternalOrder(agent, myinternalorders[1], 201);
