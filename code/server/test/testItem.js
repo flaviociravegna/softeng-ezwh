@@ -4,6 +4,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const app = require('../server');
+const db_cleaning = require('./utils-dbCleaning');
 var agent = chai.request.agent(app);
 
 const N_Items = 4;
@@ -17,6 +18,10 @@ let item4 = { id: 4, description: "item no.4", price: 40.99, SKUId: 4, supplierI
 // Setup the data in order to do tests
 
 function setup() {
+
+     //db cleanig
+     db_cleaning.deleteAllSKU(agent);
+     db_cleaning.deleteAllItems(agent);
 
     // POST /api/sku (SUCCESS)
     describe('POST /api/sku', function () {
@@ -96,7 +101,7 @@ describe('API Test: Item', function () {
 
         // Illegal ID (null or < 1 or not a number)
         getItem(422);
-        getItem(422, -1);
+        getItem(404, -1);
         getItem(422, 0.44);
         getItem(422, "ezwh");
     });

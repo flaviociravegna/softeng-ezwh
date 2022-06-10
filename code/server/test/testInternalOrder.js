@@ -4,6 +4,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const app = require('../server');
+const db_cleaning = require('./utils-dbCleaning');
 var agent = chai.request.agent(app);
 
 const N_InternalOrder = 4;
@@ -14,6 +15,11 @@ let io4 = { id: 4, issueDate: "2021/11/29 04:33", state: "ISSUED", products: [{ 
 
 /*****************************************************************/
 function setup() {
+
+    //db cleanig
+    db_cleaning.deleteAllInternalOrders(agent);
+    db_cleaning.deleteAllSkuItems(agent);
+    db_cleaning.deleteAllSKU(agent);
 
     // POST /api/sku (SUCCESS)
     describe('POST /api/sku', function () {

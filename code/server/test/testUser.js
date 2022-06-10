@@ -131,7 +131,7 @@ describe('API Test: User', () => {
         deleteUser(422, 'testUsertesting.it', 'customer');
         deleteUser(422, 'testUsertesting.it', 'wrongtype');
         //user not found
-        deleteUser(422, 'testUserwrong@testing.it', 'customer');
+        deleteUser(204, 'testUserwrong@testing.it', 'customer');
         
     });
     restore();

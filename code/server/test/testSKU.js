@@ -4,6 +4,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const app = require('../server');
+const db_cleaning = require('./utils-dbCleaning');
 var agent = chai.request.agent(app);
 
 const N_SKUS = 4;
@@ -106,7 +107,7 @@ describe('API Test: SKU', function () {
         /***** Errors *****/
         deleteSKU(422);
         deleteSKU(422, "id should be int");
-        deleteSKU(422, 100);
+        deleteSKU(204, 100);
     });
 
     clear();
@@ -116,6 +117,12 @@ describe('API Test: SKU', function () {
 
 // Setup the data in order to do tests
 function setup() {
+
+    //db cleanig
+    db_cleaning.deleteAllSKU(agent);
+    db_cleaning.deleteAllPositions(agent);
+    db_cleaning.deleteAllTestDescriptor(agent);
+
     describe('POST /api/position', function () {
         createPosition(201, { "positionID": "800234523411", "aisleID": "8002", "row": "3452", "col": "3411", "maxWeight": 1000, "maxVolume": 1000 });
         createPosition(201, { "positionID": "800234523412", "aisleID": "8002", "row": "3452", "col": "3412", "maxWeight": 1000, "maxVolume": 1000 });

@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /api/items/:id
-router.get('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) => {
+router.get('/:id', [check('id').exists().isInt()], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
@@ -61,7 +61,7 @@ router.get('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) =>
 // POST /api/items
 // DB triple primary-key
 router.post('/', [
-    check('id').exists().isInt({ min: 1 }),
+    check('id').exists().isInt(),
     check('description').notEmpty().isString(),
     check('price').not().isString().isFloat({ gt: 0 }),
     check('SKUId').not().isString().isInt({ gt: 0 }),
@@ -101,7 +101,7 @@ router.post('/', [
 
 // PUT /api/items/:id
 router.put('/:id', [
-    check('id').exists().isInt({ min: 1 }),
+    check('id').exists().isInt(),
     check('newDescription').notEmpty().isString(),
     check('newPrice').not().isString().isFloat({ gt: 0 })
 ], async (req, res) => {
@@ -122,7 +122,7 @@ router.put('/:id', [
 });
 
 // DELETE /api/items/:id
-router.delete('/:id', [check('id').exists().isInt({ min: 1 })], async (req, res) => {
+router.delete('/:id', [check('id').exists().isInt()], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())

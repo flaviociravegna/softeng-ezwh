@@ -73,11 +73,11 @@ router.post('/', [
             return res.status(404).json({ error: "no RestockOrder associated to restockOrderID " });
 
         //check if SKUItem exists in Restock Order
-        for (let SKUItem of req.body.products) {
+        /*for (let SKUItem of req.body.products) {
             const sku = await restockOrder_DAO.getRFIDFromRestockOrder(SKUItem.RFID, req.body.restockOrderId);
             if (sku.error)
                 return res.status(422).send("RFID " + SKUItem.RFID + " not found in restock Order" + req.body.restockOrderId);
-        }
+        }*/
 
         const id = await returnOrder_DAO.getLastReturnOrderId();
         await returnOrder_DAO.createNewReturnOrder(req.body.returnDate, req.body.restockOrderId, id + 1);

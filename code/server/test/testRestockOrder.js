@@ -4,6 +4,7 @@ chai.use(chaiHttp);
 chai.should();
 
 const app = require('../server');
+const db_cleaning = require('./utils-dbCleaning');
 var agent = chai.request.agent(app);
 
 let sku1 = { id: 1, description: "SKU 1", weight: 10, volume: 10, notes: "notes 1", position: "800234523411", availableQuantity: 1, price: 10.99, testDescriptors: [] }
@@ -308,6 +309,15 @@ describe('API Test: RESTOCK ORDER', function () {
 
 // Setup the data in order to do tests
 function setup() {
+    
+    //db cleanig
+    db_cleaning.deleteAllReturnOrders(agent);
+    db_cleaning.deleteAllRestockOrders(agent);
+    db_cleaning.deleteAllTestResults(agent);
+    db_cleaning.deleteAllTestDescriptor(agent);
+    db_cleaning.deleteAllSkuItems(agent);
+    db_cleaning.deleteAllSKU(agent);
+
     describe('Creating users...', function () {
         createNewSupplier(201, supplier1);
         createNewSupplier(201, supplier2);
