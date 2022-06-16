@@ -34,7 +34,7 @@ Report effort figures from the timesheet, compute size from the source code.
 |defects before release vs defects after release = D/D_before | 23 / 67 = 0.34 |
 |DD = defect density = D/S| 23 / 3832 = 0.006 |
 |D_fix = average effort to fix a defect = ENQ / D | 5 / 23 = 0.22 ph/defect |
-|overall productivity OP = S/(E + ENQ)| 3832 / (329 + 5) = 11.47 LO/ph |
+|overall productivity OP = S/(E + ENQ)| 3832 / (329 + 5) = 11.47 LOC/ph |
 
 ## Second estimation
 
