@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const RestockOrder_DAO = require('../modules/RestockOrder');
 const SKU_db = require('../modules/SKU');
+const item_db = require('../modules/Item');
 const USER_DAO = require('../modules/User');
 const { check, validationResult, body } = require('express-validator'); // validation middleware
 const dayjs = require('dayjs');
@@ -24,7 +25,6 @@ router.get('/', skipThisRoute, async (req, res) => {
         for (let ro of ROs) {
             ro.products = await RestockOrder_DAO.getRestockOrderProducts(ro.id);
             ro.skuItems = await RestockOrder_DAO.getRestockOrderSkuItems(ro.id);
-
             ro.transportNote = await RestockOrder_DAO.getRestockOrderTransportNote(ro.id);
         }
 
@@ -38,12 +38,12 @@ router.get('/', skipThisRoute, async (req, res) => {
                 skuItems: (row.state == "ISSUED" || row.state == "DELIVERY") ? [] : row.skuItems
             }
 
-            if (row.state != "ISSUED")
+           if (row.state != "ISSUED")
                 obj.transportNote = row.transportNote;
 
             return obj;
         });
-
+        
         res.status(200).json(Result);
     } catch (err) {
         res.status(500).send(err);
@@ -144,9 +144,10 @@ router.get('/:id/returnItems', [
 // not sure how to acces issueDate
 router.post('/', [
     check('issueDate').isString(),
-    check('supplierId').isInt({ min: 1 }),
+    check('supplierId').isInt(),
     check('products').isArray(),
-    check('products.*.SKUId').exists().not().isString().isInt({ min: 1 }),
+    check('products.*.SKUId').exists().not().isString().isInt(),
+    check('products.*.itemId').exists().not().isString().isInt(),
     check('products.*.description').notEmpty().isString(),
     check('products.*.price').not().isString().isFloat({ gt: 0 }),
     check('products.*.qty').not().isString().isInt({ min: 1 }),
@@ -162,9 +163,9 @@ router.post('/', [
 
         //check if supplierId exists
         // Better with 404 error, but not present in API
-        const supplier = await USER_DAO.getSupplierById(req.body.supplierId);
+       /* const supplier = await USER_DAO.getSupplierById(req.body.supplierId);
         if (supplier.error)
-            return res.status(422).json({ error: "Supplier Not Found" });
+            return res.status(422).json({ error: "Supplier Not Found" });*/
 
         let skuId_array = [];
         for (let prod of req.body.products) {
@@ -176,6 +177,10 @@ router.post('/', [
             let sku = await SKU_db.getSKUById(prod.SKUId);
             if (sku.error)
                 return res.status(422).send("SKUId " + prod.SKUId + " not found in the db");
+
+            let item = await item_db.getItemBySupplierIdAndSKUId(req.body.supplierId, prod.itemId, prod.SKUId);
+            if (item.error)
+                return res.status(422).send("Supplier " + req.body.supplierId + " not doesn't sell item id " + prod.itemId);
         }
 
         let RestockOrderId = await RestockOrder_DAO.getLastIdRsO();
@@ -186,7 +191,7 @@ router.post('/', [
         ROProductsTableID++;
 
         for (const prod of req.body.products)
-            await RestockOrder_DAO.insertProductInOrder(ROProductsTableID++, RestockOrderId, prod.SKUId, prod.qty, prod.description);
+            await RestockOrder_DAO.insertProductInOrder(ROProductsTableID++, RestockOrderId, prod.SKUId, prod.itemId, prod.qty);
 
         res.status(201).end();
     } catch (err) {
@@ -225,6 +230,7 @@ router.put('/:id/skuItems', [
     check('id').isInt({ min: 1 }),
     check('skuItems').isArray(),
     check('skuItems.*.SKUId').not().isString().exists().isInt({ min: 1 }),
+    check('skuItems.*.itemId').exists().not().isString().isInt(),
     check('skuItems.*.rfid').isString().isNumeric().isLength({ min: 32, max: 32 }),
 ], async (req, res) => {
     try {
@@ -253,7 +259,7 @@ router.put('/:id/skuItems', [
         }
 
         for (const prod of req.body.skuItems)
-            await RestockOrder_DAO.addRestockOrderSKUItems(req.params.id, prod.rfid);
+            await RestockOrder_DAO.addRestockOrderSKUItems(req.params.id, prod.rfid, prod.itemId);
 
         res.status(200).end();
     } catch (err) {

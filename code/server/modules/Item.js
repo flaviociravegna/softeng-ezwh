@@ -25,9 +25,9 @@ exports.getAllItems = () => {
     });
 }
 
-exports.getItemsById = (id) => {
+exports.getItemByIdAndSupplierId = (id, supplierId) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT * FROM Items WHERE id = ?', [id], (err, row) => {
+        db.get('SELECT * FROM Items WHERE id = ? AND supplierID = ?', [id, supplierId], (err, row) => {
             if (err)
                 reject(err);
             if (row == undefined)
@@ -64,9 +64,9 @@ exports.modifyItem = (id, price, skuID, supplierID, description) => {
     });
 }
 
-exports.deleteItemsByID = (id) => {
+exports.deleteItemByIDAndSupplierId = (id, supplierId) => {
     return new Promise(async (resolve, reject) => {
-        db.run("DELETE FROM Items WHERE id = ?", [id], function (err) {
+        db.run("DELETE FROM Items WHERE id = ? AND supplierID = ?", [id, supplierId], function (err) {
             if (err)
                 reject(err);
             else

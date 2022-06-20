@@ -119,24 +119,24 @@ describe('RestockOrder Products', () => {
 
     });
     test('Insert a new product', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
 
-        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': 'a description', 'price': 10, 'qty': 10 }]);
+        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, "itemId": 1, 'description': 'a description', 'price': 10, 'qty': 10 }]);
 
     });
 
     test('Insert 2 new products', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
-        await expect(RO.insertProductInOrder(2, 1, 2, 20)).resolves.toBe(null);
-        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': 'a description', 'price': 10, 'qty': 10 },
-        { "SKUId": 2, 'description': 'another description', 'price': 20, 'qty': 20 }]);
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.insertProductInOrder(2, 1, 2, 2, 20)).resolves.toBe(null);
+        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, "itemId": 1, 'description': 'a description', 'price': 10, 'qty': 10 },
+        { "SKUId": 2, "itemId": 2, 'description': 'another description', 'price': 20, 'qty': 20 }]);
 
     });
 
     test('Fail to insert 2nd product', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
-        await expect(RO.insertProductInOrder(1, 1, 2, 20)).rejects.toThrow();
-        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, 'description': 'a description', 'price': 10, 'qty': 10 }]);
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.insertProductInOrder(1, 1, 2, 2, 20)).rejects.toThrow();
+        await expect(RO.getRestockOrderProducts(1)).resolves.toEqual([{ "SKUId": 1, "itemId": 1, 'description': 'a description', 'price': 10, 'qty': 10 }]);
 
     });
 
@@ -164,8 +164,8 @@ describe('get SKU by ID', () => {
 
     });
     test('get SKU by ID', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
-        await expect(RO.getSKUByIdFromRestockOrder(1, 1)).resolves.toEqual({ "description": null, "productID": 1, "quantity": 10, "restockOrderID": 1, "skuID": 1 });
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.getSKUByIdFromRestockOrder(1, 1)).resolves.toEqual({ "productID": 1, "quantity": 10, "restockOrderID": 1, "skuID": 1, "itemId": 1 });
     });
 
     test('get SKU by ID when theres no product', async () => {
@@ -173,19 +173,19 @@ describe('get SKU by ID', () => {
     });
 
     test('get SKU by ID when theres a wrong SKUID', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
         await expect(RO.getSKUByIdFromRestockOrder(2, 1)).resolves.toEqual({ error: 'SKU not found.' });
     })
     test('get SKU by ID when theres a wrong OrderID', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
         await expect(RO.getSKUByIdFromRestockOrder(1, 2)).resolves.toEqual({ error: 'SKU not found.' });
     })
     test('get SKU by ID when theres a wrong  type OrderID', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
         await expect(RO.getSKUByIdFromRestockOrder(1, 'a')).resolves.toEqual({ error: 'SKU not found.' });
     })
     test('get SKU by ID when theres a wrong  type SKUID', async () => {
-        await expect(RO.insertProductInOrder(1, 1, 1, 10)).resolves.toBe(null);
+        await expect(RO.insertProductInOrder(1, 1, 1, 1, 10)).resolves.toBe(null);
         await expect(RO.getSKUByIdFromRestockOrder('a', 1)).resolves.toEqual({ error: 'SKU not found.' });
     })
 });
@@ -293,20 +293,20 @@ describe('SKU Items of RestockOrder', () => {
         await expect(RO.getRFIDFromRestockOrder(1, 1)).resolves.toEqual({ error: "RFID not found in Restock Order" });
     })
     test('Insert SKUItems to restockOrder', async () => {
-        await expect(RO.addRestockOrderSKUItems(1, 1)).resolves.toEqual('New RestockOrder SKU Item inserted');
-        await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([{ 'SKUId': 1, 'rfid': "1" }]);
+        await expect(RO.addRestockOrderSKUItems(1, 1, 1)).resolves.toEqual('New RestockOrder SKU Item inserted');
+        await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([{ 'SKUId': 1, "itemId": 1, 'rfid': "1" }]);
     })
 
     test('Insert 2 SKUItems to restockOrder', async () => {
-        await expect(RO.addRestockOrderSKUItems(1, 1)).resolves.toEqual('New RestockOrder SKU Item inserted');
-        await expect(RO.addRestockOrderSKUItems(1, 2)).resolves.toEqual('New RestockOrder SKU Item inserted');
-        await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([{ 'SKUId': 1, 'rfid': "1" }, { 'SKUId': 2, 'rfid': "2" }]);
+        await expect(RO.addRestockOrderSKUItems(1, 1, 1)).resolves.toEqual('New RestockOrder SKU Item inserted');
+        await expect(RO.addRestockOrderSKUItems(1, 2, 2)).resolves.toEqual('New RestockOrder SKU Item inserted');
+        await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([{ 'SKUId': 1, "itemId": 1, 'rfid': "1" }, { 'SKUId': 2, "itemId": 2, 'rfid': "2" }]);
     })
     test('Insert 2 times the same SKUItem', async () => {
         // it doesnt send an error
-        await expect(RO.addRestockOrderSKUItems(1, 1)).resolves.toEqual('New RestockOrder SKU Item inserted');
-        await expect(RO.addRestockOrderSKUItems(1, 1)).rejects.toThrow();
-        await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([{ 'SKUId': 1, 'rfid': "1" }]);
+        await expect(RO.addRestockOrderSKUItems(1, 1, 1)).resolves.toEqual('New RestockOrder SKU Item inserted');
+        await expect(RO.addRestockOrderSKUItems(1, 1, 1)).rejects.toThrow();
+        await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([{ 'SKUId': 1, 'rfid': "1", "itemId": 1 }]);
     })
     //the check that the SKU Item effectively exists is done at a higher level
 
@@ -450,8 +450,8 @@ describe('get last Product Id in Restock Order', () => {
         await RO.createRestockOrder('19/11/1999', 1, 1);
         await RO.createRestockOrder('20/10/2099', 2, 2);
         await RO.createRestockOrder('20/10/2099', 3, 3);
-        await RO.insertProductInOrder(1, 1, 1234, 10);
-        await RO.insertProductInOrder(2, 1, 1234, 10);
+        await RO.insertProductInOrder(1, 1, 1234, 1, 10);
+        await RO.insertProductInOrder(2, 1, 1234, 1, 10);
     });
     afterEach(async () => {
         await RO.deleteAllRestockOrders();
@@ -549,8 +549,8 @@ describe('Remove SkuItem from Restock Order', () => {
         await RO.createRestockOrder('20/10/2099', 3, 3);
         await SKU_ITEM.createNewSKUItem(1, 1, '11/11/2020', 1);
         await SKU_ITEM.createNewSKUItem(2, 2, '12/11/2020', 2);
-        await RO.addRestockOrderSKUItems(1, 1)
-        await RO.addRestockOrderSKUItems(1, 2)
+        await RO.addRestockOrderSKUItems(1, 1, 1);
+        await RO.addRestockOrderSKUItems(1, 2, 2);
 
     });
     afterEach(async () => {
@@ -566,10 +566,12 @@ describe('Remove SkuItem from Restock Order', () => {
         await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([
             {
                 "SKUId": 1,
+                "itemId": 1,
                 "rfid": "1",
             },
             {
                 "SKUId": 2,
+                "itemId": 2,
                 "rfid": "2",
             }]);
         await expect(RO.deleteSkuItemsFromRestockOrder(1)).resolves.toEqual('Deleted');
@@ -589,15 +591,18 @@ describe('Remove SkuItem from Restock Order', () => {
         await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([
             {
                 "SKUId": 1,
+                "itemId": 1,
                 "rfid": "1",
             },
             {
                 "SKUId": 2,
+                "itemId": 2,
                 "rfid": "2",
             }]);
         await expect(RO.removeSKUItemFromRestockOrder(1, 1)).resolves.toEqual('Item Deleted from RestockOrder');
         await expect(RO.getRestockOrderSkuItems(1)).resolves.toEqual([{
             "SKUId": 2,
+            "itemId": 2,
             "rfid": "2",
         }]);
     });
@@ -625,8 +630,8 @@ describe('get Restock Order Failed SKUItems', () => {
         await RO.createRestockOrder('20/10/2099', 3, 3);
         await SKU_ITEM.createNewSKUItem(1, 1, '11/11/2020', 1);
         await SKU_ITEM.createNewSKUItem(2, 2, '12/11/2020', 2);
-        await RO.addRestockOrderSKUItems(1, 1)
-        await RO.addRestockOrderSKUItems(1, 2)
+        await RO.addRestockOrderSKUItems(1, 1, 1);
+        await RO.addRestockOrderSKUItems(1, 2, 2);
         await TestResults.createNewTestResult({ 'id': 1, 'date': '19/11/2000', 'result': 0, 'idTestDescriptor': '19', 'rfid': '1' });
 
     });
@@ -641,7 +646,7 @@ describe('get Restock Order Failed SKUItems', () => {
     });
     test('get failed SKU items from an order that has at least 1', async () => {
         // it doesnt send an error
-        await expect(RO.getRestockOrderFailedSKUItems(1)).resolves.toEqual([{ "RFID": "1", "skuID": 1 }]);
+        await expect(RO.getRestockOrderFailedSKUItems(1)).resolves.toEqual([{ "RFID": "1", "skuID": 1, "itemId": 1 }]);
 
     })
     test('get failed SKU items from an order that has none', async () => {

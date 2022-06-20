@@ -107,7 +107,7 @@ function deleteAllTestResults(agent){
 
 function deleteAllInternalOrders(agent){
     describe('Removing all Internal Orders', function(){
-        it('Getting Interna Orders', function(done){
+        it('Getting Internal Orders', function(done){
             agent.get('/api/internalOrders')
             .then(function(res){
                 res.should.have.status(200);

@@ -41,14 +41,17 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET /api/items/:id
-router.get('/:id', [check('id').exists().isInt()], async (req, res) => {
+// GET /api/items/:id/:supplierId
+router.get('/:id/:supplierId', [
+    check('id').exists().isInt(),
+    check('supplierId').exists().isInt()
+    ], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(422).json({ errors: errors.array() });
 
-        const item = await item_DAO.getItemsById(req.params.id);
+        const item = await item_DAO.getItemByIdAndSupplierId(req.params.id, req.params.supplierId);
         if (item.error)
             return res.status(404).json(item);
 
@@ -69,9 +72,10 @@ router.post('/', [
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
-        if (!errors.isEmpty())
-            return res.status(422).json({ errors: errors.array() });
+        if (!errors.isEmpty()) {
 
+            return res.status(422).json({ errors: errors.array() });
+        }
         let sku = await SKU_DAO.getSKUById(req.body.SKUId);
         if (sku.error)
             return res.status(404).json(sku);
@@ -80,6 +84,7 @@ router.post('/', [
         // supplier already sells an Item with the same ID
         let itemList = await item_DAO.getAllItems();
         if (CheckItemsSameID(req.body.id, req.body.supplierId, itemList) != true) {
+
             return res.status(422).json({
                 errors: "This supplier already sells an Item with the same ID."
             });
@@ -99,9 +104,10 @@ router.post('/', [
     }
 });
 
-// PUT /api/items/:id
-router.put('/:id', [
+// PUT /api/items/:id/:supplierId
+router.put('/:id/:supplierId', [
     check('id').exists().isInt(),
+    check('supplierId').exists().isInt(),
     check('newDescription').notEmpty().isString(),
     check('newPrice').not().isString().isFloat({ gt: 0 })
 ], async (req, res) => {
@@ -110,7 +116,7 @@ router.put('/:id', [
         if (!errors.isEmpty())
             return res.status(422).json({ errors: errors.array() });
 
-        const item = await item_DAO.getItemsById(req.params.id);
+        const item = await item_DAO.getItemByIdAndSupplierId(req.params.id, req.params.supplierId);
         if (item.error)
             return res.status(404).json(item);
 
@@ -121,18 +127,21 @@ router.put('/:id', [
     }
 });
 
-// DELETE /api/items/:id
-router.delete('/:id', [check('id').exists().isInt()], async (req, res) => {
+// DELETE /api/items/:id/:supplierId
+router.delete('/:id/:supplierId', [
+    check('id').exists().isInt(),
+    check('supplierId').exists().isInt()
+], async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(422).json({ errors: errors.array() });
 
-        const item = await item_DAO.getItemsById(req.params.id);
+        /*const item = await item_DAO.getItemByIdAndSupplierId(req.params.id, req.params.supplierId);
         if (item.error)
-            return res.status(422).json(item);
+            return res.status(422).json(item);*/
 
-        await item_DAO.deleteItemsByID(req.params.id);
+        await item_DAO.deleteItemByIDAndSupplierId(req.params.id, req.params.supplierId);
         res.status(204).end();
     } catch {
         res.status(503).end();

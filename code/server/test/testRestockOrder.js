@@ -19,8 +19,8 @@ let SKUItem6 = { "RFID": "12345678901234567890123456789016", "SKUId": 2, "DateOf
 let SKUItem7 = { "RFID": "12345678901234567890123456789017", "SKUId": 1, "DateOfStock": "2021/11/29 12:30" };
 let SKUItem8 = { "RFID": "12345678901234567890123456789018", "SKUId": 2, "DateOfStock": "2021/11/29 12:30" };
 
-const product1 = { "SKUId": sku1.id, "description": sku1.description, "price": sku1.price, "qty": 1 };
-const product2 = { "SKUId": sku2.id, "description": sku2.description, "price": sku2.price, "qty": 1 };
+const product1 = { "SKUId": sku1.id, "itemId": 1, "description": sku1.description, "price": sku1.price, "qty": 1 };
+const product2 = { "SKUId": sku2.id, "itemId": 2, "description": sku2.description, "price": sku2.price, "qty": 1 };
 
 const N_RESTOCK_ORDERS = 4;
 const STATES = ["ISSUED", "DELIVERY", "DELIVERED", "TESTED", "COMPLETEDRETURN", "COMPLETED"];
