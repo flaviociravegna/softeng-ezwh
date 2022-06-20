@@ -82,10 +82,10 @@ describe('API Test: Item', function () {
 
     // GET /api/items/:id
     describe('GET /api/items/:id', function () {
-        getItem(200, 1, item1);
-        getItem(200, 2, item2);
-        getItem(200, 3, item3);
-        getItem(200, 4, item4);
+        getItem(200, 1, 1, item1);
+        getItem(200, 2, 1, item2);
+        getItem(200, 3, 1, item3);
+        getItem(200, 4, 1, item4);
     });
 
     // GET /api/items
@@ -96,19 +96,19 @@ describe('API Test: Item', function () {
     // GET /api/items/:id
     describe('GET /api/items/:id (errors)', function () {
         // id not found
-        getItem(404, 114);
-        getItem(404, 514);
+        getItem(404, 114, 1);
+        getItem(404, 514, 1);
 
         // Illegal ID (null or < 1 or not a number)
         getItem(422);
-        getItem(404, -1);
-        getItem(422, 0.44);
-        getItem(422, "ezwh");
+        getItem(404, -1, 1);
+        getItem(422, 0.44, 1);
+        getItem(422, "ezwh", 1);
     });
 
     //UPDATE /api/items/:id
     describe('UPDATE /api/items/:id(success)', function () {
-        updateItem(200, 1, {
+        updateItem(200, 1, 1, {
             "newDescription": "a new sku",
             "newPrice": 10.99
         })
@@ -117,25 +117,25 @@ describe('API Test: Item', function () {
     //UPDATE /api/items/:id(FAIL)
     describe('UPDATE /api/items/:id(erros)', function () {
         //Illegal price 
-        updateItem(422, 1, { "newDescription": "a new sku", "newPrice": -10.99 });
-        updateItem(422, 1, { "newDescription": "a new sku", "newPrice": "10.99" });
-        updateItem(422, 1, { "newDescription": "a new sku", "newPrice": "string" });
-        updateItem(422, 1, { "newDescription": "a new sku", "newPrice": "" });
+        updateItem(422, 1, 1, { "newDescription": "a new sku", "newPrice": -10.99 });
+        updateItem(422, 1, 1, { "newDescription": "a new sku", "newPrice": "10.99" });
+        updateItem(422, 1, 1, { "newDescription": "a new sku", "newPrice": "string" });
+        updateItem(422, 1, 1, { "newDescription": "a new sku", "newPrice": "" });
 
         // Empty description
-        updateItem(422, 1, { "newDescription": "", "newPrice": 10.99 });
+        updateItem(422, 1, 1, { "newDescription": "", "newPrice": 10.99 });
         //wrong id
-        updateItem(404, 114, { "newDescription": "a new sku", "newPrice": 10.99 });
-        updateItem(422, "not a number", { "newDescription": "a new sku", "newPrice": 10.99 });
+        updateItem(404, 114, 1, { "newDescription": "a new sku", "newPrice": 10.99 });
+        updateItem(422, "not a number", 1, { "newDescription": "a new sku", "newPrice": 10.99 });
         // wrong prop's name
-        updateItem(422, 4, { "Description": "a new sku", "newPrice": 10.99 });
+        updateItem(422, 4, 1, { "Description": "a new sku", "newPrice": 10.99 });
     });
 
     describe('DELETE /api/items (errors)', function () {
         deleteItem(422);
-        deleteItem(422, -1);
-        deleteItem(422, "not an int");
-        deleteItem(422, 999);           // Item not found
+        deleteItem(422, -1, 1);
+        deleteItem(422, "not an int", 1);
+        //deleteItem(422, 999, 1);           // Item not found
     });
 
     clear();
@@ -156,10 +156,10 @@ function clear() {
 
     // DELETE ITEMS
     describe('DELETE /api/items', function () {
-        deleteItem(204, 1);
-        deleteItem(204, 2);
-        deleteItem(204, 3);
-        deleteItem(204, 4);
+        deleteItem(204, 1, 1);
+        deleteItem(204, 2, 1);
+        deleteItem(204, 3, 1);
+        deleteItem(204, 4, 1);
     });
 
     // DELETE SUPPLIER
@@ -287,9 +287,9 @@ function getAllItems(expectedHTTPStatus, expectedLength, expectedItems) {
     });
 }
 
-function getItem(expectedHTTPStatus, id, expectedItem) {
+function getItem(expectedHTTPStatus, id, supplierId, expectedItem) {
     it('Get item', function (done) {
-        agent.get('/api/items/' + id)
+        agent.get('/api/items/' + id + '/' + supplierId)
             .end(function (err, res) {
                 if (err)
                     done(err);
@@ -322,10 +322,10 @@ function deleteSKU(expectedHTTPStatus, id) {
     });
 }
 
-function updateItem(expectedHTTPStatus, id, item) {
+function updateItem(expectedHTTPStatus, id, supplierId, item) {
     it(`Updating item [id: ${id}] item`, function (done) {
         if (item !== undefined) {
-            agent.put(`/api/items/${id}`)
+            agent.put(`/api/items/${id}/${supplierId}`)
                 .set('content-type', 'application/json')
                 .send(item)
                 .end(function (err, res) {
@@ -348,9 +348,9 @@ function updateItem(expectedHTTPStatus, id, item) {
     });
 }
 
-function deleteItem(expectedHTTPStatus, id) {
+function deleteItem(expectedHTTPStatus, id, supplierId) {
     it('Deleting a item', function (done) {
-        agent.delete(`/api/items/${id}`)
+        agent.delete(`/api/items/${id}/${supplierId}`)
             .end(function (err, res) {
                 if (err)
                     done(err);

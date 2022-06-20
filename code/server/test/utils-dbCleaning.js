@@ -133,7 +133,7 @@ function deleteAllItems(agent){
                 res.should.have.status(200);
                 if(res.body.length !==0) {
                     for (let i = 0; i< res.body.length; i++){
-                        agent.delete('/api/items/'+res.body[i].id)
+                        agent.delete('/api/items/'+res.body[i].id+'/'+res.body[i].supplierId)
                         .then(function(res2){
                             res2.should.have.status(204);
                         });

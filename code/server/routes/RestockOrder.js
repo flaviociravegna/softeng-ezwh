@@ -178,8 +178,8 @@ router.post('/', [
             if (sku.error)
                 return res.status(422).send("SKUId " + prod.SKUId + " not found in the db");
 
-            let item = await item_db.getItemBySupplierIdAndSKUId(req.body.supplierId, prod.itemId, prod.SKUId);
-            if (item.error)
+            let item = await item_db.getItemBySupplierIdAndSKUId(prod.itemId, req.body.supplierId, prod.SKUId);
+            if (item.error) 
                 return res.status(422).send("Supplier " + req.body.supplierId + " not doesn't sell item id " + prod.itemId);
         }
 

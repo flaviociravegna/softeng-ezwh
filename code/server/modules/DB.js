@@ -184,7 +184,7 @@ class DatabaseConnection {
 
     static createTableItems() {
         return new Promise(async (resolve, reject) => {
-            const sql = "CREATE TABLE IF NOT EXISTS Items (id INTEGER UNIQUE NOT NULL, description TEXT, price DECIMAL, skuID INTEGER, supplierID INTEGER, PRIMARY KEY (id, supplierID));";
+            const sql = "CREATE TABLE IF NOT EXISTS Items (id INTEGER NOT NULL, description TEXT, price DECIMAL, skuID INTEGER, supplierID INTEGER, PRIMARY KEY (id, supplierID));";
             this.db.run(sql, [], function (err) {
                 if (err)
                     reject(err);

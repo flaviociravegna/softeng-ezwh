@@ -78,238 +78,57 @@ Server listening at http://localhost:3001
       ✔ Inserting a new SKU
       ✔ Inserting a new SKU
     POST /api/items
-qui
-      1) Inserting a new item
-qui
-      2) Inserting a new item
-qui
-      3) Inserting a new item
-qui
-      4) Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
     PUT /api/newUser
-      ✔ Inserting a new User (78ms)
+      ✔ Inserting a new User (74ms)
     POST /api/items (errors)
-[
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'id',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'id',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'description',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'description',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'price',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'SKUId',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: '',
-    msg: 'Invalid value',
-    param: 'description',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'description',
-    location: 'body'
-  },
-  {
-    value: undefined,
-    msg: 'Invalid value',
-    param: 'description',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: -10,
-    msg: 'Invalid value',
-    param: 'price',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: '10',
-    msg: 'Invalid value',
-    param: 'price',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'price',
-    location: 'body'
-  },
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'price',
-    location: 'body'
-  }
-]
       ✔ Inserting a new item
       ✔ Inserting a new item
-[
-  {
-    value: '6',
-    msg: 'Invalid value',
-    param: 'SKUId',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'SKUId',
-    location: 'body'
-  },
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'SKUId',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: '1',
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  }
-]
-      ✔ Inserting a new item
-[
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  },
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  }
-]
       ✔ Inserting a new item
       ✔ Inserting a new item
-[
-  {
-    value: '1',
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  }
-]
       ✔ Inserting a new item
-[
-  {
-    value: -1,
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  }
-]
       ✔ Inserting a new item
-[
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  },
-  {
-    value: 'string',
-    msg: 'Invalid value',
-    param: 'supplierId',
-    location: 'body'
-  }
-]
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
+      ✔ Inserting a new item
       ✔ Inserting a new item
     GET /api/items/:id
-      5) Get item
-      6) Get item
-      7) Get item
-      8) Get item
+      ✔ Get item
+      ✔ Get item
+      ✔ Get item
+      ✔ Get item
     GET /api/items
       ✔ Get all Items
     GET /api/items/:id (errors)
       ✔ Get item
       ✔ Get item
-      9) Get item
       ✔ Get item
-      10) Get item
-      11) Get item
+      ✔ Get item
+      ✔ Get item
+      ✔ Get item
     UPDATE /api/items/:id(success)
-      12) Updating item [id: 1] item
+      ✔ Updating item [id: 1] item
     UPDATE /api/items/:id(erros)
-      13) Updating item [id: 1] item
-      14) Updating item [id: 1] item
-      15) Updating item [id: 1] item
-      16) Updating item [id: 1] item
-      17) Updating item [id: 1] item
+      ✔ Updating item [id: 1] item
+      ✔ Updating item [id: 1] item
+      ✔ Updating item [id: 1] item
+      ✔ Updating item [id: 1] item
+      ✔ Updating item [id: 1] item
       ✔ Updating item [id: 114] item
-      18) Updating item [id: not a number] item
-      19) Updating item [id: 4] item
+      ✔ Updating item [id: not a number] item
+      ✔ Updating item [id: 4] item
     DELETE /api/items (errors)
-      20) Deleting a item
-      21) Deleting a item
-      22) Deleting a item
-      23) Deleting a item
+      ✔ Deleting a item
+      ✔ Deleting a item
+      ✔ Deleting a item
     DELETE /api/sku
       ✔ Deleting a SKU
       ✔ Deleting a SKU
@@ -317,10 +136,10 @@ qui
       ✔ Deleting a SKU
       ✔ Deleting a SKU
     DELETE /api/items
-      24) Deleting a item
-      25) Deleting a item
-      26) Deleting a item
-      27) Deleting a item
+      ✔ Deleting a item
+      ✔ Deleting a item
+      ✔ Deleting a item
+      ✔ Deleting a item
     DELETE /api/users/:username/:type
       ✔ Deleting a user
 
@@ -404,8 +223,8 @@ qui
     Removing all SKUs
       ✔ Getting SKUs
     Creating users...
-      ✔ Inserting a new supplier (74ms)
-      ✔ Inserting a new supplier (74ms)
+      ✔ Inserting a new supplier (69ms)
+      ✔ Inserting a new supplier (71ms)
     Creating SKUs...
       ✔ Inserting a new SKU
       ✔ Inserting a new SKU
@@ -422,24 +241,26 @@ qui
       ✔ Inserting a new test result
       ✔ Inserting a new test result
     Creating Items...
-      28) Inserting a new Item
-      29) Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
     POST /api/restockOrder (success)
-      30) Inserting a new Restock Order
-      31) Inserting a new Restock Order
-      32) Inserting a new Restock Order
-      33) Inserting a new Restock Order
-      34) Updating Restock Order state [id = 3]
-      35) Updating Restock Order state [id = 4]
+      ✔ Inserting a new Restock Order
+      ✔ Inserting a new Restock Order
+      ✔ Inserting a new Restock Order
+      ✔ Inserting a new Restock Order
+      ✔ Updating Restock Order state [id = 3]
+      ✔ Updating Restock Order state [id = 4]
     GET /api/restockOrders
-      36) Get all Restock Orders
+      ✔ Get all Restock Orders
     GET /api/restockOrdersIssued
-      37) Get all Restock Orders Issued
+      ✔ Get all Restock Orders Issued
     GET /api/restockOrders/:id (success)
-      38) Get Restock order with ID = 1
-      39) Get Restock order with ID = 2
-      40) Get Restock order with ID = 3
-      41) Get Restock order with ID = 4
+      ✔ Get Restock order with ID = 1
+      ✔ Get Restock order with ID = 2
+      ✔ Get Restock order with ID = 3
+      ✔ Get Restock order with ID = 4
     GET /api/skus/:id (errors)
       ✔ Get Restock order with ID = 99
       ✔ Get Restock order with ID = undefined
@@ -458,12 +279,12 @@ qui
       ✔ Inserting a new Restock Order
       ✔ Inserting a new Restock Order
       ✔ Inserting a new Restock Order
-      42) Inserting a new Restock Order
-      43) Inserting a new Restock Order
+      ✔ Inserting a new Restock Order
+      ✔ Inserting a new Restock Order
     PUT /api/restockOrder/:id (success)
-      44) Updating Restock Order state [id = 2]
-      45) Get all Restock Orders Issued
-      46) Get Restock order with ID = 2
+      ✔ Updating Restock Order state [id = 2]
+      ✔ Get all Restock Orders Issued
+      ✔ Get Restock order with ID = 2
     PUT /api/restockOrder/:id (errors)
       ✔ Updating Restock Order state [id = undefined]
       ✔ Updating Restock Order state [id = 99]
@@ -476,12 +297,12 @@ qui
       ✔ Updating Restock Order state [id = 1]
       ✔ Updating Restock Order state [id = 1]
     PUT /api/restockOrder/:id/skuItems (success)
-      47) Adding Restock order [id: 2] SKU Item list
-      48) Get Restock order with ID = 2
-      49) Adding Restock order [id: 4] SKU Item list
-      50) Get Restock order with ID = 4
-      51) Adding Restock order [id: 4] SKU Item list
-      52) Get Restock order with ID = 4
+      ✔ Adding Restock order [id: 2] SKU Item list
+      ✔ Get Restock order with ID = 2
+      ✔ Adding Restock order [id: 4] SKU Item list
+      ✔ Get Restock order with ID = 4
+      ✔ Adding Restock order [id: 4] SKU Item list
+      ✔ Get Restock order with ID = 4
     PUT /api/restockOrder/:id/skuItems (errors)
       ✔ Adding Restock order [id: 1] SKU Item list
       ✔ Adding Restock order [id: 3] SKU Item list
@@ -497,21 +318,21 @@ qui
       ✔ Adding Restock order [id: 2] SKU Item list
       ✔ Adding Restock order [id: 2] SKU Item list
       ✔ Adding Restock order [id: 2] SKU Item list
-      53) Adding Restock order [id: 99] SKU Item list
+      ✔ Adding Restock order [id: 99] SKU Item list
     GET /api/restockOrders/:id/returnItems (success)
-      54) Get Restock Order [2] SKU Items to be returned
+      ✔ Get Restock Order [2] SKU Items to be returned
     GET /api/restockOrders/:id/returnItems (errors)
       ✔ Get Restock Order [undefined] SKU Items to be returned
       ✔ Get Restock Order [-1] SKU Items to be returned
       ✔ Get Restock Order [not an int] SKU Items to be returned
-      55) Get Restock Order [1] SKU Items to be returned
-      56) Get Restock Order [3] SKU Items to be returned
-      57) Get Restock Order [4] SKU Items to be returned
+      ✔ Get Restock Order [1] SKU Items to be returned
+      ✔ Get Restock Order [3] SKU Items to be returned
+      ✔ Get Restock Order [4] SKU Items to be returned
       ✔ Get Restock Order [99] SKU Items to be returned
       ✔ Get Restock Order [10] SKU Items to be returned
     PUT /api/restockOrder/:id/transportNote (success)
-      58) Adding Restock Order [id: 3] transport note
-      59) Get Restock order with ID = 3
+      ✔ Adding Restock Order [id: 3] transport note
+      ✔ Get Restock order with ID = 3
     PUT /api/restockOrder/:id/transportNote (errors)
       ✔ Adding Restock Order [id: undefined] transport note
       ✔ Adding Restock Order [id: -1] transport note
@@ -520,15 +341,15 @@ qui
       ✔ Adding Restock Order [id: 3] transport note
       ✔ Adding Restock Order [id: 3] transport note
       ✔ Adding Restock Order [id: 3] transport note
-      60) Adding Restock Order [id: 3] transport note
-      61) Adding Restock Order [id: 3] transport note
-      62) Adding Restock Order [id: 3] transport note
+      ✔ Adding Restock Order [id: 3] transport note
+      ✔ Adding Restock Order [id: 3] transport note
+      ✔ Adding Restock Order [id: 3] transport note
       ✔ Adding Restock Order [id: 99] transport note
     DELETE /api/restockOrder/:id (success)
-      63) Deleting Restock Order [id = 1]
-      64) Deleting Restock Order [id = 2]
-      65) Deleting Restock Order [id = 3]
-      66) Deleting Restock Order [id = 4]
+      ✔ Deleting Restock Order [id = 1]
+      ✔ Deleting Restock Order [id = 2]
+      ✔ Deleting Restock Order [id = 3]
+      ✔ Deleting Restock Order [id = 4]
     DELETE /api/restockOrder/:id (errors)
       ✔ Deleting Restock Order [id = undefined]
       ✔ Deleting Restock Order [id = 99]
@@ -536,8 +357,10 @@ qui
       ✔ Deleting Restock Order [id = id must be an int]
       ✔ Deleting Restock Order [id = 2]
     Deleting Items...
-      67) Deleting an Item
-      68) Deleting an Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
     Deleting SKU Items and test results...
       ✔ Deleting a test descriptor
       ✔ Deleting a test result
@@ -568,12 +391,18 @@ qui
       ✔ Getting and removing
     removing all skuitems
       ✔ Getting SKUitems
+    Removing all Items
+      ✔ Getting Items
     Removing all SKUs
       ✔ Getting SKUs
     Populating DB...
-      ✔ Inserting a new supplier (72ms)
+      ✔ Inserting a new supplier (69ms)
       ✔ Inserting a new SKU
       ✔ Inserting a new SKU
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
       ✔ Inserting a new SKU Item
       ✔ Inserting a new SKU Item
       ✔ Inserting a new SKU Item
@@ -581,17 +410,17 @@ qui
       ✔ Inserting a new test descriptor
       ✔ Inserting a new test result
       ✔ Inserting a new test result
-      69) Inserting a new Restock Order
-      70) Updating Restock Order state [id = 1]
-      71) Adding Restock order [id: 1] SKU Item list
-      72) Inserting a new Restock Order
-      73) Updating Restock Order state [id = 2]
-      74) Adding Restock order [id: 2] SKU Item list
+      ✔ Inserting a new Restock Order
+      ✔ Updating Restock Order state [id = 1]
+      ✔ Adding Restock order [id: 1] SKU Item list
+      ✔ Inserting a new Restock Order
+      ✔ Updating Restock Order state [id = 2]
+      ✔ Adding Restock order [id: 2] SKU Item list
     POST /api/returnOrder (success)
-      75) Inserting a new Return Order
-      76) Inserting a new Return Order
+      ✔ Inserting a new Return Order
+      ✔ Inserting a new Return Order
     POST /api/returnOrder (error test)
-      77) Inserting a new Return Order
+      ✔ Inserting a new Return Order
       ✔ Inserting a new Return Order
       ✔ Inserting a new Return Order
       ✔ Inserting a new Return Order
@@ -607,9 +436,9 @@ qui
       ✔ Inserting a new Return Order
       ✔ Inserting a new Return Order
     GET /api/returnOrders
-      78) Get All Return order 
+      ✔ Get All Return order 
     GET /api/returnOrders/:id (success)
-      79) Get All Return order 
+      ✔ Get All Return order 
     GET /api/returnOrders/:id (error test)
       ✔ Get All Return order 
       ✔ Get All Return order 
@@ -621,8 +450,8 @@ qui
       ✔ Deleting Return Order [id = -12]
       ✔ Deleting Return Order [id = undefined]
     Restoring db
-      80) Deleting Restock Order [id = 1]
-      81) Deleting Restock Order [id = 2]
+      ✔ Deleting Restock Order [id = 1]
+      ✔ Deleting Restock Order [id = 2]
       ✔ Deleting a test result
       ✔ Deleting a test result
       ✔ Deleting a test descriptor
@@ -630,11 +459,15 @@ qui
       ✔ Deleting a SKU Item
       ✔ Deleting a SKU Item
       ✔ Deleting a SKU Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
       ✔ Deleting a SKU
       ✔ Deleting a SKU
       ✔ Deleting a supplier
-      82) Deleting Return Order [id = 1]
-      83) Deleting Return Order [id = 2]
+      ✔ Deleting Return Order [id = 1]
+      ✔ Deleting Return Order [id = 2]
 
   API Test: SKU
     Removing all SKUs
@@ -978,8 +811,8 @@ qui
 
   API Test: User
     POST /api/newUser
-      ✔ Inserting a new User (74ms)
-      ✔ Inserting a new User (74ms)
+      ✔ Inserting a new User (69ms)
+      ✔ Inserting a new User (70ms)
     POST /api/newUser (error test)
       ✔ Inserting a new User
       ✔ Inserting a new User
@@ -995,32 +828,32 @@ qui
     GET /api/users
       ✔ Get all users
     POST /api/newUser (success - check all possible user types)
-      ✔ Inserting a new User (73ms)
-      ✔ Inserting a new User (73ms)
-      ✔ Inserting a new User (73ms)
+      ✔ Inserting a new User (69ms)
+      ✔ Inserting a new User (68ms)
+      ✔ Inserting a new User (69ms)
     POST /api/managerSessions (manager Login)
-      ✔ Login user (71ms)
-      ✔ Login user (71ms)
+      ✔ Login user (67ms)
+      ✔ Login user (66ms)
       ✔ Login user
     POST /api/customerSessions (customer Login)
-      ✔ Login user (70ms)
-      ✔ Login user (67ms)
+      ✔ Login user (66ms)
+      ✔ Login user (66ms)
       ✔ Login user
     POST /api/supplierSessions (supplier Login)
-      ✔ Login user (66ms)
-      ✔ Login user (70ms)
+      ✔ Login user (65ms)
+      ✔ Login user (67ms)
       ✔ Login user
     POST /api/clerkSessions (clerk Login)
-      ✔ Login user (70ms)
-      ✔ Login user (72ms)
+      ✔ Login user (67ms)
+      ✔ Login user (66ms)
       ✔ Login user
     POST /api/qualityEmployeeSessions (quality Employee Login)
-      ✔ Login user (70ms)
-      ✔ Login user (69ms)
+      ✔ Login user (68ms)
+      ✔ Login user (66ms)
       ✔ Login user
     POST /api/deliveryEmployeeSessions (delivery Employee Login)
-      ✔ Login user (70ms)
-      ✔ Login user (71ms)
+      ✔ Login user (65ms)
+      ✔ Login user (65ms)
       ✔ Login user
     PUT /api/users/:username (error test)
       ✔ Updating User rights:
@@ -1047,1373 +880,5 @@ qui
       ✔ Deleting a user
 
 
-  588 passing (3s)
-  83 failing
-
-  1) API Test: Item
-       POST /api/items
-         Inserting a new item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:181:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  2) API Test: Item
-       POST /api/items
-         Inserting a new item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:181:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  3) API Test: Item
-       POST /api/items
-         Inserting a new item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:181:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  4) API Test: Item
-       POST /api/items
-         Inserting a new item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:181:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  5) API Test: Item
-       GET /api/items/:id
-         Get item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:296:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  6) API Test: Item
-       GET /api/items/:id
-         Get item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:296:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  7) API Test: Item
-       GET /api/items/:id
-         Get item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:296:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  8) API Test: Item
-       GET /api/items/:id
-         Get item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:296:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  9) API Test: Item
-       GET /api/items/:id (errors)
-         Get item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:296:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  10) API Test: Item
-       GET /api/items/:id (errors)
-         Get item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:296:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  11) API Test: Item
-       GET /api/items/:id (errors)
-         Get item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:296:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  12) API Test: Item
-       UPDATE /api/items/:id(success)
-         Updating item [id: 1] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  13) API Test: Item
-       UPDATE /api/items/:id(erros)
-         Updating item [id: 1] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  14) API Test: Item
-       UPDATE /api/items/:id(erros)
-         Updating item [id: 1] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  15) API Test: Item
-       UPDATE /api/items/:id(erros)
-         Updating item [id: 1] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  16) API Test: Item
-       UPDATE /api/items/:id(erros)
-         Updating item [id: 1] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  17) API Test: Item
-       UPDATE /api/items/:id(erros)
-         Updating item [id: 1] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  18) API Test: Item
-       UPDATE /api/items/:id(erros)
-         Updating item [id: not a number] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  19) API Test: Item
-       UPDATE /api/items/:id(erros)
-         Updating item [id: 4] item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:335:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  20) API Test: Item
-       DELETE /api/items (errors)
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  21) API Test: Item
-       DELETE /api/items (errors)
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  22) API Test: Item
-       DELETE /api/items (errors)
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  23) API Test: Item
-       DELETE /api/items (errors)
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  24) API Test: Item
-       DELETE /api/items
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 404
-      + expected - actual
-
-      -404
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  25) API Test: Item
-       DELETE /api/items
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 404
-      + expected - actual
-
-      -404
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  26) API Test: Item
-       DELETE /api/items
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 404
-      + expected - actual
-
-      -404
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  27) API Test: Item
-       DELETE /api/items
-         Deleting a item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 404
-      + expected - actual
-
-      -404
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testItem.js:358:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  28) API Test: RESTOCK ORDER
-       Creating Items...
-         Inserting a new Item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 503
-      + expected - actual
-
-      -503
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:790:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  29) API Test: RESTOCK ORDER
-       Creating Items...
-         Inserting a new Item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 503
-      + expected - actual
-
-      -503
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:790:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  30) API Test: RESTOCK ORDER
-       POST /api/restockOrder (success)
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 503
-      + expected - actual
-
-      -503
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:660:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  31) API Test: RESTOCK ORDER
-       POST /api/restockOrder (success)
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 503
-      + expected - actual
-
-      -503
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:660:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  32) API Test: RESTOCK ORDER
-       POST /api/restockOrder (success)
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 503
-      + expected - actual
-
-      -503
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:660:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  33) API Test: RESTOCK ORDER
-       POST /api/restockOrder (success)
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 503
-      + expected - actual
-
-      -503
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:660:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  34) API Test: RESTOCK ORDER
-       POST /api/restockOrder (success)
-         Updating Restock Order state [id = 3]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:580:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  35) API Test: RESTOCK ORDER
-       POST /api/restockOrder (success)
-         Updating Restock Order state [id = 4]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:580:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  36) API Test: RESTOCK ORDER
-       GET /api/restockOrders
-         Get all Restock Orders:
-
-      Uncaught AssertionError: expected [] to have a length of 4 but got +0
-      + expected - actual
-
-      -0
-      +4
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:419:42
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  37) API Test: RESTOCK ORDER
-       GET /api/restockOrdersIssued
-         Get all Restock Orders Issued:
-
-      Uncaught AssertionError: expected [] to have a length of 2 but got +0
-      + expected - actual
-
-      -0
-      +2
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:450:42
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  38) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id (success)
-         Get Restock order with ID = 1:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  39) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id (success)
-         Get Restock order with ID = 2:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  40) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id (success)
-         Get Restock order with ID = 3:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  41) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id (success)
-         Get Restock order with ID = 4:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  42) API Test: RESTOCK ORDER
-       POST /api/restockOrder (errors)
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 503
-      + expected - actual
-
-      -503
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:660:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  43) API Test: RESTOCK ORDER
-       POST /api/restockOrder (errors)
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 503
-      + expected - actual
-
-      -503
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:660:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  44) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id (success)
-         Updating Restock Order state [id = 2]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:580:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  45) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id (success)
-         Get all Restock Orders Issued:
-
-      Uncaught AssertionError: expected [] to have a length of 1 but got +0
-      + expected - actual
-
-      -0
-      +1
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:450:42
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  46) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id (success)
-         Get Restock order with ID = 2:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  47) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/skuItems (success)
-         Adding Restock order [id: 2] SKU Item list:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 422
-      + expected - actual
-
-      -422
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:632:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  48) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/skuItems (success)
-         Get Restock order with ID = 2:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  49) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/skuItems (success)
-         Adding Restock order [id: 4] SKU Item list:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 422
-      + expected - actual
-
-      -422
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:632:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  50) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/skuItems (success)
-         Get Restock order with ID = 4:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  51) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/skuItems (success)
-         Adding Restock order [id: 4] SKU Item list:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 422
-      + expected - actual
-
-      -422
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:632:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  52) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/skuItems (success)
-         Get Restock order with ID = 4:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  53) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/skuItems (errors)
-         Adding Restock order [id: 99] SKU Item list:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 404 but got 422
-      + expected - actual
-
-      -422
-      +404
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:632:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  54) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id/returnItems (success)
-         Get Restock Order [2] SKU Items to be returned:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:514:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  55) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id/returnItems (errors)
-         Get Restock Order [1] SKU Items to be returned:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:514:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  56) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id/returnItems (errors)
-         Get Restock Order [3] SKU Items to be returned:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:514:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  57) API Test: RESTOCK ORDER
-       GET /api/restockOrders/:id/returnItems (errors)
-         Get Restock Order [4] SKU Items to be returned:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:514:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  58) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/transportNote (success)
-         Adding Restock Order [id: 3] transport note:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:606:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  59) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/transportNote (success)
-         Get Restock order with ID = 3:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:479:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  60) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/transportNote (errors)
-         Adding Restock Order [id: 3] transport note:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:606:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  61) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/transportNote (errors)
-         Adding Restock Order [id: 3] transport note:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:606:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  62) API Test: RESTOCK ORDER
-       PUT /api/restockOrder/:id/transportNote (errors)
-         Adding Restock Order [id: 3] transport note:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 422 but got 404
-      + expected - actual
-
-      -404
-      +422
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:606:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  63) API Test: RESTOCK ORDER
-       DELETE /api/restockOrder/:id (success)
-         Deleting Restock Order [id = 1]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:893:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  64) API Test: RESTOCK ORDER
-       DELETE /api/restockOrder/:id (success)
-         Deleting Restock Order [id = 2]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:893:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  65) API Test: RESTOCK ORDER
-       DELETE /api/restockOrder/:id (success)
-         Deleting Restock Order [id = 3]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:893:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  66) API Test: RESTOCK ORDER
-       DELETE /api/restockOrder/:id (success)
-         Deleting Restock Order [id = 4]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:893:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  67) API Test: RESTOCK ORDER
-       Deleting Items...
-         Deleting an Item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 404
-      + expected - actual
-
-      -404
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:867:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  68) API Test: RESTOCK ORDER
-       Deleting Items...
-         Deleting an Item:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 404
-      + expected - actual
-
-      -404
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testRestockOrder.js:867:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  69) API Test: RETURN ORDER
-       Populating DB...
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:385:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  70) API Test: RETURN ORDER
-       Populating DB...
-         Updating Restock Order state [id = 1]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:411:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  71) API Test: RETURN ORDER
-       Populating DB...
-         Adding Restock order [id: 1] SKU Item list:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 422
-      + expected - actual
-
-      -422
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:437:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  72) API Test: RETURN ORDER
-       Populating DB...
-         Inserting a new Restock Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:385:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  73) API Test: RETURN ORDER
-       Populating DB...
-         Updating Restock Order state [id = 2]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:411:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  74) API Test: RETURN ORDER
-       Populating DB...
-         Adding Restock order [id: 2] SKU Item list:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 422
-      + expected - actual
-
-      -422
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:437:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  75) API Test: RETURN ORDER
-       POST /api/returnOrder (success)
-         Inserting a new Return Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:546:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  76) API Test: RETURN ORDER
-       POST /api/returnOrder (success)
-         Inserting a new Return Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 201 but got 422
-      + expected - actual
-
-      -422
-      +201
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:546:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  77) API Test: RETURN ORDER
-       POST /api/returnOrder (error test)
-         Inserting a new Return Order:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 404 but got 422
-      + expected - actual
-
-      -422
-      +404
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:546:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  78) API Test: RETURN ORDER
-       GET /api/returnOrders
-         Get All Return order :
-
-      Uncaught AssertionError: expected [] to have a length of 2 but got +0
-      + expected - actual
-
-      -0
-      +2
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:586:46
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  79) API Test: RETURN ORDER
-       GET /api/returnOrders/:id (success)
-         Get All Return order :
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 200 but got 404
-      + expected - actual
-
-      -404
-      +200
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:622:37
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/index.js:916:18)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  80) API Test: RETURN ORDER
-       Restoring db
-         Deleting Restock Order [id = 1]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:501:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  81) API Test: RETURN ORDER
-       Restoring db
-         Deleting Restock Order [id = 2]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:501:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  82) API Test: RETURN ORDER
-       Restoring db
-         Deleting Return Order [id = 1]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:569:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-  83) API Test: RETURN ORDER
-       Restoring db
-         Deleting Return Order [id = 2]:
-
-      Uncaught AssertionError: expected { Object (_events, _eventsCount, ...) } to have status code 204 but got 422
-      + expected - actual
-
-      -422
-      +204
-      
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/test/testReturnOrder.js:569:33
-      at Test.Request.callback (node_modules/superagent/lib/node/index.js:716:12)
-      at /Users/alessiamessina/Desktop/Politecnico/SE/EzWh/code/server/node_modules/superagent/lib/node/index.js:916:18
-      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:19:7)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
-
-
+  683 passing (3s)
 

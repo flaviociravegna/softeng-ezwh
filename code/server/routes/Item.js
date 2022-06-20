@@ -129,7 +129,7 @@ router.put('/:id/:supplierId', [
 
 // DELETE /api/items/:id/:supplierId
 router.delete('/:id/:supplierId', [
-    check('id').exists().isInt(),
+    check('id').exists().isInt({min: 0}),
     check('supplierId').exists().isInt()
 ], async (req, res) => {
     try {

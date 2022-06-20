@@ -40,6 +40,21 @@ exports.getItemByIdAndSupplierId = (id, supplierId) => {
     });
 }
 
+exports.getItemBySupplierIdAndSKUId = (id, supplierId, skuId) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM Items WHERE id = ? AND supplierID = ? AND skuID = ?', [id, supplierId, skuId], (err, row) => {
+            if (err)
+                reject(err);
+            if (row == undefined)
+                resolve({ error: 'ID not found.' });
+            else {
+                const item = new Item(row.id, row.price, row.skuID, row.supplierID, row.description);
+                resolve(item);
+            }
+        });
+    });
+}
+
 exports.createNewItem = (id, price, skuID, supplierID, description) => {
     return new Promise(async (resolve, reject) => {
         db.run("INSERT INTO Items (id,price,skuID,supplierID,description) VALUES (?, ?, ?, ?, ?)",
