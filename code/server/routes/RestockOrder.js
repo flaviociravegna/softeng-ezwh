@@ -3,7 +3,6 @@ const router = express.Router();
 const RestockOrder_DAO = require('../modules/RestockOrder');
 const SKU_db = require('../modules/SKU');
 const item_db = require('../modules/Item');
-const USER_DAO = require('../modules/User');
 const { check, validationResult, body } = require('express-validator'); // validation middleware
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');

@@ -216,8 +216,8 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | S2-5   | FR3 | Delete position by id |
 | S2-5   | FR3 | Delete position with  not exist positionID    |
 | S2-6   | FR3 | Get all positions    |
-| S3-1, S3-2   | FR5 | Create new restock order    |
-| S3-1, S3-2   | FR5 | Create restock order with invalid body    |
+| S3-2   | FR5 | Create new restock order    |
+| S3-2   | FR5 | Create restock order with invalid body    |
 | S4-1   | FR1 | Create new user    |
 | S4-1   | FR1 | Create new user  with wrong invalid body  |
 | S4-3   | FR1 | Delete user by username and type  |

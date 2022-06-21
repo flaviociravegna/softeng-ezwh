@@ -115,7 +115,7 @@ server --> "Position (router)"
 "User (router)" --> "User (DAO)"
 "RestockOrder (router)" --> "RestockOrder (DAO)"
 "RestockOrder (router)" --> "SKU (DAO)"
-"RestockOrder (router)" --> "User (DAO)"
+"RestockOrder (router)" --> "Item (DAO)"
 "ReturnOrder (router)" --> "ReturnOrder (DAO)"
 "ReturnOrder (router)" --> "RestockOrder (DAO)"
 "Position (router)" --> "Position (DAO)"
@@ -284,7 +284,7 @@ class "RestockOrder (DAO)"{
   +getRestockOrderById(id:Integer): Object
   +getRestockOrderFailedSKUItems(id:Integer): Array<Object>
   ~getLastPIDInOrder():Integer
-  +insertProductInOrder(id:Integer,restockOrderId:Integer,skuId:Integer,qty:Integer):void
+  +insertProductInOrder(id:Integer,restockOrderId:Integer,skuId:Integer, itemId:Integer, qty:Integer):void
   +createRestockOrder(issueDate:String, products:Array<Item>, supplierId:Integer): void
   ~getLastIdRso():Integer
   +removeSKUItemFromRestockOrder(skuId: Integer, id:Integer): void
@@ -298,6 +298,11 @@ class "RestockOrder (DAO)"{
   +deleteProductsFromRestockOrder(id:Integer):void
   +getSupplierById(id:Integer):Object
   +getSKUByIdFromRestockOrder(skuId:Integer,restockOrderID:Integer):Object
+  +getRFIDFromRestockOrder(RFID:Integer, restockOrderId): Object
+  +deleteAllRestockOrders():void
+  +deleteAllRestockOrdersProducts():void
+  +deleteAllRestockOrdersSKUItems():void
+  +deleteAllRestockOrderTransportNote():void
 }
 class "ReturnOrder (DAO)"{ 
   -ID: Integer
@@ -311,8 +316,9 @@ class "ReturnOrder (DAO)"{
   +insertProductInRO(product:Object,id:Integer):void
   +createNewReturnOrder(returnDate:String, id:Integer, restockOrderId:Integer): void
   +deleteReturnOrder(id:Integer): void
-  +de;eteReturnOrderProducts(id:Integer): void
-  +getRFIDFromRestockOrder(RFID:Integer, restockOrderId): Object
+  +deleteReturnOrderProducts(id:Integer): void
+  +deleteAllReturnOrders():void
+  +deleteAllReturnOrdersProducts():void
 }
 class "Item (DAO)"{ 
   -ID: Integer
