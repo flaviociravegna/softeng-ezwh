@@ -115,10 +115,7 @@ server --> "Position (router)"
 
 
 # API testing - Scenarios
-
-
-<If needed, define here additional scenarios for the application. Scenarios should be named
- referring the UC in the OfficialRequirements that they detail>
+S
 
 ## Scenario 1-4
 
@@ -243,7 +240,6 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 | S11-2  | FR7 | Update one skuitem with not exist SKU item  |
 | S11-3  | FR7 | Delete sku item by RFID   |
 | S11-3  | FR7 | Delete sku item with invalid RFID   |
-
 | S12-1  | FR3 | Create new test description   |
 | S12-1  | FR3 | Create new test description with invalid skuId   |
 | S12-2  | FR3 | Update test description    |

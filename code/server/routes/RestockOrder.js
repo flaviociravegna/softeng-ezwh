@@ -38,12 +38,12 @@ router.get('/', skipThisRoute, async (req, res) => {
                 skuItems: (row.state == "ISSUED" || row.state == "DELIVERY") ? [] : row.skuItems
             }
 
-           if (row.state != "ISSUED")
+            if (row.state != "ISSUED")
                 obj.transportNote = row.transportNote;
 
             return obj;
         });
-        
+
         res.status(200).json(Result);
     } catch (err) {
         res.status(500).send(err);
@@ -88,7 +88,6 @@ router.get('/:id', [
             return res.status(404).end();
 
         let RO = {
-            id: ResOrd.id,
             issueDate: ResOrd.issueDate,
             state: ResOrd.state,
             products: ResOrd.products,
@@ -163,9 +162,9 @@ router.post('/', [
 
         //check if supplierId exists
         // Better with 404 error, but not present in API
-       /* const supplier = await USER_DAO.getSupplierById(req.body.supplierId);
-        if (supplier.error)
-            return res.status(422).json({ error: "Supplier Not Found" });*/
+        /* const supplier = await USER_DAO.getSupplierById(req.body.supplierId);
+         if (supplier.error)
+             return res.status(422).json({ error: "Supplier Not Found" });*/
 
         let skuId_array = [];
         for (let prod of req.body.products) {
@@ -178,9 +177,14 @@ router.post('/', [
             if (sku.error)
                 return res.status(422).send("SKUId " + prod.SKUId + " not found in the db");
 
+            // Check if supplier doesn't sell a product with a certain itemId
             let item = await item_db.getItemBySupplierIdAndSKUId(prod.itemId, req.body.supplierId, prod.SKUId);
-            if (item.error) 
-                return res.status(422).send("Supplier " + req.body.supplierId + " not doesn't sell item id " + prod.itemId);
+            if (item.error)
+                return res.status(422).send("Supplier " + req.body.supplierId + " doesn't sell item id " + prod.itemId);
+
+            //Check if supplier itemId doesn't correspond to SKUId
+            if (item.id !== prod.itemId)
+                return res.status(422).send("Supplier " + req.body.supplierId + " item id doesn't correspond to SKUId " + prod.SKUId);
         }
 
         let RestockOrderId = await RestockOrder_DAO.getLastIdRsO();
