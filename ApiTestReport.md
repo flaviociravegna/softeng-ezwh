@@ -115,7 +115,6 @@ server --> "Position (router)"
 
 
 # API testing - Scenarios
-S
 
 ## Scenario 1-4
 
@@ -259,4 +258,3 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 |   NFR9    |     testSkuItem.js &emsp; --> &emsp; "PUT /api/skuitems/:rfid (errors)"      |
 | NFR6 |  testSkuItem.js &emsp; --> &emsp; "GET /api/skus/:id (errors)"|
 | NFR4 | testPosition.js &emsp; --> &emsp; "POST /api/positions (errors)" |
-| NFR2 |  |
