@@ -1,9 +1,12 @@
 Server listening at http://localhost:3001
 
 
+  wait for db connection
+    ✔ Connection to db done
+
   API Test: InternalOrders
     Removing all Internal Orders
-      ✔ Getting Interna Orders
+      ✔ Getting Internal Orders
     removing all skuitems
       ✔ Getting SKUitems
     Removing all SKUs
@@ -16,10 +19,10 @@ Server listening at http://localhost:3001
     POST /api/skuitem (success)
       ✔ Inserting a new SKU Item
     POST /api/internalOrders
+      ✔ Inserting a new InternalOrder (40ms)
       ✔ Inserting a new InternalOrder
-      ✔ Inserting a new InternalOrder
-      ✔ Inserting a new InternalOrder
-      ✔ Inserting a new InternalOrder
+      ✔ Inserting a new InternalOrder (38ms)
+      ✔ Inserting a new InternalOrder (44ms)
     POST /api/internalOrders(erros)
       ✔ Inserting a new InternalOrder
       ✔ Inserting a new InternalOrder
@@ -83,7 +86,7 @@ Server listening at http://localhost:3001
       ✔ Inserting a new item
       ✔ Inserting a new item
     PUT /api/newUser
-      ✔ Inserting a new User (75ms)
+      ✔ Inserting a new User (93ms)
     POST /api/items (errors)
       ✔ Inserting a new item
       ✔ Inserting a new item
@@ -126,7 +129,6 @@ Server listening at http://localhost:3001
       ✔ Updating item [id: not a number] item
       ✔ Updating item [id: 4] item
     DELETE /api/items (errors)
-      ✔ Deleting a item
       ✔ Deleting a item
       ✔ Deleting a item
       ✔ Deleting a item
@@ -224,8 +226,8 @@ Server listening at http://localhost:3001
     Removing all SKUs
       ✔ Getting SKUs
     Creating users...
-      ✔ Inserting a new supplier (69ms)
-      ✔ Inserting a new supplier (72ms)
+      ✔ Inserting a new supplier (80ms)
+      ✔ Inserting a new supplier (84ms)
     Creating SKUs...
       ✔ Inserting a new SKU
       ✔ Inserting a new SKU
@@ -244,11 +246,13 @@ Server listening at http://localhost:3001
     Creating Items...
       ✔ Inserting a new Item
       ✔ Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
     POST /api/restockOrder (success)
-      ✔ Inserting a new Restock Order
-      ✔ Inserting a new Restock Order
-      ✔ Inserting a new Restock Order
-      ✔ Inserting a new Restock Order
+      ✔ Inserting a new Restock Order (47ms)
+      ✔ Inserting a new Restock Order (48ms)
+      ✔ Inserting a new Restock Order (40ms)
+      ✔ Inserting a new Restock Order (46ms)
       ✔ Updating Restock Order state [id = 3]
       ✔ Updating Restock Order state [id = 4]
     GET /api/restockOrders
@@ -346,8 +350,8 @@ Server listening at http://localhost:3001
       ✔ Adding Restock Order [id: 99] transport note
     DELETE /api/restockOrder/:id (success)
       ✔ Deleting Restock Order [id = 1]
-      ✔ Deleting Restock Order [id = 2]
-      ✔ Deleting Restock Order [id = 3]
+      ✔ Deleting Restock Order [id = 2] (45ms)
+      ✔ Deleting Restock Order [id = 3] (43ms)
       ✔ Deleting Restock Order [id = 4]
     DELETE /api/restockOrder/:id (errors)
       ✔ Deleting Restock Order [id = undefined]
@@ -356,6 +360,8 @@ Server listening at http://localhost:3001
       ✔ Deleting Restock Order [id = id must be an int]
       ✔ Deleting Restock Order [id = 2]
     Deleting Items...
+      ✔ Deleting an Item
+      ✔ Deleting an Item
       ✔ Deleting an Item
       ✔ Deleting an Item
     Deleting SKU Items and test results...
@@ -388,12 +394,18 @@ Server listening at http://localhost:3001
       ✔ Getting and removing
     removing all skuitems
       ✔ Getting SKUitems
+    Removing all Items
+      ✔ Getting Items
     Removing all SKUs
       ✔ Getting SKUs
     Populating DB...
-      ✔ Inserting a new supplier (72ms)
+      ✔ Inserting a new supplier (85ms)
       ✔ Inserting a new SKU
       ✔ Inserting a new SKU
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
+      ✔ Inserting a new Item
       ✔ Inserting a new SKU Item
       ✔ Inserting a new SKU Item
       ✔ Inserting a new SKU Item
@@ -401,10 +413,10 @@ Server listening at http://localhost:3001
       ✔ Inserting a new test descriptor
       ✔ Inserting a new test result
       ✔ Inserting a new test result
-      ✔ Inserting a new Restock Order
+      ✔ Inserting a new Restock Order (56ms)
       ✔ Updating Restock Order state [id = 1]
       ✔ Adding Restock order [id: 1] SKU Item list
-      ✔ Inserting a new Restock Order
+      ✔ Inserting a new Restock Order (47ms)
       ✔ Updating Restock Order state [id = 2]
       ✔ Adding Restock order [id: 2] SKU Item list
     POST /api/returnOrder (success)
@@ -441,8 +453,8 @@ Server listening at http://localhost:3001
       ✔ Deleting Return Order [id = -12]
       ✔ Deleting Return Order [id = undefined]
     Restoring db
-      ✔ Deleting Restock Order [id = 1]
-      ✔ Deleting Restock Order [id = 2]
+      ✔ Deleting Restock Order [id = 1] (47ms)
+      ✔ Deleting Restock Order [id = 2] (41ms)
       ✔ Deleting a test result
       ✔ Deleting a test result
       ✔ Deleting a test descriptor
@@ -450,6 +462,10 @@ Server listening at http://localhost:3001
       ✔ Deleting a SKU Item
       ✔ Deleting a SKU Item
       ✔ Deleting a SKU Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
+      ✔ Deleting an Item
       ✔ Deleting a SKU
       ✔ Deleting a SKU
       ✔ Deleting a supplier
@@ -798,8 +814,8 @@ Server listening at http://localhost:3001
 
   API Test: User
     POST /api/newUser
-      ✔ Inserting a new User (69ms)
-      ✔ Inserting a new User (69ms)
+      ✔ Inserting a new User (77ms)
+      ✔ Inserting a new User (85ms)
     POST /api/newUser (error test)
       ✔ Inserting a new User
       ✔ Inserting a new User
@@ -815,32 +831,32 @@ Server listening at http://localhost:3001
     GET /api/users
       ✔ Get all users
     POST /api/newUser (success - check all possible user types)
-      ✔ Inserting a new User (69ms)
-      ✔ Inserting a new User (69ms)
-      ✔ Inserting a new User (70ms)
+      ✔ Inserting a new User (78ms)
+      ✔ Inserting a new User (84ms)
+      ✔ Inserting a new User (84ms)
     POST /api/managerSessions (manager Login)
-      ✔ Login user (67ms)
-      ✔ Login user (67ms)
+      ✔ Login user (62ms)
+      ✔ Login user (61ms)
       ✔ Login user
     POST /api/customerSessions (customer Login)
-      ✔ Login user (66ms)
-      ✔ Login user (67ms)
+      ✔ Login user (60ms)
+      ✔ Login user (64ms)
       ✔ Login user
     POST /api/supplierSessions (supplier Login)
-      ✔ Login user (66ms)
-      ✔ Login user (66ms)
+      ✔ Login user (61ms)
+      ✔ Login user (62ms)
       ✔ Login user
     POST /api/clerkSessions (clerk Login)
-      ✔ Login user (67ms)
-      ✔ Login user (69ms)
+      ✔ Login user (60ms)
+      ✔ Login user (61ms)
       ✔ Login user
     POST /api/qualityEmployeeSessions (quality Employee Login)
-      ✔ Login user (70ms)
-      ✔ Login user (68ms)
+      ✔ Login user (61ms)
+      ✔ Login user (61ms)
       ✔ Login user
     POST /api/deliveryEmployeeSessions (delivery Employee Login)
-      ✔ Login user (66ms)
-      ✔ Login user (66ms)
+      ✔ Login user (60ms)
+      ✔ Login user (61ms)
       ✔ Login user
     PUT /api/users/:username (error test)
       ✔ Updating User rights:
@@ -867,5 +883,5 @@ Server listening at http://localhost:3001
       ✔ Deleting a user
 
 
-  671 passing (3s)
+  684 passing (7s)
 

@@ -19,8 +19,8 @@ let SKUItem6 = { "RFID": "12345678901234567890123456789016", "SKUId": 2, "DateOf
 let SKUItem7 = { "RFID": "12345678901234567890123456789017", "SKUId": 1, "DateOfStock": "2021/11/29 12:30" };
 let SKUItem8 = { "RFID": "12345678901234567890123456789018", "SKUId": 2, "DateOfStock": "2021/11/29 12:30" };
 
-const product1 = { "SKUId": sku1.id, "description": sku1.description, "price": sku1.price, "qty": 1 };
-const product2 = { "SKUId": sku2.id, "description": sku2.description, "price": sku2.price, "qty": 1 };
+const product1 = { "SKUId": sku1.id, "itemId": 1, "description": sku1.description, "price": sku1.price, "qty": 1 };
+const product2 = { "SKUId": sku2.id, "itemId": 2, "description": sku2.description, "price": sku2.price, "qty": 1 };
 
 const N_RESTOCK_ORDERS = 4;
 const STATES = ["ISSUED", "DELIVERY", "DELIVERED", "TESTED", "COMPLETEDRETURN", "COMPLETED"];
@@ -29,28 +29,28 @@ let restockOrder1_issued = {
     "id": 1,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 7
+    "supplierId": 2
 };
 
 let restockOrder2_issued = {
     "id": 2,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 7
+    "supplierId": 3
 };
 
 let restockOrder3_delivery = {
     "id": 3,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 7
+    "supplierId": 2
 };
 
 let restockOrder4_delivered = {
     "id": 4,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 7
+    "supplierId": 3
 };
 
 const supplier1 = {
@@ -82,6 +82,22 @@ let item2 = {
     "description": "item2",
     "price": 20.99,
     "SKUId": 2,
+    "supplierId": 2
+};
+
+let item3 = {
+    "id": 1,
+    "description": "item3",
+    "price": 20.99,
+    "SKUId": 1,
+    "supplierId": 3
+};
+
+let item4 = {
+    "id": 2,
+    "description": "item4",
+    "price": 20.99,
+    "SKUId": 2,
     "supplierId": 3
 };
 
@@ -89,11 +105,11 @@ let item2 = {
 
 describe('API Test: RESTOCK ORDER', function () {
     setup();
-
-    const tempSI1 = { "SKUId": SKUItem1.SKUId, "rfid": SKUItem1.RFID };
-    const tempSI2 = { "SKUId": SKUItem2.SKUId, "rfid": SKUItem2.RFID };
-    const tempSI3 = { "SKUId": SKUItem3.SKUId, "rfid": SKUItem3.RFID };
-    const tempSI4 = { "SKUId": SKUItem4.SKUId, "rfid": SKUItem4.RFID };
+    // SkuId e ItemId in questi esempi sono sempre uguali tra loro
+    const tempSI1 = { "SKUId": SKUItem1.SKUId, "rfid": SKUItem1.RFID, "itemId": SKUItem1.SKUId };
+    const tempSI2 = { "SKUId": SKUItem2.SKUId, "rfid": SKUItem2.RFID, "itemId": SKUItem2.SKUId };
+    const tempSI3 = { "SKUId": SKUItem3.SKUId, "rfid": SKUItem3.RFID, "itemId": SKUItem3.SKUId };
+    const tempSI4 = { "SKUId": SKUItem4.SKUId, "rfid": SKUItem4.RFID, "itemId": SKUItem4.SKUId };
 
     describe('POST /api/restockOrder (success)', function () {
         createNewRestockOrder(201, restockOrder1_issued);
@@ -309,7 +325,7 @@ describe('API Test: RESTOCK ORDER', function () {
 
 // Setup the data in order to do tests
 function setup() {
-    
+
     //db cleanig
     db_cleaning.deleteAllReturnOrders(agent);
     db_cleaning.deleteAllRestockOrders(agent);
@@ -367,13 +383,17 @@ function setup() {
     describe('Creating Items...', function () {
         createNewItem(201, item1);
         createNewItem(201, item2);
+        createNewItem(201, item3);
+        createNewItem(201, item4);
     });
 }
 
 function clear() {
     describe('Deleting Items...', function () {
-        deleteItem(204, item1.id);
-        deleteItem(204, item2.id);
+        deleteItem(204, item1.id, item1.supplierId);
+        deleteItem(204, item2.id, item2.supplierId);
+        deleteItem(204, item3.id, item3.supplierId);
+        deleteItem(204, item4.id, item4.supplierId);
     });
 
     describe('Deleting SKU Items and test results...', function () {
@@ -479,7 +499,7 @@ function getRestockOrder(expectedHTTPStatus, id, expectedRO) {
                     res.should.have.status(expectedHTTPStatus);
                     if (expectedHTTPStatus === 200) {
                         res.should.be.json;
-                        res.body.should.haveOwnProperty("id");
+                        //res.body.should.haveOwnProperty("id");
                         res.body.should.haveOwnProperty("issueDate");
                         res.body.should.haveOwnProperty("state");
                         res.body.should.haveOwnProperty("products");
@@ -656,7 +676,6 @@ function createNewRestockOrder(expectedHTTPStatus, restockOrder) {
                 .end(function (err, res) {
                     if (err)
                         done(err);
-
                     res.should.have.status(expectedHTTPStatus);
                     done();
                 });
@@ -857,9 +876,9 @@ function deleteSKUItem(expectedHTTPStatus, rfid) {
     });
 }
 
-function deleteItem(expectedHTTPStatus, id) {
+function deleteItem(expectedHTTPStatus, id, supplierId) {
     it('Deleting an Item', function (done) {
-        agent.delete(`/api/items/${id}`)
+        agent.delete(`/api/items/${id}/${supplierId}`)
             .end(function (err, res) {
                 if (err)
                     done(err);

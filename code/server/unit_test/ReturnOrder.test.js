@@ -116,7 +116,7 @@ describe('ReturnOrder Products', () => {
         await RO.createNewReturnOrder('19/11/2020', 1, 1);
         await RO.createNewReturnOrder('20/10/2021', 2, 2);
         await RO.createNewReturnOrder('11/01/2022', 3, 3);
-        await RO.insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
+        await RO.insertProductInRO({ 'SKUId': 1, "itemId": 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1);
     });
 
     afterEach(async () => {
@@ -125,7 +125,7 @@ describe('ReturnOrder Products', () => {
     });
 
     test('get return order products', async () => {
-        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }]);
+        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{ 'SKUId': 1, "itemId": 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }]);
     });
 
     test('get return order products when there are none', async () => {
@@ -133,13 +133,13 @@ describe('ReturnOrder Products', () => {
     });
 
     test('fail to insert a repeated product', async () => {
-        await expect(RO.insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1)).rejects.toThrow();
+        await expect(RO.insertProductInRO({ 'SKUId': 1, "itemId": 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" }, 1)).rejects.toThrow();
     });
 
     test('insert a product', async () => {
-        await expect(RO.insertProductInRO({ 'SKUId': 2, 'description': "another description.", 'price': 29.99, 'RFID': "12345678901234567890123456789015" }, 1)).resolves.toBe('inserted products');
-        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" },
-        { 'SKUId': 2, 'description': "another description.", 'price': 29.99, 'RFID': "12345678901234567890123456789015" }]);
+        await expect(RO.insertProductInRO({ 'SKUId': 2, "itemId": 2, 'description': "another description.", 'price': 29.99, 'RFID': "12345678901234567890123456789015" }, 1)).resolves.toBe('inserted products');
+        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{ 'SKUId': 1, "itemId": 1, 'description': "a description.", 'price': 19.99, 'RFID': "12345678901234567890123456789014" },
+        { 'SKUId': 2, "itemId": 2, 'description': "another description.", 'price': 29.99, 'RFID': "12345678901234567890123456789015" }]);
     });
 
     test('delete a return order products', async () => {
@@ -183,7 +183,7 @@ describe('delete a return order', () => {
         await RO.createNewReturnOrder('19/11/2020', 1, 1);
         await RO.createNewReturnOrder('20/10/2021', 2, 2);
         await RO.createNewReturnOrder('11/01/2022', 3, 3);
-        await RO.insertProductInRO({ 'SKUId': 1, 'description': "a description.", 'price': 19.99, 'RFID': 12341234 }, 1);
+        await RO.insertProductInRO({ 'SKUId': 1, "itemId": 1, 'description': "a description.", 'price': 19.99, 'RFID': 12341234 }, 1);
 
     });
     afterEach(async () => {
@@ -192,7 +192,7 @@ describe('delete a return order', () => {
     });
 
     test('delete a return Order products', async () => {
-        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{ "RFID": "12341234", "SKUId": 1, "description": "a description.", "price": 19.99 }]);
+        await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([{ "RFID": "12341234", "SKUId": 1, "itemId": 1, "description": "a description.", "price": 19.99 }]);
         await expect(RO.deleteReturnOrderProducts(1)).resolves.toBe('ReturnOrderProducts Deleted');
 
         await expect(RO.getReturnOrderProducts(1)).resolves.toEqual([]);

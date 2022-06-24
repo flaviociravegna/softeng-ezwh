@@ -30,7 +30,7 @@ app.use('/', user);
 
 /*******************************************/
 
-database.createConnection();
+database.createConnection().then(() => app.emit("db_connection_created"));
 
 // init express
 app.use(express.json());

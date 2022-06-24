@@ -54,7 +54,7 @@ class DatabaseConnection {
 
     static createTableRestockOrdersProducts() {
         return new Promise(async (resolve, reject) => {
-            const sql = "CREATE TABLE IF NOT EXISTS RestockOrdersProducts (restockOrderID INTEGER, skuID INTEGER, quantity INTEGER, productID INTEGER, description TEXT, PRIMARY KEY (restockOrderID, productID));";
+            const sql = "CREATE TABLE IF NOT EXISTS RestockOrdersProducts (restockOrderID INTEGER, skuID INTEGER, itemId INTEGER, quantity INTEGER, productID INTEGER, PRIMARY KEY (restockOrderID, productID));";
             this.db.run(sql, [], function (err) {
                 if (err)
                     reject(err);
@@ -67,7 +67,7 @@ class DatabaseConnection {
 
     static createTableRestockOrdersSKUItems() {
         return new Promise(async (resolve, reject) => {
-            const sql = "CREATE TABLE IF NOT EXISTS RestockOrdersSKUItems (restockOrderID INTEGER, RFID TEXT, PRIMARY KEY (restockOrderID, RFID));";
+            const sql = "CREATE TABLE IF NOT EXISTS RestockOrdersSKUItems (restockOrderID INTEGER, RFID TEXT, itemId INTEGER, PRIMARY KEY (restockOrderID, RFID));";
             this.db.run(sql, [], function (err) {
                 if (err)
                     reject(err);
@@ -106,7 +106,7 @@ class DatabaseConnection {
 
     static createTableReturnOrdersProducts() {
         return new Promise(async (resolve, reject) => {
-            const sql = "CREATE TABLE IF NOT EXISTS ReturnOrdersProducts (SKUId INTEGER, description TEXT, price NUMERIC, RFID TEXT, ReturnOrderID INTEGER, PRIMARY KEY (RFID, ReturnOrderID));";
+            const sql = "CREATE TABLE IF NOT EXISTS ReturnOrdersProducts (SKUId INTEGER, itemId INTEGER, description TEXT, price NUMERIC, RFID TEXT, ReturnOrderID INTEGER, PRIMARY KEY (RFID, ReturnOrderID));";
             this.db.run(sql, [], function (err) {
                 if (err)
                     reject(err);
@@ -184,7 +184,7 @@ class DatabaseConnection {
 
     static createTableItems() {
         return new Promise(async (resolve, reject) => {
-            const sql = "CREATE TABLE IF NOT EXISTS Items (id INTEGER UNIQUE NOT NULL, description TEXT, price DECIMAL, skuID INTEGER, supplierID INTEGER, PRIMARY KEY (id, supplierID));";
+            const sql = "CREATE TABLE IF NOT EXISTS Items (id INTEGER NOT NULL, description TEXT, price DECIMAL, skuID INTEGER, supplierID INTEGER, PRIMARY KEY (id, supplierID));";
             this.db.run(sql, [], function (err) {
                 if (err)
                     reject(err);

@@ -50,7 +50,7 @@ exports.getReturnOrderById = (id) => {
 
 exports.getReturnOrderProducts = (id) => {
     return new Promise((resolve, reject) => {
-        db.all('SELECT SKUId, description, price, RFID FROM ReturnOrdersProducts WHERE ReturnOrderID = ?', [id], (err, rows) => {
+        db.all('SELECT SKUId, itemId, description, price, RFID FROM ReturnOrdersProducts WHERE ReturnOrderID = ?', [id], (err, rows) => {
             if (err)
                 reject(err);
             else
@@ -75,8 +75,8 @@ exports.getLastReturnOrderId = () => {
 
 exports.insertProductInRO = (product, id) => {
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO ReturnOrdersProducts (SKUId,description,price,RFID,ReturnOrderID) VALUES (?,?,?,?,?)",
-            [product.SKUId, product.description, product.price, product.RFID, id], function (err) {
+        db.run("INSERT INTO ReturnOrdersProducts (SKUId,itemId,description,price,RFID,ReturnOrderID) VALUES (?,?,?,?,?,?)",
+            [product.SKUId, product.itemId, product.description, product.price, product.RFID, id], function (err) {
                 if (err) {
                     reject(err);
                 }

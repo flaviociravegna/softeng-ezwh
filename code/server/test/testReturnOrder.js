@@ -15,21 +15,21 @@ let SKUItem2 = { "RFID": "12345678901234567890123456789012", "SKUId": 2, "DateOf
 let SKUItem3 = { "RFID": "12345678901234567890123456789013", "SKUId": 1, "DateOfStock": "2021/11/29 12:30" };
 let SKUItem4 = { "RFID": "12345678901234567890123456789014", "SKUId": 2, "DateOfStock": "2021/11/29 12:30" };
 
-const product1 = { "SKUId": sku1.id, "description": sku1.description, "price": sku1.price, "qty": 1 };
-const product2 = { "SKUId": sku2.id, "description": sku2.description, "price": sku2.price, "qty": 1 };
+const product1 = { "SKUId": sku1.id, "itemId": 1, "description": sku1.description, "price": sku1.price, "qty": 1 };
+const product2 = { "SKUId": sku2.id, "itemId": 2, "description": sku2.description, "price": sku2.price, "qty": 1 };
 
 let restockOrder1 = {
     "id": 1,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 7
+    "supplierId": 2
 };
 
 let restockOrder2 = {
     "id": 2,
     "issueDate": "2021/11/29 09:33",
     "products": [product1, product2],
-    "supplierId": 7
+    "supplierId": 3
 };
 
 const supplier1 = {
@@ -40,16 +40,48 @@ const supplier1 = {
     "type": "supplier"
 };
 
+let item1 = {
+    "id": 1,
+    "description": "item 1",
+    "price": 10.99,
+    "SKUId": 1,
+    "supplierId": 2         // ID = 1 is assigned to the manager
+};
+
+let item2 = {
+    "id": 2,
+    "description": "item2",
+    "price": 20.99,
+    "SKUId": 2,
+    "supplierId": 2
+};
+
+let item3 = {
+    "id": 1,
+    "description": "item3",
+    "price": 20.99,
+    "SKUId": 1,
+    "supplierId": 3
+};
+
+let item4 = {
+    "id": 2,
+    "description": "item4",
+    "price": 20.99,
+    "SKUId": 2,
+    "supplierId": 3
+};
+
 const returnOrder1 = {
     "returnDate":"2021/11/29 09:33",
-    "products": [{"SKUId":1,"description":"SKU 1", "price":10.99, "RFID":"12345678901234567890123456789011"},
-                {"SKUId":1,"description":"SKU 2", "price":20.99, "RFID":"12345678901234567890123456789012"}],
+    "products": [{"SKUId":1, "itemId": 1, "description":"SKU 1", "price":10.99, "RFID":"12345678901234567890123456789011"},
+                {"SKUId":2, "itemId": 2, "description":"SKU 2", "price":20.99, "RFID":"12345678901234567890123456789012"}],
     "restockOrderId" : 1
 }
 
 const returnOrder2 = {
     "returnDate":"2021/11/29 09:33",
-    "products": [{"SKUId":1,"description":"SKU 1","price":10.99, "RFID":"12345678901234567890123456789013"}],
+    "products": [{"SKUId":1, "itemId": 1, "description":"SKU 1","price":10.99, "RFID":"12345678901234567890123456789013"}],
     "restockOrderId" : 2
 }
 
@@ -66,7 +98,7 @@ const returnOrder2 = {
         // No restock order Id
         createNewReturnOrder(404, {
             "returnDate":"2021/11/29 09:33",
-            "products": [{"SKUId":1,"description":"SKU 1","price":10.99, "RFID":"12345678901234567890123456789013"}],
+            "products": [{"SKUId":1, "itemId": 1, "description":"SKU 1","price":10.99, "RFID":"12345678901234567890123456789013"}],
             "restockOrderId" : 100
         });
         // Invalid Date
@@ -176,6 +208,7 @@ function setup() {
     db_cleaning.deleteAllReturnOrders(agent);
     db_cleaning.deleteAllRestockOrders(agent);
     db_cleaning.deleteAllSkuItems(agent);
+    db_cleaning.deleteAllItems(agent);
     db_cleaning.deleteAllSKU(agent);
     
     describe('Populating DB...', function () {
@@ -184,6 +217,11 @@ function setup() {
         createNewSKU(201, sku1);
         createNewSKU(201, sku2);
 
+        createNewItem(201, item1);
+        createNewItem(201, item2);
+        createNewItem(201, item3);
+        createNewItem(201, item4);
+    
         createNewSKUItem(201, SKUItem1);
         createNewSKUItem(201, SKUItem2);
         createNewSKUItem(201, SKUItem3);
@@ -207,11 +245,11 @@ function setup() {
 
         createNewRestockOrder(201, restockOrder1);
         modifyRestockOrderState(200, restockOrder1.id, { "newState": "DELIVERED" });
-        addRestockOrderSKUItemList(200, restockOrder1.id, { "skuItems": [{"SKUId": SKUItem1.SKUId, "rfid":SKUItem1.RFID }, {"SKUId": SKUItem2.SKUId, "rfid":SKUItem2.RFID }]});
+        addRestockOrderSKUItemList(200, restockOrder1.id, { "skuItems": [{"SKUId": SKUItem1.SKUId, "rfid":SKUItem1.RFID, "itemId": SKUItem1.SKUId }, {"SKUId": SKUItem2.SKUId, "rfid":SKUItem2.RFID, "itemId": SKUItem2.SKUId }]});
         
         createNewRestockOrder(201, restockOrder2);
         modifyRestockOrderState(200, restockOrder2.id, { "newState": "DELIVERED" });
-        addRestockOrderSKUItemList(200, restockOrder2.id, { "skuItems": [{"SKUId": SKUItem3.SKUId, "rfid":SKUItem3.RFID }, {"SKUId": SKUItem4.SKUId, "rfid":SKUItem4.RFID }]});
+        addRestockOrderSKUItemList(200, restockOrder2.id, { "skuItems": [{"SKUId": SKUItem3.SKUId, "rfid":SKUItem3.RFID, "itemId": SKUItem3.SKUId }, {"SKUId": SKUItem4.SKUId, "rfid":SKUItem4.RFID, "itemId": SKUItem4.SKUId }]});
 
     });
 }
@@ -230,6 +268,11 @@ function restore () {
         deleteSKUItem(204, SKUItem2.RFID);
         deleteSKUItem(204, SKUItem3.RFID);
         deleteSKUItem(204, SKUItem4.RFID);
+
+        deleteItem(204, item1.id, item1.supplierId);
+        deleteItem(204, item2.id, item2.supplierId);
+        deleteItem(204, item3.id, item3.supplierId);
+        deleteItem(204, item4.id, item4.supplierId);
 
         deleteSKU(204, sku1.id);
         deleteSKU(204, sku2.id);
@@ -335,6 +378,32 @@ function createNewTestResult(expectedHTTPStatus, testResult) {
                 });
         } else {
             agent.post('/api/skuitems/testResult')
+                .end(function (err, res) {
+                    if (err)
+                        done(err);
+
+                    res.should.have.status(expectedHTTPStatus);
+                    done();
+                });
+        }
+    });
+}
+
+function createNewItem(expectedHTTPStatus, item) {
+    it('Inserting a new Item', function (done) {
+        if (item != undefined) {
+            agent.post('/api/item')
+                .set('content-type', 'application/json')
+                .send(item)
+                .end(function (err, res) {
+                    if (err)
+                        done(err);
+
+                    res.should.have.status(expectedHTTPStatus);
+                    done();
+                });
+        } else {
+            agent.post('/api/item')
                 .end(function (err, res) {
                     if (err)
                         done(err);
@@ -455,6 +524,19 @@ function addRestockOrderSKUItemList(expectedHTTPStatus, id, skuItems) {
 function deleteSKU(expectedHTTPStatus, id) {
     it('Deleting a SKU', function (done) {
         agent.delete(`/api/skus/${id}`)
+            .end(function (err, res) {
+                if (err)
+                    done(err);
+
+                res.should.have.status(expectedHTTPStatus);
+                done();
+            });
+    });
+}
+
+function deleteItem(expectedHTTPStatus, id, supplierId) {
+    it('Deleting an Item', function (done) {
+        agent.delete(`/api/items/${id}/${supplierId}`)
             .end(function (err, res) {
                 if (err)
                     done(err);

@@ -14,9 +14,17 @@ let io3 = { id: 3, issueDate: "2021/11/29 03:33", state: "ISSUED", products: [{ 
 let io4 = { id: 4, issueDate: "2021/11/29 04:33", state: "ISSUED", products: [{ "SKUId": 4, "description": "a product", "price": 40.99, "qty": 1 }], customerId: 1 };
 
 /*****************************************************************/
+describe('wait for db connection', function () {
+    this.timeout(5000);
+    before(function (done) {
+        app.on("db_connection_created", () => done());
+    });
+
+    it('Connection to db done', function () { return true; });
+});
+
 function setup() {
 
-    //db cleanig
     db_cleaning.deleteAllInternalOrders(agent);
     db_cleaning.deleteAllSkuItems(agent);
     db_cleaning.deleteAllSKU(agent);

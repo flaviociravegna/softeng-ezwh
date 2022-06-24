@@ -115,7 +115,7 @@ server --> "Position (router)"
 "User (router)" --> "User (DAO)"
 "RestockOrder (router)" --> "RestockOrder (DAO)"
 "RestockOrder (router)" --> "SKU (DAO)"
-"RestockOrder (router)" --> "User (DAO)"
+"RestockOrder (router)" --> "Item (DAO)"
 "ReturnOrder (router)" --> "ReturnOrder (DAO)"
 "ReturnOrder (router)" --> "RestockOrder (DAO)"
 "Position (router)" --> "Position (DAO)"
@@ -284,7 +284,7 @@ class "RestockOrder (DAO)"{
   +getRestockOrderById(id:Integer): Object
   +getRestockOrderFailedSKUItems(id:Integer): Array<Object>
   ~getLastPIDInOrder():Integer
-  +insertProductInOrder(id:Integer,restockOrderId:Integer,skuId:Integer,qty:Integer):void
+  +insertProductInOrder(id:Integer,restockOrderId:Integer,skuId:Integer, itemId:Integer, qty:Integer):void
   +createRestockOrder(issueDate:String, products:Array<Item>, supplierId:Integer): void
   ~getLastIdRso():Integer
   +removeSKUItemFromRestockOrder(skuId: Integer, id:Integer): void
@@ -298,6 +298,11 @@ class "RestockOrder (DAO)"{
   +deleteProductsFromRestockOrder(id:Integer):void
   +getSupplierById(id:Integer):Object
   +getSKUByIdFromRestockOrder(skuId:Integer,restockOrderID:Integer):Object
+  +getRFIDFromRestockOrder(RFID:Integer, restockOrderId): Object
+  +deleteAllRestockOrders():void
+  +deleteAllRestockOrdersProducts():void
+  +deleteAllRestockOrdersSKUItems():void
+  +deleteAllRestockOrderTransportNote():void
 }
 class "ReturnOrder (DAO)"{ 
   -ID: Integer
@@ -311,8 +316,9 @@ class "ReturnOrder (DAO)"{
   +insertProductInRO(product:Object,id:Integer):void
   +createNewReturnOrder(returnDate:String, id:Integer, restockOrderId:Integer): void
   +deleteReturnOrder(id:Integer): void
-  +de;eteReturnOrderProducts(id:Integer): void
-  +getRFIDFromRestockOrder(RFID:Integer, restockOrderId): Object
+  +deleteReturnOrderProducts(id:Integer): void
+  +deleteAllReturnOrders():void
+  +deleteAllReturnOrdersProducts():void
 }
 class "Item (DAO)"{ 
   -ID: Integer
@@ -456,10 +462,10 @@ In all the Sequence Diagrams is assumed that all the data are already loaded fro
 autoactivate on
 actor Manager
 Manager -> API : Selects description D, weight W, volume V, notes N, price P, available quantity Q
-API -> EzWh : createNewSKU(D, W, V, N, P. Q)
-EzWh -> SKU : new SKU(D, W, V, N, P. Q)
+API -> Server : createNewSKU(D, W, V, N, P. Q)
+Server -> SKU : new SKU(D, W, V, N, P. Q)
 return SKU
-EzWh -> DB : store(SKU)
+Server -> DB : store(SKU)
 return success
 return success
 @enduml
@@ -471,10 +477,10 @@ return success
 autoactivate on
 actor Manager
 Manager -> API : Inserts new Position newId for Position pId
-API -> EzWh : modifyPositionId(pID, newId)
-EzWh -> Position : setPosition(ID)
+API -> Server : modifyPositionId(pID, newId)
+Server -> Position : setPosition(ID)
 returndone
-EzWh -> DB : update(Position)
+Server -> DB : update(Position)
 return done
 
 return success
@@ -483,15 +489,16 @@ return success
 
 
 ## Scenario 3.1: Restock Order of SKU S issued by quantity
+
 ```plantuml
 @startuml
 autoactivate on
 actor Manager
-Manager -> API : Selects quantity Q, supplier SP, data D, product P
-API -> EzWh : createRestockOrder(D, SP, {P,Q})
-EzWh -> RestockOrder : new RestockOrder(D, SP, {P, Q}, state=ISSUED)
+Manager -> API : Selects first the supplier SP, then quantity Q, data D, product P
+API -> Server : createRestockOrder(D, SP, {P,Q})
+Server -> RestockOrder : new RestockOrder(D, SP, {P, Q}, state=ISSUED)
 return RestockOrder
-EzWh -> DB : store(RestockOrder)
+Server -> DB : store(RestockOrder)
 return success
 return success
 @enduml
@@ -502,9 +509,9 @@ return success
 autoactivate on
 actor Admin
 Admin -> API : Selects User
-API -> EzWh : deleteUser(username, type)
+API -> Server : deleteUser(username, type)
 
-EzWh -> DB : delete(User)
+Server -> DB : delete(User)
 return done
 
 return success
@@ -518,17 +525,17 @@ autoactivate on
 actor QualityEmployee 
 loop for each Position
 QualityEmployee -> API : Performs a test TId on SKUItem SRFID with result R
-API -> EzWh : createTestResult(S.RFID, TId, Date, R)
-EzWh -> TestResult: new TestResult(S.RFID, TId, Date, R)
+API -> Server : createTestResult(S.RFID, TId, Date, R)
+Server -> TestResult: new TestResult(S.RFID, TId, Date, R)
 return TestResult
 end
-EzWh -> DB : store(TestResult)
+Server -> DB : store(TestResult)
 return success
 QualityEmployee -> API: Finishes tests on Restock Order ROid
-API -> EzWh : modifyRestockOrderState(ROid, TESTED)
-EzWh -> RestockOrder: setState(TESTED)
+API -> Server : modifyRestockOrderState(ROid, TESTED)
+Server -> RestockOrder: setState(TESTED)
 return success
-EzWh -> DB : update(RestockOrder)
+Server -> DB : update(RestockOrder)
 return success
 
 return success
@@ -541,21 +548,21 @@ return success
 autoactivate on
 actor Manager
 Manager -> API : Inserts Restock Order Id RID
-API -> EzWh :  getRestockOrderFailedSKU(RID)
-EzWh -> RestockOrder : getFailedSKUItems(RID)
+API -> Server :  getRestockOrderFailedSKU(RID)
+Server -> RestockOrder : getFailedSKUItems(RID)
 return SKU Array
 return SKU Array
 return SKU Array
 Manager -> GUI: Inserts SKU list S
-GUI -> EzWh: createNewReturnOrder(date, S, RID)
-EzWh -> ReturnOrder: new ReturnOrder(date, S, RID)
+GUI -> Server: createNewReturnOrder(date, S, RID)
+Server -> ReturnOrder: new ReturnOrder(date, S, RID)
 note over ReturnOrder, SKUItem : operation done for each SKUItem
 ReturnOrder -> SKUItem: setAvailability(0)
 return done
 return ReturnOrder
-EzWh -> DB : store(ReturnOrder)
+Server -> DB : store(ReturnOrder)
 return success
-EzWh -> DB : update(SKUItem)
+Server -> DB : update(SKUItem)
 return success
 return success
 @enduml
@@ -568,29 +575,29 @@ autoactivate on
 actor Customer
 actor Manager
 Customer -> API : Selects SKU Items S and quantities Q
-API -> EzWh : createNewInternalOrder(Date,Array <object>, customerId)
-EzWh -> InternalOrder : new InternalOrder(Date,Array <object>, customerId, state=ISSUED)
+API -> Server : createNewInternalOrder(Date,Array <object>, customerId)
+Server -> InternalOrder : new InternalOrder(Date,Array <object>, customerId, state=ISSUED)
 return InternalOrder
 loop for each SKUItem
-EzWh -> SKUItem:  setAvailability(Q)
+Server -> SKUItem:  setAvailability(Q)
 return success
 end
 loop for each Position
-EzWh -> Position: changeWeightAndVolume(S.weight, S.volume)
+Server -> Position: changeWeightAndVolume(S.weight, S.volume)
 return success
 end
-EzWh -> DB : store(InternalOrder)
+Server -> DB : store(InternalOrder)
 return success
-EzWh -> DB : update(SKUItem)
+Server -> DB : update(SKUItem)
 return success
-EzWh -> DB : update(Position)
+Server -> DB : update(Position)
 return success
 return success
 Manager -> API: Accepts the order with id ID
-API -> EzWh: modifyInternalOrderState(ID, state=ACCEPTED)
-EzWh -> InternalOrder: setState(ACCEPTED)
+API -> Server: modifyInternalOrderState(ID, state=ACCEPTED)
+Server -> InternalOrder: setState(ACCEPTED)
 return success
-EzWh -> DB: update(InternalOrder)
+Server -> DB: update(InternalOrder)
 return success
 return success
 

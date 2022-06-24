@@ -27,7 +27,7 @@ describe("Create a new Item", () => {
         await expect(Item.createNewItem(1, 10, 1, 1, "an Item")).resolves.toEqual("New Item inserted");
 
         // Check if they are really the ones created
-        await expect(Item.getItemsById(1)).resolves.toEqual({ "id": 1, "price": 10, "supplierId": 1, "description": "an Item", "SKUId": 1 });
+        await expect(Item.getItemByIdAndSupplierId(1, 1)).resolves.toEqual({ "id": 1, "price": 10, "supplierId": 1, "description": "an Item", "SKUId": 1 });
     });
 
     test("two new Item created", async () => {
@@ -62,7 +62,7 @@ describe("Get all Items", () => {
         3, 10, 3, 1, "an Item");
 });
 
-describe("Get SKU by ID", () => {
+describe("Get Item by ID", () => {
     beforeEach(async () => {
         await Item.deleteAllItems();
         await expect(Item.createNewItem(1, 10, 1, 1, "an Item")).resolves.toEqual("New Item inserted");
@@ -79,7 +79,29 @@ describe("Get SKU by ID", () => {
     testItem(3, 10, 3, 1, "an Item");
 
     test("Get Item: not found", async () => {
-        const res = await Item.getItemsById(9)
+        const res = await Item.getItemByIdAndSupplierId(9, 1)
+        expect(res).toEqual({ error: 'ID not found.' });
+    });
+});
+
+describe("Get Item by Supplier Id and SkuId", () => {
+    beforeEach(async () => {
+        await Item.deleteAllItems();
+        await expect(Item.createNewItem(1, 10, 1, 1, "an Item")).resolves.toEqual("New Item inserted");
+        await expect(Item.createNewItem(2, 10, 2, 1, "an Item")).resolves.toEqual("New Item inserted");
+        await expect(Item.createNewItem(3, 10, 3, 1, "an Item")).resolves.toEqual("New Item inserted");
+    });
+
+    afterEach(async () => {
+        await Item.deleteAllItems();
+    });
+
+    testGetItemBySupplierIdAndSKUId(1, 10, 1, 1, "an Item");
+    testGetItemBySupplierIdAndSKUId(2, 10, 2, 1, "an Item");
+    testGetItemBySupplierIdAndSKUId(3, 10, 3, 1, "an Item");
+
+    test("Get Item: not found", async () => {
+        const res = await Item.getItemBySupplierIdAndSKUId(9, 1)
         expect(res).toEqual({ error: 'ID not found.' });
     });
 });
@@ -96,7 +118,7 @@ describe("Modify Item", () => {
 
     test("modify an Item", async () => {
         await Item.modifyItem(1, 20, 3, 1, "another Item");
-        const res = await Item.getItemsById(1);
+        const res = await Item.getItemByIdAndSupplierId(1, 1);
         expect(res).toEqual({ "id": 1, "price": 20, "supplierId": 1, "description": "another Item", "SKUId": 3 });
     });
 });
@@ -114,8 +136,8 @@ describe("Delete an Item", () => {
     });
 
     test("delete Item", async () => {
-        await Item.deleteItemsByID(3)
-        const res = await Item.getItemsById(3);
+        await Item.deleteItemByIDAndSupplierId(3, 1)
+        const res = await Item.getItemByIdAndSupplierId(3, 1);
         expect(res).toEqual({ error: 'ID not found.' });
     });
 });
@@ -135,7 +157,14 @@ async function testAllItems(id, price, skuId, supplierId, description,
 
 async function testItem(id, price, skuId, supplierId, description) {
     test('get an Item', async () => {
-        let res = await Item.getItemsById(id);
+        let res = await Item.getItemByIdAndSupplierId(id, supplierId);
+        expect(res).toEqual({ "id": id, "price": price, "supplierId": supplierId, "description": description, "SKUId": skuId });
+    });
+}
+
+async function testGetItemBySupplierIdAndSKUId(id, price, skuId, supplierId, description) {
+    test('get an Item by Id and SKUId', async () => {
+        let res = await Item.getItemBySupplierIdAndSKUId(id, supplierId, skuId);
         expect(res).toEqual({ "id": id, "price": price, "supplierId": supplierId, "description": description, "SKUId": skuId });
     });
 }

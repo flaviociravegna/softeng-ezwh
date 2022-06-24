@@ -17,13 +17,14 @@ class RestockOrder {
 /*************** Restock Order ********************/
 exports.getRestockOrderProducts = (restock_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT ROP.skuID, ROP.quantity, S.description, S.price FROM RestockOrdersProducts ROP, SKUs S WHERE ROP.restockOrderID = ? AND ROP.skuID = S.id'
+        const sql = 'SELECT ROP.skuID, ROP.quantity, S.description, S.price, ROP.itemId FROM RestockOrdersProducts ROP, SKUs S WHERE ROP.restockOrderID = ? AND ROP.itemId = S.id'
         db.all(sql, [restock_id], (err, rows) => {
             if (err)
                 reject(err);
             else {
                 const productsList = rows.map((row) => ({
                     SKUId: row.skuID,
+                    itemId: row.itemId,
                     description: row.description,
                     price: row.price,
                     qty: row.quantity,
@@ -37,14 +38,15 @@ exports.getRestockOrderProducts = (restock_id) => {
 
 exports.getRestockOrderSkuItems = (restock_id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT ROSI.RFID, SI.skuID FROM RestockOrdersSKUItems ROSI, SKUItems SI WHERE ROSI.RFID = SI.RFID AND restockOrderID = ?'
+        const sql = 'SELECT ROSI.RFID, ROSI.itemId, SI.skuID FROM RestockOrdersSKUItems ROSI, SKUItems SI WHERE ROSI.RFID = SI.RFID AND restockOrderID = ?'
         db.all(sql, [restock_id], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
                 const SKUItemList = rows.map((row) => ({
                     SKUId: row.skuID,
-                    rfid: row.RFID
+                    rfid: row.RFID,
+                    itemId: row.itemId
                 }));
                 resolve(SKUItemList);
             }
@@ -98,7 +100,7 @@ exports.getRestockOrderById = (Id) => {
 
 exports.getRestockOrderFailedSKUItems = (id) => {
     return new Promise((resolve, reject) => {
-        db.all("SELECT SI.skuID, RO.RFID FROM TestResults TR, RestockOrdersSKUItems RO, SKUItems SI WHERE RO.RFID = TR.RFID AND RO.RFID = SI.RFID AND TR.RFID NOT IN (SELECT RFID FROM TestResults WHERE RESULT = 1) AND RO.restockOrderID = ? GROUP BY RO.RFID,  SI.skuID", [id], (err, rows) => {
+        db.all("SELECT SI.skuID, RO.RFID, RO.itemId FROM TestResults TR, RestockOrdersSKUItems RO, SKUItems SI WHERE RO.RFID = TR.RFID AND RO.RFID = SI.RFID AND TR.RFID NOT IN (SELECT RFID FROM TestResults WHERE RESULT = 1) AND RO.restockOrderID = ? GROUP BY RO.RFID, RO.itemId, SI.skuID", [id], (err, rows) => {
             if (err)
                 reject(err);
             else
@@ -118,10 +120,10 @@ exports.getLastPIDInOrder = (orderId) => {
     });
 }
 
-exports.insertProductInOrder = (id, restockOrderId, skuID, qty) => {
+exports.insertProductInOrder = (id, restockOrderId, skuID, itemId, qty) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO RestockOrdersProducts (productID, restockOrderID, skuID, quantity) VALUES (?,?,?,?)';
-        db.run(sql, [id, restockOrderId, skuID, qty], (err, row) => {
+        const sql = 'INSERT INTO RestockOrdersProducts (productID, restockOrderID, skuID, itemId, quantity) VALUES (?,?,?,?,?)';
+        db.run(sql, [id, restockOrderId, skuID, itemId, qty], (err, row) => {
             if (err)
                 reject(err);
             else
@@ -183,10 +185,10 @@ exports.modifyRestockOrderState = (id, newState) => {
     });
 }
 
-exports.addRestockOrderSKUItems = (restockOrderID, RFID) => {
+exports.addRestockOrderSKUItems = (restockOrderID, RFID, itemId) => {
     return new Promise(async (resolve, reject) => {
-        db.run("INSERT INTO RestockOrdersSKUItems (restockOrderID, RFID) VALUES (?, ?)",
-            [restockOrderID, RFID], (err, row) => {
+        db.run("INSERT INTO RestockOrdersSKUItems (restockOrderID, RFID, itemId) VALUES (?, ?, ?)",
+            [restockOrderID, RFID, itemId], (err, row) => {
                 if (err)
                     reject(err);
                 else

@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         const RO = await returnOrder_DAO.getReturnOrders();
         for (let returnOrder of RO)
             returnOrder.products = await returnOrder_DAO.getReturnOrderProducts(returnOrder.id);
-
+        
         res.status(200).json(RO);
     } catch (err) {
         res.status(500).send(err);
@@ -56,6 +56,7 @@ router.post('/', [
     check('products').isArray(),
     check('products.*.SKUId').exists().isInt({ min: 1 }),
     check('products.*.description').isString(),
+    check('products.*.itemId').exists().not().isString().isInt(),
     check('products.*.price').isFloat({ gt: 0 }),
     check('products.*.RFID').isNumeric().isLength({ min: 32, max: 32 }),
     check('restockOrderId').isInt({ gt: 0 })
